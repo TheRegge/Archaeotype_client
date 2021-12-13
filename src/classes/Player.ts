@@ -5,7 +5,7 @@ export default class Player extends Phaser.GameObjects.Rectangle {
 
   private constructor(scene: Phaser.Scene, width: number, height: number) {
 
-    super(scene, 0, 0, width, height, 0xFF5555, 0)
+    super(scene, width / 2, height / 2, width, height, 0xFF5555, 0.3)
 
     this.scene = scene
     this.scene.add.existing(this)
@@ -18,7 +18,7 @@ export default class Player extends Phaser.GameObjects.Rectangle {
       const body = Player.instance.body as Phaser.Physics.Arcade.Body
       body.setCollideWorldBounds(true)
 
-      Player.instance.setStrokeStyle(MINIMAP_SCALE, 0xFF5555, 1)
+      // Player.instance.setStrokeStyle(MINIMAP_SCALE, 0xFF5555, 1)
 
       Player.instance.setInteractive()
       scene.input.setDraggable(Player.instance)

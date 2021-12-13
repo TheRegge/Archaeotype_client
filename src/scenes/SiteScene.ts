@@ -59,7 +59,7 @@ export default class SiteScene extends Phaser.Scene {
 
         this.cameras.main.ignore(ignoredByMainCam)
         this.minimap.ignore(ignoredByMinimap)
-        this.cameras.main.startFollow(this.player, true, 0.05, 0.05)
+        this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
     }
 
     update() {

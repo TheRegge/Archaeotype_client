@@ -17,8 +17,6 @@ export default class Minimap extends Phaser.Cameras.Scene2D.Camera {
 
   }
 
-
-
   toggle = () => {
     this.visible = !this.visible
   }

@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import Player from '../classes/Player'
 import Minimap from '../classes/Minimap'
 import ATGrid from '../classes/ATGrid'
+import Ruler from '../classes/Ruler'
 
 import {
     TILE_SIZE,
@@ -20,26 +21,21 @@ export default class SiteScene extends Phaser.Scene {
     private player
     private cursors
     private grid
+    private rulerH
+    private rulerV
 
     constructor() {
         super('site')
     }
 
-    preload() {
-        this.load.setPath('assets/')
-        this.load.image('plane', 'actors/plane.png')
+    // preload() {
+    //     this.load.setPath('assets/')
+    //     this.load.image('plane', 'actors/plane.png')
 
-    }
+    // }
 
     create() {
-        var plane = this.add.image(100, 100, 'plane').setInteractive()
-        plane.on('pointerup', () => {
-            if (this.scale.isFullscreen) {
-                this.scale.stopFullscreen()
-            } else {
-                this.scale.startFullscreen()
-            }
-        })
+
         const ignoredByMainCam: Phaser.GameObjects.GameObject[] = []
         const ignoredByMinimap: Phaser.GameObjects.GameObject[] = []
         this.cursors = this.input.keyboard.createCursorKeys()
@@ -47,12 +43,17 @@ export default class SiteScene extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, WORLD.width, WORLD.height)
         this.setupMainCam()
 
+
         this.grid = this.createGrid()
         this.add.existing(this.grid)
         ignoredByMinimap.push(this.grid)
 
         this.minimap = this.createMinimap()
         this.cameras.addExisting(this.minimap)
+
+        this.createRulers()
+        ignoredByMinimap.push(this.rulerH)
+        ignoredByMinimap.push(this.rulerV)
 
         this.player = Player.getInstance(this, VIEWPORT.width, VIEWPORT.height)
         ignoredByMainCam.push(this.player)
@@ -96,8 +97,8 @@ export default class SiteScene extends Phaser.Scene {
 
     createMinimap = () => {
         return new Minimap(
-            VIEWPORT.width - 20 - MINIMAP.width,
-            20,
+            VIEWPORT.width - WORLD.innerPadding - MINIMAP.width,
+            WORLD.innerPadding * 2,
             MINIMAP.width,
             MINIMAP.height,
             this
@@ -117,5 +118,25 @@ export default class SiteScene extends Phaser.Scene {
             undefined,
             0xFFFFFF,
             0.4)
+    }
+
+    createRulers = () => {
+        this.rulerH = new Ruler(
+            this,
+            WORLD.width,
+            WORLD.innerPadding,
+            TILE_SIZE,
+            NUM_TILES_HEIGHT,
+            NUM_TILES_WIDTH
+        )
+
+        this.rulerV = new Ruler(
+            this,
+            WORLD.innerPadding,
+            WORLD.height,
+            TILE_SIZE,
+            NUM_TILES_HEIGHT,
+            NUM_TILES_WIDTH
+        )
     }
 }

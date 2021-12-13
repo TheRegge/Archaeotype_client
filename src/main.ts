@@ -10,6 +10,7 @@ export const PLAYER_SPEED = 500
 export enum WORLD {
 	width = TILE_SIZE * NUM_TILES_WIDTH,
 	height = TILE_SIZE * NUM_TILES_HEIGHT,
+	innerPadding = 32
 }
 
 export enum VIEWPORT {

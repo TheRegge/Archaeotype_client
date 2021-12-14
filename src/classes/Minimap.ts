@@ -1,6 +1,7 @@
 import { WORLD, MINIMAP_SCALE } from '../main'
+import { IToggle } from './IToggle'
 
-export default class Minimap extends Phaser.Cameras.Scene2D.Camera {
+export default class Minimap extends Phaser.Cameras.Scene2D.Camera implements IToggle {
 
   public constructor(x: number, y: number, width: number, height: number, scene: Phaser.Scene) {
 

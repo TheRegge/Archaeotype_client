@@ -1,3 +1,5 @@
+import { IToggle } from "./IToggle"
+
 type RulerSettings = {
   type: 'vertical' | 'horizontal'
   x: number
@@ -13,7 +15,7 @@ type RulerSettings = {
   textSize?: number
   textColor?: string
 }
-export default class Ruler extends Phaser.GameObjects.Container {
+export default class Ruler extends Phaser.GameObjects.Container implements IToggle {
   public scene: Phaser.Scene
   public background: Phaser.GameObjects.Rectangle
   public fontSize: number

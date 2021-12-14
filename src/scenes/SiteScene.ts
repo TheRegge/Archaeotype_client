@@ -3,6 +3,7 @@ import Player from '../classes/Player'
 import Minimap from '../classes/Minimap'
 import ATGrid from '../classes/ATGrid'
 import Ruler from '../classes/Ruler'
+import OriginButton from '~/classes/OriginButton'
 
 import {
     TILE_SIZE,
@@ -18,24 +19,24 @@ import {
 
 export default class SiteScene extends Phaser.Scene {
     private minimap
-    private player
+    public player
     private cursors
     private grid
     private rulerH
     private rulerV
+    private originButton
 
     constructor() {
         super('site')
     }
 
-    // preload() {
-    //     this.load.setPath('assets/')
-    //     this.load.image('plane', 'actors/plane.png')
+    preload() {
+        this.load.setPath('assets/')
+        this.load.image('cursor-hand', 'images/cursor-hand.png')
 
-    // }
+    }
 
     create() {
-
         const ignoredByMainCam: Phaser.GameObjects.GameObject[] = []
         const ignoredByMinimap: Phaser.GameObjects.GameObject[] = []
         this.cursors = this.input.keyboard.createCursorKeys()
@@ -54,6 +55,7 @@ export default class SiteScene extends Phaser.Scene {
         this.createRulers()
         ignoredByMinimap.push(this.rulerH)
         ignoredByMinimap.push(this.rulerV)
+        ignoredByMinimap.push(this.originButton)
 
         this.player = Player.getInstance(this, VIEWPORT.width, VIEWPORT.height)
         ignoredByMainCam.push(this.player)
@@ -138,5 +140,15 @@ export default class SiteScene extends Phaser.Scene {
             NUM_TILES_HEIGHT,
             NUM_TILES_WIDTH
         )
+
+        this.originButton = new OriginButton(
+            this,
+            0,
+            0,
+            WORLD.innerPadding,
+            WORLD.innerPadding,
+            0x27A0E7
+        )
+
     }
 }

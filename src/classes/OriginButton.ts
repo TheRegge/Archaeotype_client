@@ -1,5 +1,6 @@
 import SiteScene from "~/scenes/SiteScene"
-export default class OriginButton extends Phaser.GameObjects.Rectangle {
+import { IToggle } from "./IToggle"
+export default class OriginButton extends Phaser.GameObjects.Rectangle implements IToggle {
 
   public constructor(
     scene: Phaser.Scene,
@@ -15,6 +16,7 @@ export default class OriginButton extends Phaser.GameObjects.Rectangle {
     this.setY(this.y + this.height / 2)
     this.setScrollFactor(0, 0)
     this.setInteractive({ cursor: 'url(assets/images/curor-hand.png), pointer' })
+    this.scene.input.keyboard.on('keydown-R', this.toggle)
     this.on('pointerdown', this.clickHandler)
     this.scene.add.existing(this)
   }
@@ -22,5 +24,9 @@ export default class OriginButton extends Phaser.GameObjects.Rectangle {
   clickHandler = () => {
     const scene = this.scene as SiteScene
     scene.player.setPosition(0, 0)
+  }
+
+  toggle = () => {
+    this.visible = !this.visible
   }
 }

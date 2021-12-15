@@ -63,6 +63,13 @@ export default class SiteScene extends Phaser.Scene {
         this.player = Player.getInstance(this, VIEWPORT.width, VIEWPORT.height)
         ignoredByMainCam.push(this.player)
 
+        const strokeWidth = 120
+        this.minimapFrame = new Phaser.GameObjects.Rectangle(this, strokeWidth / 2, strokeWidth / 2, WORLD.width - strokeWidth, WORLD.height - strokeWidth)
+        this.minimapFrame.setStrokeStyle(strokeWidth, 0xFFFFFF, .5)
+        this.minimapFrame.setOrigin(0, 0)
+        this.add.existing(this.minimapFrame)
+        ignoredByMainCam.push(this.minimapFrame)
+
         this.cameras.main.ignore(ignoredByMainCam)
         this.minimap.ignore(ignoredByMinimap)
         this.cameras.main.startFollow(this.player, false, 0.05, 0.05)

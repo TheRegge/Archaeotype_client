@@ -38,7 +38,7 @@ export default class Ruler extends Phaser.GameObjects.Container implements ITogg
     this.scene.add.existing(this)
     scene.input.keyboard.on('keydown-R', this.toggle)
 
-    this.background = new Phaser.GameObjects.Rectangle(this.scene, 0, 0, width, height, 0x000000, 0.2)
+    this.background = new Phaser.GameObjects.Rectangle(this.scene, 0, 0, width, height, 0x000000, 0.6)
     this.add(this.background)
 
     let rulerSettings: RulerSettings = {
@@ -50,10 +50,11 @@ export default class Ruler extends Phaser.GameObjects.Container implements ITogg
       x2: 0,
       y2: 0,
       unitsNumber: this.unitsNum,
-      strokeWidth: 1,
-      strokeColor: 0x000000,
+      strokeWidth: 2,
+      strokeColor: 0xFFFFFF,
+      strokeAlpha: 0.6,
       textSize: 13,
-      textColor: "#333333"
+      textColor: "#FFFFFF"
     }
 
     // Overide settings for horizontal & vertical
@@ -89,7 +90,7 @@ export default class Ruler extends Phaser.GameObjects.Container implements ITogg
       const coords = { x, y, x1, y1, x2, y2 }
 
       const tick = new Phaser.GameObjects.Line(this.scene, coords.x, coords.y, coords.x1, coords.y1, coords.x2, coords.y2)
-      tick.setStrokeStyle(strokeWidth, 0x000000, 0.5)
+      tick.setStrokeStyle(strokeWidth, strokeColor, strokeAlpha)
       this.add(tick)
       const tickText = new Phaser.GameObjects.Text(this.scene, coords.x, coords.y, i + '', { fontFamily: 'Varela Round', fontSize: `${textSize}px`, color: `${textColor}` })
 

@@ -26,18 +26,20 @@ export default class SiteScene extends Phaser.Scene {
     private rulerH
     private rulerV
     private originButton
+    private minimapFrame
 
     constructor() {
         super('site')
     }
 
     preload() {
-        this.load.setPath('assets/')
-        this.load.image('cursor-hand', 'images/cursor-hand.png')
+        this.load.setPath('/assets/')
+        this.load.image('terrain', 'images/terrains/q1.jpg')
 
     }
 
     create() {
+        this.add.image(0, 0, 'terrain').setPosition(WORLD.width / 2, WORLD.height / 2)
         const ignoredByMainCam: Phaser.GameObjects.GameObject[] = []
         const ignoredByMinimap: Phaser.GameObjects.GameObject[] = []
         this.cursors = this.input.keyboard.createCursorKeys()

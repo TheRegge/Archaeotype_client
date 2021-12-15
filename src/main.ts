@@ -6,6 +6,7 @@ export const NUM_TILES_HEIGHT = 25
 export const NUM_TILES_WIDTH = 25
 export const MINIMAP_SCALE = 20
 export const PLAYER_SPEED = 500
+export const HINT_COLOR = 0x27A0E7
 
 export enum WORLD {
 	width = TILE_SIZE * NUM_TILES_WIDTH,

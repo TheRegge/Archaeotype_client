@@ -12,7 +12,8 @@ import {
     MINIMAP,
     PLAYER_SPEED,
     WORLD,
-    VIEWPORT
+    VIEWPORT,
+    HINT_COLOR
 } from '../main'
 
 
@@ -147,7 +148,7 @@ export default class SiteScene extends Phaser.Scene {
             0,
             WORLD.innerPadding,
             WORLD.innerPadding,
-            0x27A0E7
+            HINT_COLOR
         )
 
     }

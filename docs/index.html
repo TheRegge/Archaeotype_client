@@ -1,0 +1,90 @@
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Archaeotype Developer Documentation</title><meta name="description" content="Documentation for Archaeotype Developer Documentation"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">Archaeotype Developer Documentation</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>Archaeotype Developer Documentation</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography"><p><img src="https://user-images.githubusercontent.com/2236153/71606463-37a0da80-2b2e-11ea-9b5f-5d26ccc84f91.png" alt="phaser3-parceljs-template"></p>
+
+<a href="#phaser-3--typescript--parcel-template" id="phaser-3--typescript--parcel-template" style="color: inherit; text-decoration: none;">
+  <h1>Phaser 3 + TypeScript + Parcel Template</h1>
+</a>
+<blockquote>
+<p>For people who want to spend time making Phaser 3 games in TypeScript instead of configuring build tools.</p>
+</blockquote>
+<p><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></p>
+<p>This is a TypeScript specific fork of <a href="https://github.com/ourcade/phaser3-parcel-template">phaser3-parcel-template</a>.</p>
+
+<a href="#prerequisites" id="prerequisites" style="color: inherit; text-decoration: none;">
+  <h2>Prerequisites</h2>
+</a>
+<p>You&#39;ll need <a href="https://nodejs.org/en/">Node.js</a>, <a href="https://www.npmjs.com/">npm</a>, and <a href="https://parceljs.org/">Parcel</a> installed.</p>
+<p>It is highly recommended to use <a href="https://github.com/nvm-sh/nvm">Node Version Manager</a> (nvm) to install Node.js and npm.</p>
+<p>For Windows users there is <a href="https://github.com/coreybutler/nvm-windows">Node Version Manager for Windows</a>.</p>
+<p>Install Node.js and <code>npm</code> with <code>nvm</code>:</p>
+<pre><code class="language-bash"><span class="hl-0">nvm install node</span><br/><br/><span class="hl-0">nvm use node</span>
+</code></pre>
+<p>Replace &#39;node&#39; with &#39;latest&#39; for <code>nvm-windows</code>.</p>
+<p>Then install Parcel:</p>
+<pre><code class="language-bash"><span class="hl-0">npm install -g parcel-bundler</span>
+</code></pre>
+
+<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
+  <h2>Getting Started</h2>
+</a>
+<p>Clone this repository to your local machine:</p>
+<pre><code class="language-bash"><span class="hl-0">git clone https://github.com/ourcade/phaser3-typescript-parcel-template.git</span>
+</code></pre>
+<p>This will create a folder named <code>phaser3-typescript-parcel-template</code>. You can specify a different folder name like this:</p>
+<pre><code class="language-bash"><span class="hl-0">git clone https://github.com/ourcade/phaser3-typescript-parcel-template.git my-folder-name</span>
+</code></pre>
+<p>Go into your new project folder and install dependencies:</p>
+<pre><code class="language-bash"><span class="hl-1">cd</span><span class="hl-0"> phaser3-typescript-parcel-template </span><span class="hl-2"># or &#39;my-folder-name&#39;</span><br/><span class="hl-0">npm install</span>
+</code></pre>
+<p>Start development server:</p>
+<pre><code><span class="hl-3">npm</span><span class="hl-0"> </span><span class="hl-3">run</span><span class="hl-0"> </span><span class="hl-3">start</span>
+</code></pre>
+<p>To create a production build:</p>
+<pre><code><span class="hl-3">npm</span><span class="hl-0"> </span><span class="hl-3">run</span><span class="hl-0"> </span><span class="hl-3">build</span>
+</code></pre>
+<p>Production files will be placed in the <code>dist</code> folder. Then upload those files to a web server. 🎉</p>
+
+<a href="#project-structure" id="project-structure" style="color: inherit; text-decoration: none;">
+  <h2>Project Structure</h2>
+</a>
+<pre><code><span class="hl-0">    .</span><br/><span class="hl-0">    ├── </span><span class="hl-3">dist</span><br/><span class="hl-0">    ├── </span><span class="hl-3">node_modules</span><br/><span class="hl-0">    ├── </span><span class="hl-3">public</span><br/><span class="hl-0">    ├── </span><span class="hl-3">src</span><br/><span class="hl-0">    │   ├── </span><span class="hl-3">scenes</span><br/><span class="hl-0">    │   │   ├── </span><span class="hl-3">SiteScene</span><span class="hl-0">.</span><span class="hl-3">ts</span><br/><span class="hl-0">    │   ├── </span><span class="hl-3">index</span><span class="hl-0">.</span><span class="hl-3">html</span><br/><span class="hl-0">    │   ├── </span><span class="hl-3">main</span><span class="hl-0">.</span><span class="hl-3">ts</span><br/><span class="hl-0">    ├── </span><span class="hl-3">package</span><span class="hl-0">.</span><span class="hl-3">json</span>
+</code></pre>
+<p>The contents of this template is the basic <a href="http://phaser.io/tutorials/getting-started-phaser3/part5">Phaser 3 getting started example</a>.</p>
+<p>This template assumes you will want to organize your code into multiple files and use TypeScript.</p>
+<p>TypeScript files are intended for the <code>src</code> folder. <code>main.ts</code> is the entry point referenced by <code>index.html</code>.</p>
+<p>Other than that there is no opinion on how you should structure your project. There is a <code>scenes</code> folder in <code>src</code> where the <code>SiteScene.ts</code> lives but you can do whatever you want.</p>
+
+<a href="#static-assets" id="static-assets" style="color: inherit; text-decoration: none;">
+  <h2>Static Assets</h2>
+</a>
+<p>Any static assets like images or audio files should be placed in the <code>public</code> folder. It&#39;ll then be served at <a href="http://localhost:8000/images/my-image.png">http://localhost:8000/images/my-image.png</a></p>
+<p>Example <code>public</code> structure:</p>
+<pre><code><span class="hl-0">    </span><span class="hl-3">public</span><br/><span class="hl-0">    ├── </span><span class="hl-3">images</span><br/><span class="hl-0">    │   ├── </span><span class="hl-3">my</span><span class="hl-0">-</span><span class="hl-3">image</span><span class="hl-0">.</span><span class="hl-3">png</span><br/><span class="hl-0">    ├── </span><span class="hl-3">music</span><br/><span class="hl-0">    │   ├── ...</span><br/><span class="hl-0">    ├── </span><span class="hl-3">sfx</span><br/><span class="hl-0">    │   ├── ...</span>
+</code></pre>
+<p>They can then be loaded by Phaser with <code>this.image.load(&#39;my-image&#39;, &#39;images/my-image.png&#39;)</code>.</p>
+
+<a href="#typescript-eslint" id="typescript-eslint" style="color: inherit; text-decoration: none;">
+  <h2>TypeScript ESLint</h2>
+</a>
+<p>This template uses a basic <code>typescript-eslint</code> set up for code linting.</p>
+<p>It does not aim to be opinionated.</p>
+
+<a href="#dev-server-port" id="dev-server-port" style="color: inherit; text-decoration: none;">
+  <h2>Dev Server Port</h2>
+</a>
+<p>You can change the dev server&#39;s port number by modifying the <code>start</code> script in <code>package.json</code>. We use Parcel&#39;s <code>-p</code> option to specify the port number.</p>
+<p>The script looks like this:</p>
+<pre><code><span class="hl-3">parcel</span><span class="hl-0"> </span><span class="hl-3">src</span><span class="hl-0">/</span><span class="hl-3">index</span><span class="hl-0">.</span><span class="hl-3">html</span><span class="hl-0"> -</span><span class="hl-3">p</span><span class="hl-0"> </span><span class="hl-4">8000</span>
+</code></pre>
+<p>Change 8000 to whatever you want.</p>
+
+<a href="#other-notes" id="other-notes" style="color: inherit; text-decoration: none;">
+  <h2>Other Notes</h2>
+</a>
+<p><a href="https://github.com/lifuzhao100/parcel-plugin-clean-easy">parcel-plugin-clean-easy</a> is used to ensure only the latest files are in the <code>dist</code> folder. You can modify this behavior by changing <code>parcelCleanPaths</code> in <code>package.json</code>.</p>
+<p><a href="https://github.com/elwin013/parcel-plugin-static-files-copy#readme">parcel-plugin-static-files</a> is used to copy static files from <code>public</code> into the output directory and serve it. You can add additional paths by modifying <code>staticFiles</code> in <code>package.json</code>.</p>
+
+<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+  <h2>License</h2>
+</a>
+<p><a href="https://github.com/ourcade/phaser3-typescript-parcel-template/blob/master/LICENSE">MIT License</a></p>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-enum"><a href="enums/MINIMAP.html" class="tsd-kind-icon">MINIMAP</a></li><li class="tsd-kind-enum"><a href="enums/VIEWPORT.html" class="tsd-kind-icon">VIEWPORT</a></li><li class="tsd-kind-enum"><a href="enums/WORLD.html" class="tsd-kind-icon">WORLD</a></li><li class="tsd-kind-property"><a href="modules.html#default" class="tsd-kind-icon">default</a></li><li class="tsd-kind-variable"><a href="modules.html#HINT_COLOR" class="tsd-kind-icon">HINT_<wbr/>COLOR</a></li><li class="tsd-kind-variable"><a href="modules.html#MINIMAP_SCALE" class="tsd-kind-icon">MINIMAP_<wbr/>SCALE</a></li><li class="tsd-kind-variable"><a href="modules.html#NUM_TILES_HEIGHT" class="tsd-kind-icon">NUM_<wbr/>TILES_<wbr/>HEIGHT</a></li><li class="tsd-kind-variable"><a href="modules.html#NUM_TILES_WIDTH" class="tsd-kind-icon">NUM_<wbr/>TILES_<wbr/>WIDTH</a></li><li class="tsd-kind-variable"><a href="modules.html#PLAYER_SPEED" class="tsd-kind-icon">PLAYER_<wbr/>SPEED</a></li><li class="tsd-kind-variable"><a href="modules.html#TILE_SIZE" class="tsd-kind-icon">TILE_<wbr/>SIZE</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>

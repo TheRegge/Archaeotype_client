@@ -1,0 +1,7 @@
+{
+  "entryPoints": ["src/index"],
+  "entryPointStrategy": "resolve",
+  "out": "docs",
+  "name": "Archaeotype Developer Documentation",
+  "tsconfig": "./tsconfig.json"
+}

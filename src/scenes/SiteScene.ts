@@ -13,7 +13,8 @@ import {
     PLAYER_SPEED,
     WORLD,
     VIEWPORT,
-    HINT_COLOR
+    HINT_COLOR,
+    HINT_COLOR_HEX
 } from '../main'
 
 
@@ -124,8 +125,8 @@ export default class SiteScene extends Phaser.Scene {
             0,
             WORLD.width,
             WORLD.height,
-            TILE_SIZE,
-            TILE_SIZE,
+            TILE_SIZE / 2,
+            TILE_SIZE / 2,
             undefined,
             undefined,
             0xFFFFFF,
@@ -133,23 +134,28 @@ export default class SiteScene extends Phaser.Scene {
     }
 
     createRulers = () => {
-        this.rulerH = new Ruler(
-            this,
-            WORLD.width,
-            WORLD.innerPadding,
-            TILE_SIZE,
-            NUM_TILES_HEIGHT,
-            NUM_TILES_WIDTH
-        )
+        this.rulerH = new Ruler({
+            scene: this,
+            width: WORLD.width,
+            height: WORLD.innerPadding,
+            rulerScale: TILE_SIZE / 2,
+            unitsNum: NUM_TILES_HEIGHT * 2,
+            fontSize: 12,
+            strokeColor: 0XFFFFFF,
+            strokeAlpha: 0.8
+        })
 
-        this.rulerV = new Ruler(
-            this,
-            WORLD.innerPadding,
-            WORLD.height,
-            TILE_SIZE,
-            NUM_TILES_HEIGHT,
-            NUM_TILES_WIDTH
-        )
+        this.rulerV = new Ruler({
+            scene: this,
+            width: WORLD.innerPadding,
+            height: WORLD.height,
+            rulerScale: TILE_SIZE / 2,
+            unitsNum: NUM_TILES_HEIGHT * 2,
+            fontSize: 12,
+            useLetters: true,
+            strokeColor: 0XFFFFFF,
+            strokeAlpha: 0.8
+        })
 
         this.originButton = new OriginButton(
             this,

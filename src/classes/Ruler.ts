@@ -1,6 +1,6 @@
 import { IToggle } from "./IToggle"
 
-type RulerUnitSettings = {
+export type RulerUnitSettings = {
   type: 'vertical' | 'horizontal'
   x: number
   y: number
@@ -9,38 +9,104 @@ type RulerUnitSettings = {
   lineEndX: number
   lineEndY: number
 }
-
-type RulerOptions = {
+/**
+ * Type for Ruler constructor options
+ */
+export type RulerOptions = {
+  /**
+   * The Scene containing the Ruler
+   */
   scene: Phaser.Scene
+
+  /**
+   * The width of the ruler
+   */
   width: number
+
+  /**
+   * The height of the ruler
+   */
   height: number
+
+  /**
+   * The size of one unit on the ruler
+   */
   rulerScale: number
+
+  /**
+   * The number of units on the ruler
+   */
   unitsNum: number
+
+  /**
+   * The font size for the text displaying the ruler units
+   */
   fontSize?: number
+
+  /**
+   * The color of the text for the ruler units.
+   * This is used as a CSS color format, like '#FF0000' for  red
+   */
   textColor?: string
+
+  /**
+   * The width of each unit tick on the ruler
+   */
   strokeWidth?: number
+
+  /**
+   * The color of each unit tick on the ruler
+   */
   strokeColor?: number
+
+  /**
+   * The opacity of each unit tick on the ruler
+   */
   strokeAlpha?: number
+
+  /**
+   * The background color of the ruler
+   */
   backgroundColor?: number
+
+  /**
+   * The opacity of the background. Between 0 and 1
+   */
   backgroundAlpha?: number
+
+  /**
+   * Use letter instead of numbers. From A to Z followed to AA to ZZ,
+   * thus limiting the size of the ruler to 52 units
+   */
   useLetters?: boolean
 }
+
+/**
+ * Create a Ruler
+ *
+ * Rulers appear on the top and left side of the Site scene and
+ * enable the students to describe the coordinates of an object 
+ * on the site.
+ *
+ * __Note:__ A ruler can be either horizontal or vertical. This is
+ * decided by the ratio of `width / height`
+ */
 export default class Ruler extends Phaser.GameObjects.Container implements IToggle {
 
-  background: Phaser.GameObjects.Rectangle
-  fontSize: number
-  unitsNum: number
-  rulerScale: number
-  width: number
-  height: number
-  useLetters: boolean
-  letters: string[]
-  textColor: string
-  strokeWidth: number
-  strokeColor: number
-  strokeAlpha: number
-  backgroundColor: number
-  backgroundAlpha: number
+  public width: number
+  public height: number
+  private background: Phaser.GameObjects.Rectangle
+  private fontSize: number
+  private unitsNum: number
+  private rulerScale: number
+  private useLetters: boolean
+  private letters: string[]
+  private textColor: string
+  private strokeWidth: number
+  private strokeColor: number
+  private strokeAlpha: number
+  private backgroundColor: number
+  private backgroundAlpha: number
 
   public constructor(options: RulerOptions) {
 

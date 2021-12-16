@@ -23,8 +23,7 @@ type RulerOptions = {
   strokeAlpha?: number
   backgroundColor?: number
   backgroundAlpha?: number
-  textSize?: number
-  textColor?: string
+  useLetters?: boolean
 }
 export default class Ruler extends Phaser.GameObjects.Container implements IToggle {
 
@@ -34,7 +33,8 @@ export default class Ruler extends Phaser.GameObjects.Container implements ITogg
   rulerScale: number
   width: number
   height: number
-  public constructor(scene: Phaser.Scene, width: number, height: number, rulerScale: number, unitsNum: number, fontSize = 13) {
+  useLetters: boolean
+  letters: string[]
   textColor: string
   strokeWidth: number
   strokeColor: number
@@ -51,7 +51,7 @@ export default class Ruler extends Phaser.GameObjects.Container implements ITogg
     this.rulerScale = options.rulerScale
     this.unitsNum = options.unitsNum
     this.fontSize = options.fontSize || 12
-    this.scene = scene
+    this.useLetters = options.useLetters || false
     this.textColor = options.textColor || "#FFFFFF"
     this.strokeWidth = options.strokeWidth || 2
     this.strokeColor = options.strokeColor || 0xFFFFFF
@@ -60,7 +60,11 @@ export default class Ruler extends Phaser.GameObjects.Container implements ITogg
     this.backgroundAlpha = options.backgroundAlpha || 0.6
     this.scene.add.existing(this)
 
-    this.background = new Phaser.GameObjects.Rectangle(this.scene, 0, 0, width, height, 0x000000, 0.6)
+    this.letters = [
+      'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+      'AA', 'BB', 'CC', 'DD', 'EE', 'FF', 'GG', 'HH', 'II', 'JJ', 'KK', 'LL', 'MM', 'NN', 'OO', 'PP', 'QQ', 'RR', 'SS', 'TT', 'UU', 'VV', 'WW', 'XX', 'YY', 'ZZ'
+    ]
+
     this.scene.input.keyboard.on('keydown-R', this.toggle)
 
     this.background = new Phaser.GameObjects.Rectangle(this.scene, 0, 0, this.width, this.height, this.backgroundColor, this.backgroundAlpha)
@@ -114,7 +118,8 @@ export default class Ruler extends Phaser.GameObjects.Container implements ITogg
       tick.setStrokeStyle(this.strokeWidth, this.strokeColor, this.strokeAlpha)
       this.add(tick)
 
-      const tickText = new Phaser.GameObjects.Text(this.scene, coords.x, coords.y, i + '', { fontFamily: 'Varela Round', fontSize: `${textSize}px`, color: `${textColor}` })
+      const txt = this.useLetters ? this.letters[i - 1] : i + ''
+      const tickText = new Phaser.GameObjects.Text(this.scene, coords.x, coords.y, txt, { fontFamily: 'Varela Round', fontSize: `${this.fontSize}px`, color: `${this.textColor}` })
 
       if (type === 'horizontal') {
         // Center the text horizontally between the ticks

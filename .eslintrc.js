@@ -13,5 +13,12 @@ module.exports = {
     "@typescript-eslint/no-namespace": { allowDeclarations: true },
     "@typescript-eslint/member-delimiter-style": 0,
     "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/quotes": [
+      "error",
+      "single",
+      {
+        allowTemplateLiterals: true,
+      },
+    ],
   },
 };

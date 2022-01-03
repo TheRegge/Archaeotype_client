@@ -16,8 +16,7 @@ export default class Player extends Phaser.GameObjects.Rectangle {
    * can be instanciated, using the static method `Player.getInstance()`
    */
   private constructor(scene: Phaser.Scene, width: number, height: number) {
-
-    super(scene, width / 2, height / 2, width, height, 0xFF5555, 0.3)
+    super(scene, width / 2, height / 2, width, height, 0xff5555, 0.3)
 
     this.scene = scene
     this.scene.add.existing(this)
@@ -27,23 +26,31 @@ export default class Player extends Phaser.GameObjects.Rectangle {
   /**
    * Creates or gets the only instance of Player (Singleton pattern)
    */
-  public static getInstance(scene: Phaser.Scene, width: number, height: number): Player {
+  public static getInstance(
+    scene: Phaser.Scene,
+    width: number,
+    height: number
+  ): Player {
     if (!Player.instance) {
       Player.instance = new Player(scene, width, height)
       const body = Player.instance.body as Phaser.Physics.Arcade.Body
       body.setCollideWorldBounds(true)
 
-      Player.instance.setInteractive()
+      Player.instance.setInteractive({ cursor: 'move' })
+
       scene.input.setDraggable(Player.instance)
-      scene.input.on('drag', function (
-        pointer: Phaser.Input.Pointer,
-        gameObject: Phaser.Physics.Arcade.Body,
-        dragX: number,
-        dragY: number
-      ) {
-        gameObject.x = dragX;
-        gameObject.y = dragY;
-      });
+      scene.input.on(
+        'drag',
+        function (
+          pointer: Phaser.Input.Pointer,
+          gameObject: Phaser.Physics.Arcade.Body,
+          dragX: number,
+          dragY: number
+        ) {
+          gameObject.x = dragX
+          gameObject.y = dragY
+        }
+      )
     }
     return Player.instance
   }
@@ -58,7 +65,7 @@ export default class Player extends Phaser.GameObjects.Rectangle {
 
   /**
    * Moves the player right at the passed speed
-  */
+   */
   moveRight(speed: number) {
     const body = Player.instance.body as Phaser.Physics.Arcade.Body
     body.setVelocityX(Math.abs(speed))

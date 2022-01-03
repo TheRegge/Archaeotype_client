@@ -1,5 +1,5 @@
 {
-  "entryPoints": ["src/main.ts", "src/classes/index.ts"],
+  "entryPoints": ["src/main.ts", "src/classes/index.ts", "src/scenes/index.ts"],
   "entryPointStrategy": "resolve",
   "out": "docs",
   "name": "Archaeotype Developer Documentation",

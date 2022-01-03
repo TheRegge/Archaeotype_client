@@ -1,6 +1,9 @@
-import SiteScene from "~/scenes/SiteScene"
-import { IToggle } from "./IToggle"
-export default class OriginButton extends Phaser.GameObjects.Container implements IToggle {
+import { SiteScene } from 'scenes'
+import { IToggle } from './IToggle'
+export default class OriginButton
+  extends Phaser.GameObjects.Container
+  implements IToggle
+{
   public background: Phaser.GameObjects.Rectangle
 
   public constructor(
@@ -9,7 +12,7 @@ export default class OriginButton extends Phaser.GameObjects.Container implement
     y: number,
     width: number,
     height: number,
-    backgroundColor: number = 0xFF0000,
+    backgroundColor: number = 0xff0000,
     opacity: number = 1
   ) {
     super(scene, x, y)
@@ -32,7 +35,7 @@ export default class OriginButton extends Phaser.GameObjects.Container implement
 
     this.setInteractive({
       hitArea: this.background.geom,
-      cursor: 'pointer'
+      cursor: 'pointer',
     })
 
     this.scene.input.keyboard.on('keydown-R', this.toggle)
@@ -40,11 +43,11 @@ export default class OriginButton extends Phaser.GameObjects.Container implement
     this.on('pointerdown', this.clickHandler)
 
     this.on('pointerup', () => {
-      this.background.setFillStyle(0xCC0000)
+      this.background.setFillStyle(0xcc0000)
     })
 
     this.on('pointerover', () => {
-      this.background.setFillStyle(0xCC0000)
+      this.background.setFillStyle(0xcc0000)
     })
 
     this.on('pointerout', () => {
@@ -56,7 +59,7 @@ export default class OriginButton extends Phaser.GameObjects.Container implement
   }
 
   clickHandler = () => {
-    this.background.setFillStyle(0xFF0000)
+    this.background.setFillStyle(0xff0000)
     const scene = this.scene as SiteScene
     scene.player.setPosition(0, 0)
   }
@@ -79,8 +82,19 @@ export default class OriginButton extends Phaser.GameObjects.Container implement
     let x = 0
     let y = 0
 
-    const steps: [number, number][] = [right(6), down(1), left(4), downRight(6), down(1), left(1), upLeft(6), down(4), left(1), up(6)]
-    let points: [number, number][] = [[x, y]];
+    const steps: [number, number][] = [
+      right(6),
+      down(1),
+      left(4),
+      downRight(6),
+      down(1),
+      left(1),
+      upLeft(6),
+      down(4),
+      left(1),
+      up(6),
+    ]
+    let points: [number, number][] = [[x, y]]
 
     for (let i = 0; i < steps.length; i++) {
       x += steps[i][0] * oneStep
@@ -89,7 +103,14 @@ export default class OriginButton extends Phaser.GameObjects.Container implement
       points.push(point)
     }
 
-    const icon = new Phaser.GameObjects.Polygon(this.scene, 0, 0, points, 0xFFFFFF, 1)
+    const icon = new Phaser.GameObjects.Polygon(
+      this.scene,
+      0,
+      0,
+      points,
+      0xffffff,
+      1
+    )
     this.add(icon)
   }
 }

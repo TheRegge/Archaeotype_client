@@ -31,8 +31,8 @@ export default class SiteScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.setPath('/assets/')
-    this.load.image('terrain', 'images/terrains/q1.jpg')
+    // Assets for this scene are preloaded
+    // in the previous scene (LoadingScene)
   }
 
   create() {

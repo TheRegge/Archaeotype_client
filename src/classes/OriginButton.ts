@@ -15,8 +15,7 @@ export default class OriginButton
     backgroundColor: number = 0xff0000,
     opacity: number = 1
   ) {
-    super(scene, x, y)
-    this.setPosition(width / 2, height / 2)
+    super(scene, width / 2, height / 2)
 
     this.background = new Phaser.GameObjects.Rectangle(
       this.scene,

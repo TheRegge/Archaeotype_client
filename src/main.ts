@@ -7,11 +7,13 @@ export const NUM_TILES_WIDTH = 25
 export const MINIMAP_SCALE = 20
 export const PLAYER_SPEED = 500
 export const HINT_COLOR = 0x27a0e7
+export const V_OFFSET = 32
 
-export enum WORLD {
-  width = TILE_SIZE * NUM_TILES_WIDTH,
-  height = TILE_SIZE * NUM_TILES_HEIGHT,
-  innerPadding = 32,
+export const WORLD = {
+  origin: { x: 0, y: V_OFFSET },
+  width: TILE_SIZE * NUM_TILES_WIDTH,
+  height: TILE_SIZE * NUM_TILES_HEIGHT,
+  innerPadding: 32,
 }
 
 export enum VIEWPORT {
@@ -28,8 +30,11 @@ export enum MINIMAP {
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   parent: 'phaser-app',
-  width: 1400,
-  height: 700,
+  width: VIEWPORT.width,
+  height: VIEWPORT.height + V_OFFSET,
+  dom: {
+    createContainer: true,
+  },
   backgroundColor: 0x333333,
   scale: {
     mode: Phaser.Scale.NONE,

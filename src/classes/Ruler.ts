@@ -1,4 +1,5 @@
-import { IToggle } from "./IToggle"
+import { IToggle } from './IToggle'
+import { WORLD } from '../main'
 
 export type RulerUnitSettings = {
   type: 'vertical' | 'horizontal'
@@ -85,14 +86,16 @@ export type RulerOptions = {
  * Create a Ruler
  *
  * Rulers appear on the top and left side of the Site scene and
- * enable the students to describe the coordinates of an object 
+ * enable the students to describe the coordinates of an object
  * on the site.
  *
  * __Note:__ A ruler can be either horizontal or vertical. This is
  * decided by the ratio of `width / height`
  */
-export default class Ruler extends Phaser.GameObjects.Container implements IToggle {
-
+export default class Ruler
+  extends Phaser.GameObjects.Container
+  implements IToggle
+{
   public width: number
   public height: number
   private background: Phaser.GameObjects.Rectangle
@@ -109,8 +112,7 @@ export default class Ruler extends Phaser.GameObjects.Container implements ITogg
   private backgroundAlpha: number
 
   public constructor(options: RulerOptions) {
-
-    super(options.scene, options.width / 2, options.height / 2)
+    super(options.scene, 0, 0)
 
     this.width = options.width
     this.height = options.height
@@ -118,22 +120,80 @@ export default class Ruler extends Phaser.GameObjects.Container implements ITogg
     this.unitsNum = options.unitsNum
     this.fontSize = options.fontSize || 12
     this.useLetters = options.useLetters || false
-    this.textColor = options.textColor || "#FFFFFF"
+    this.textColor = options.textColor || '#FFFFFF'
     this.strokeWidth = options.strokeWidth || 2
-    this.strokeColor = options.strokeColor || 0xFFFFFF
+    this.strokeColor = options.strokeColor || 0xffffff
     this.strokeAlpha = options.strokeAlpha || 1
     this.backgroundColor = options.backgroundColor || 0x000000
     this.backgroundAlpha = options.backgroundAlpha || 0.6
-    this.scene.add.existing(this)
 
     this.letters = [
-      'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-      'AA', 'BB', 'CC', 'DD', 'EE', 'FF', 'GG', 'HH', 'II', 'JJ', 'KK', 'LL', 'MM', 'NN', 'OO', 'PP', 'QQ', 'RR', 'SS', 'TT', 'UU', 'VV', 'WW', 'XX', 'YY', 'ZZ'
+      'A',
+      'B',
+      'C',
+      'D',
+      'E',
+      'F',
+      'G',
+      'H',
+      'I',
+      'J',
+      'K',
+      'L',
+      'M',
+      'N',
+      'O',
+      'P',
+      'Q',
+      'R',
+      'S',
+      'T',
+      'U',
+      'V',
+      'W',
+      'X',
+      'Y',
+      'Z',
+      'AA',
+      'BB',
+      'CC',
+      'DD',
+      'EE',
+      'FF',
+      'GG',
+      'HH',
+      'II',
+      'JJ',
+      'KK',
+      'LL',
+      'MM',
+      'NN',
+      'OO',
+      'PP',
+      'QQ',
+      'RR',
+      'SS',
+      'TT',
+      'UU',
+      'VV',
+      'WW',
+      'XX',
+      'YY',
+      'ZZ',
     ]
 
     this.scene.input.keyboard.on('keydown-R', this.toggle)
 
-    this.background = new Phaser.GameObjects.Rectangle(this.scene, 0, 0, this.width, this.height, this.backgroundColor, this.backgroundAlpha)
+    this.background = new Phaser.GameObjects.Rectangle(
+      this.scene,
+      0,
+      0,
+      this.width,
+      this.height,
+      this.backgroundColor,
+      this.backgroundAlpha
+    )
+    this.background.setOrigin(0)
     this.add(this.background)
 
     let rulerUnitSettings: RulerUnitSettings = {
@@ -155,7 +215,6 @@ export default class Ruler extends Phaser.GameObjects.Container implements ITogg
     }
 
     this.initRuler(rulerUnitSettings)
-
   }
 
   toggle = () => {
@@ -166,34 +225,53 @@ export default class Ruler extends Phaser.GameObjects.Container implements ITogg
     let { type, x, y, lineStartX, lineStartY, lineEndX, lineEndY } = settings
 
     for (let i = 1; i <= this.unitsNum; i++) {
-
       if (type === 'horizontal') {
-        x = (i * this.rulerScale) - (this.width / 2)
-        lineStartY = this.height * -1 / 2
-        lineEndY = this.height / 5
-
+        x = i * this.rulerScale
+        lineStartY = 0
+        lineEndY = this.height / 2
       } else if (type === 'vertical') {
-        y = (i * this.rulerScale) - (this.height / 2)
-        lineStartX = this.width * -1 / 2
-        lineEndX = this.width / 5
+        this.background.setY(WORLD.innerPadding)
+        y = i * this.rulerScale + this.width
+        lineStartX = 0
+        lineEndX = this.width / 2
       }
 
       const coords = { x, y, lineStartX, lineStartY, lineEndX, lineEndY }
 
-      const tick = new Phaser.GameObjects.Line(this.scene, coords.x, coords.y, coords.lineStartX, coords.lineStartY, coords.lineEndX, coords.lineEndY)
-      tick.setStrokeStyle(this.strokeWidth, this.strokeColor, this.strokeAlpha)
+      const tick = new Phaser.GameObjects.Line(
+        this.scene,
+        coords.x,
+        coords.y,
+        coords.lineStartX,
+        coords.lineStartY,
+        coords.lineEndX,
+        coords.lineEndY
+      )
+      tick
+        .setStrokeStyle(this.strokeWidth, this.strokeColor, this.strokeAlpha)
+        .setOrigin(0)
       this.add(tick)
 
       const txt = this.useLetters ? this.letters[i - 1] : i + ''
-      const tickText = new Phaser.GameObjects.Text(this.scene, coords.x, coords.y, txt, { fontFamily: 'Varela Round', fontSize: `${this.fontSize}px`, color: `${this.textColor}` })
+      const tickText = new Phaser.GameObjects.Text(
+        this.scene,
+        coords.x,
+        coords.y,
+        txt,
+        {
+          fontFamily: 'Varela Round',
+          fontSize: `${this.fontSize}px`,
+          color: `${this.textColor}`,
+        }
+      )
 
       if (type === 'horizontal') {
         // Center the text horizontally between the ticks
         tickText.setX(tickText.x - tickText.width / 2 - this.rulerScale / 2)
-        tickText.setY(tickText.y - tickText.height / 2)
+        tickText.setY(tickText.y + tickText.height / 2)
       } else if (type === 'vertical') {
         // Move text in a bit, so it fits in the width of the ruler
-        tickText.setX(tickText.x - tickText.width / 2)
+        tickText.setX(tickText.x - tickText.width / 2 + this.width / 2)
         // Center the text vertically between the ticks
         tickText.setY(tickText.y - tickText.height / 2 - this.rulerScale / 2)
       }

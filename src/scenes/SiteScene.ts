@@ -38,12 +38,20 @@ export default class SiteScene extends Phaser.Scene {
   create() {
     this.add
       .image(0, 0, 'terrain')
-      .setPosition(WORLD.width / 2, WORLD.height / 2)
+      .setPosition(
+        WORLD.width / 2 + WORLD.origin.x,
+        WORLD.height / 2 + WORLD.origin.y
+      )
     const ignoredByMainCam: Phaser.GameObjects.GameObject[] = []
     const ignoredByMinimap: Phaser.GameObjects.GameObject[] = []
     this.cursors = this.input.keyboard.createCursorKeys()
 
-    this.physics.world.setBounds(0, 0, WORLD.width, WORLD.height)
+    this.physics.world.setBounds(
+      WORLD.origin.x,
+      WORLD.origin.y,
+      WORLD.width,
+      WORLD.height
+    )
     this.setupMainCam()
 
     this.grid = this.createGrid()
@@ -65,8 +73,8 @@ export default class SiteScene extends Phaser.Scene {
     const strokeWidth = 120
     this.minimapFrame = new Phaser.GameObjects.Rectangle(
       this,
-      strokeWidth / 2,
-      strokeWidth / 2,
+      WORLD.origin.x + strokeWidth / 2,
+      WORLD.origin.y + strokeWidth / 2,
       WORLD.width - strokeWidth,
       WORLD.height - strokeWidth
     )
@@ -103,18 +111,25 @@ export default class SiteScene extends Phaser.Scene {
   }
 
   setupMainCam = () => {
-    this.cameras.main.setBounds(0, 0, WORLD.width, WORLD.height).setName('main')
-    this.cameras.main.setViewport(0, 0, VIEWPORT.width, VIEWPORT.height)
-    this.cameras.main.setBounds(0, 0, WORLD.width, WORLD.height)
-    this.cameras.main.scrollX = 0
-    this.cameras.main.scrollY = 0
+    this.cameras.main
+      .setBounds(WORLD.origin.x, WORLD.origin.y, WORLD.width, WORLD.height)
+      .setName('main')
+    this.cameras.main.setViewport(
+      WORLD.origin.x,
+      WORLD.origin.y,
+      VIEWPORT.width,
+      VIEWPORT.height
+    )
+
+    this.cameras.main.scrollX = WORLD.origin.x
+    this.cameras.main.scrollY = WORLD.origin.y
     this.cameras.main.setBackgroundColor(0xdddddd)
   }
 
   createMinimap = () => {
     return new Minimap(
-      VIEWPORT.width - WORLD.innerPadding - MINIMAP.width,
-      WORLD.innerPadding * 2,
+      WORLD.origin.x + VIEWPORT.width - WORLD.innerPadding - MINIMAP.width,
+      WORLD.origin.y + WORLD.innerPadding * 2,
       MINIMAP.width,
       MINIMAP.height,
       this
@@ -124,8 +139,8 @@ export default class SiteScene extends Phaser.Scene {
   createGrid = () => {
     return new ATGrid(
       this,
-      0,
-      0,
+      WORLD.origin.x,
+      WORLD.origin.y,
       WORLD.width,
       WORLD.height,
       TILE_SIZE / 2,
@@ -143,11 +158,14 @@ export default class SiteScene extends Phaser.Scene {
       width: WORLD.width,
       height: WORLD.innerPadding,
       rulerScale: TILE_SIZE / 2,
-      unitsNum: NUM_TILES_HEIGHT * 2,
+      unitsNum: NUM_TILES_WIDTH * 2,
       fontSize: 12,
       strokeColor: 0xffffff,
       strokeAlpha: 0.8,
     })
+
+    // this.rulerH.setPosition(0, 0)
+    this.add.existing(this.rulerH)
 
     this.rulerV = new Ruler({
       scene: this,
@@ -161,10 +179,13 @@ export default class SiteScene extends Phaser.Scene {
       strokeAlpha: 0.8,
     })
 
+    // this.rulerV.setPosition(0, 0)
+    this.add.existing(this.rulerV)
+
     this.originButton = new OriginButton(
       this,
-      0,
-      0,
+      WORLD.origin.x,
+      WORLD.origin.y,
       WORLD.innerPadding,
       WORLD.innerPadding,
       HINT_COLOR

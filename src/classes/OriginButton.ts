@@ -1,5 +1,6 @@
 import { SiteScene } from 'scenes'
 import { IToggle } from './IToggle'
+import { COLOR_HINT_PRIMARY, COLOR_HINT_SECONDARY } from '../main'
 export default class OriginButton
   extends Phaser.GameObjects.Container
   implements IToggle
@@ -12,7 +13,7 @@ export default class OriginButton
     y: number,
     width: number,
     height: number,
-    backgroundColor: number = 0xff0000,
+    backgroundColor: number = COLOR_HINT_PRIMARY,
     opacity: number = 1
   ) {
     super(scene, width / 2, height / 2)
@@ -42,15 +43,15 @@ export default class OriginButton
     this.on('pointerdown', this.clickHandler)
 
     this.on('pointerup', () => {
-      this.background.setFillStyle(0xcc0000)
+      this.background.setFillStyle(COLOR_HINT_SECONDARY)
     })
 
     this.on('pointerover', () => {
-      this.background.setFillStyle(0xcc0000)
+      this.background.setFillStyle(COLOR_HINT_SECONDARY)
     })
 
     this.on('pointerout', () => {
-      this.background.setFillStyle(backgroundColor)
+      this.background.setFillStyle(COLOR_HINT_PRIMARY)
     })
 
     this.createIcon()
@@ -58,7 +59,6 @@ export default class OriginButton
   }
 
   clickHandler = () => {
-    this.background.setFillStyle(0xff0000)
     const scene = this.scene as SiteScene
     scene.player.setPosition(0, 0)
   }

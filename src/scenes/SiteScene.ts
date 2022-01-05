@@ -13,7 +13,7 @@ import {
   PLAYER_SPEED,
   WORLD,
   VIEWPORT,
-  HINT_COLOR,
+  COLOR_HINT_PRIMARY,
 } from '../main'
 
 export default class SiteScene extends Phaser.Scene {
@@ -188,7 +188,7 @@ export default class SiteScene extends Phaser.Scene {
       WORLD.origin.y,
       WORLD.innerPadding,
       WORLD.innerPadding,
-      HINT_COLOR
+      COLOR_HINT_PRIMARY
     )
   }
 }

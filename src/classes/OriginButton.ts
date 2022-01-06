@@ -1,66 +1,12 @@
 import { SiteScene } from 'scenes'
 import { IToggle } from './IToggle'
-import { COLOR_HINT_PRIMARY, COLOR_HINT_SECONDARY } from '../main'
-export default class OriginButton
-  extends Phaser.GameObjects.Container
-  implements IToggle
-{
-  public background: Phaser.GameObjects.Rectangle
-
-  public constructor(
-    scene: Phaser.Scene,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    backgroundColor: number = COLOR_HINT_PRIMARY,
-    opacity: number = 1
-  ) {
-    super(scene, width / 2, height / 2)
-
-    this.background = new Phaser.GameObjects.Rectangle(
-      this.scene,
-      0,
-      0,
-      width,
-      height,
-      backgroundColor,
-      opacity
-    )
-
-    this.add(this.background)
-
-    this.setScrollFactor(0, 0)
-    this.setSize(width, height)
-
-    this.setInteractive({
-      hitArea: this.background.geom,
-      cursor: 'pointer',
-    })
+import ContainerWithBg, { ContainerWithBgOptions } from './ContainerWithBg'
+export default class OriginButton extends ContainerWithBg implements IToggle {
+  public constructor(options: ContainerWithBgOptions) {
+    super(options)
 
     this.scene.input.keyboard.on('keydown-R', this.toggle)
-
-    this.on('pointerdown', this.clickHandler)
-
-    this.on('pointerup', () => {
-      this.background.setFillStyle(COLOR_HINT_SECONDARY)
-    })
-
-    this.on('pointerover', () => {
-      this.background.setFillStyle(COLOR_HINT_SECONDARY)
-    })
-
-    this.on('pointerout', () => {
-      this.background.setFillStyle(COLOR_HINT_PRIMARY)
-    })
-
     this.createIcon()
-    this.scene.add.existing(this)
-  }
-
-  clickHandler = () => {
-    const scene = this.scene as SiteScene
-    scene.player.setPosition(0, 0)
   }
 
   toggle = () => {
@@ -110,6 +56,7 @@ export default class OriginButton
       0xffffff,
       1
     )
+    // icon.setOrigin(0)
     this.add(icon)
   }
 }

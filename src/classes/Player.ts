@@ -1,3 +1,5 @@
+import { WORLD } from '~/main'
+
 /**
  * Singleton class. The Player instantiates a rectangle
  * exactly the size of the visible portion of the terrain. The player
@@ -16,11 +18,18 @@ export default class Player extends Phaser.GameObjects.Rectangle {
    * can be instanciated, using the static method `Player.getInstance()`
    */
   private constructor(scene: Phaser.Scene, width: number, height: number) {
-    super(scene, width / 2, height / 2, width, height, 0xff5555, 0.3)
-
+    super(
+      scene,
+      width / 2 + WORLD.origin.x,
+      height / 2 + WORLD.origin.y + 32,
+      width,
+      height,
+      0xff5555,
+      0.3
+    )
     this.scene = scene
-    this.scene.add.existing(this)
-    this.scene.physics.add.existing(this)
+    this.width = width
+    this.height = height
   }
 
   /**
@@ -33,6 +42,8 @@ export default class Player extends Phaser.GameObjects.Rectangle {
   ): Player {
     if (!Player.instance) {
       Player.instance = new Player(scene, width, height)
+      scene.add.existing(Player.instance)
+      scene.physics.add.existing(Player.instance)
       const body = Player.instance.body as Phaser.Physics.Arcade.Body
       body.setCollideWorldBounds(true)
 
@@ -85,5 +96,15 @@ export default class Player extends Phaser.GameObjects.Rectangle {
   moveDown(speed: number) {
     const body = Player.instance.body as Phaser.Physics.Arcade.Body
     body.setVelocityY(Math.abs(speed))
+  }
+
+  /**
+   * Moves player to WORLD.origin
+   */
+  moveTo(x: number, y: number) {
+    Player.instance.setPosition(
+      x + Player.instance.width / 2,
+      y + Player.instance.height / 2
+    )
   }
 }

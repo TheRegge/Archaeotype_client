@@ -12,6 +12,7 @@ export default class LoadingScene extends Phaser.Scene {
     // Current scene assets
     this.load.image('logo', 'images/Archaeotype-Logo.png')
     this.load.html('startBtn', 'html/startButton.html')
+
     this.load.script(
       'webfont',
       'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js'
@@ -31,7 +32,7 @@ export default class LoadingScene extends Phaser.Scene {
     this.add.image(VIEWPORT.width / 2, VIEWPORT.height / 2 - 80, 'logo')
     WebFont.load({
       google: {
-        families: ['Varela Round'],
+        families: ['Cousine'],
         text: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
       },
       loading: () => {

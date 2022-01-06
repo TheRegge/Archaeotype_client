@@ -1,7 +1,6 @@
+import { IToggle } from '.'
 
-
-export default class ATGrid extends Phaser.GameObjects.Grid {
-
+export default class ATGrid extends Phaser.GameObjects.Grid implements IToggle {
   public constructor(
     scene: Phaser.Scene,
     x: number,
@@ -15,11 +14,10 @@ export default class ATGrid extends Phaser.GameObjects.Grid {
     outlineFillColor?: number,
     outlineFillAlpha?: number
   ) {
-
     super(
       scene,
-      x,
-      y,
+      0,
+      0,
       width,
       height,
       cellWidth,
@@ -27,9 +25,8 @@ export default class ATGrid extends Phaser.GameObjects.Grid {
       fillColor,
       fillAlpha,
       outlineFillColor,
-      outlineFillAlpha)
-
-    this.setDisplayOrigin(0, 0)
+      outlineFillAlpha
+    )
 
     this.scene.input.keyboard.on('keydown-G', this.toggle)
   }
@@ -37,5 +34,4 @@ export default class ATGrid extends Phaser.GameObjects.Grid {
   toggle = () => {
     this.visible = !this.visible
   }
-
 }

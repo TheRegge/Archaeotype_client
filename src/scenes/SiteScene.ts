@@ -1,9 +1,10 @@
 import Phaser from 'phaser'
-import Player from '../classes/Player'
-import Minimap from '../classes/Minimap'
-import ATGrid from '../classes/ATGrid'
-import Ruler from '../classes/Ruler'
-import OriginButton from '../classes/OriginButton'
+import Player from '~/classes/Player'
+import Minimap from '~/classes/Minimap'
+import ATGrid from '~/classes/ATGrid'
+import Ruler from '~/classes/Ruler'
+import OriginButton from '~/classes/OriginButton'
+import MainNav from '~/classes/MainNav'
 
 import {
   TILE_SIZE,
@@ -14,17 +15,20 @@ import {
   WORLD,
   VIEWPORT,
   COLOR_HINT_PRIMARY,
+  COLOR_HINT_SECONDARY,
+  COLOR_GRAY_MEDIUM,
 } from '../main'
 
 export default class SiteScene extends Phaser.Scene {
-  private minimap
-  public player
   private cursors
   private grid
+  private mainNav
+  private minimap
+  private minimapFrame
+  private originButton
   private rulerH
   private rulerV
-  private originButton
-  private minimapFrame
+  public player
 
   constructor() {
     super({ key: 'site' })
@@ -36,12 +40,6 @@ export default class SiteScene extends Phaser.Scene {
   }
 
   create() {
-    this.add
-      .image(0, 0, 'terrain')
-      .setPosition(
-        WORLD.width / 2 + WORLD.origin.x,
-        WORLD.height / 2 + WORLD.origin.y
-      )
     const ignoredByMainCam: Phaser.GameObjects.GameObject[] = []
     const ignoredByMinimap: Phaser.GameObjects.GameObject[] = []
     this.cursors = this.input.keyboard.createCursorKeys()
@@ -52,41 +50,42 @@ export default class SiteScene extends Phaser.Scene {
       WORLD.width,
       WORLD.height
     )
-    this.setupMainCam()
 
-    this.grid = this.createGrid()
-    this.add.existing(this.grid)
+    this.cameras.main.roundPixels = true
+
+    // Add bg image
+    // TODO: image y pos should be set at WORLD.origin.y (not * 2), but this is a hack to fix a bug I don't understand yet
+    this.add
+      .image(WORLD.origin.x * 2, WORLD.origin.y * 2, 'terrain')
+      .setOrigin(0)
+    // .setPosition(WORLD.origin.x, WORLD.origin.y)
+
+    // Player
+    this.player = Player.getInstance(this, VIEWPORT.width, VIEWPORT.height)
+    this.player.moveTo(WORLD.origin.x, WORLD.origin.y)
+    ignoredByMainCam.push(this.player)
+
+    this.createGrid()
     ignoredByMinimap.push(this.grid)
 
-    this.minimap = this.createMinimap()
-
-    this.cameras.addExisting(this.minimap)
+    this.createMinimap()
+    ignoredByMainCam.push(this.minimap)
+    ignoredByMainCam.push(this.minimapFrame)
 
     this.createRulers()
     ignoredByMinimap.push(this.rulerH)
     ignoredByMinimap.push(this.rulerV)
     ignoredByMinimap.push(this.originButton)
 
-    this.player = Player.getInstance(this, VIEWPORT.width, VIEWPORT.height)
-    ignoredByMainCam.push(this.player)
-
-    const strokeWidth = 120
-    this.minimapFrame = new Phaser.GameObjects.Rectangle(
-      this,
-      WORLD.origin.x + strokeWidth / 2,
-      WORLD.origin.y + strokeWidth / 2,
-      WORLD.width - strokeWidth,
-      WORLD.height - strokeWidth
-    )
-    this.minimapFrame.setStrokeStyle(strokeWidth, 0xffffff, 0.5)
-    this.minimapFrame.setOrigin(0, 0)
-    this.add.existing(this.minimapFrame)
+    this.createMainNav()
+    ignoredByMinimap.push(this.mainNav)
 
     ignoredByMainCam.push(this.minimapFrame)
 
     this.cameras.main.ignore(ignoredByMainCam)
     this.minimap.ignore(ignoredByMinimap)
     this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
+    this.scene.launch('mainNav')
   }
 
   update() {
@@ -110,37 +109,37 @@ export default class SiteScene extends Phaser.Scene {
     }
   }
 
-  setupMainCam = () => {
-    this.cameras.main
-      .setBounds(WORLD.origin.x, WORLD.origin.y, WORLD.width, WORLD.height)
-      .setName('main')
-    this.cameras.main.setViewport(
-      WORLD.origin.x,
-      WORLD.origin.y,
-      VIEWPORT.width,
-      VIEWPORT.height
-    )
-
-    this.cameras.main.scrollX = WORLD.origin.x
-    this.cameras.main.scrollY = WORLD.origin.y
-    this.cameras.main.setBackgroundColor(0xdddddd)
-  }
-
   createMinimap = () => {
-    return new Minimap(
-      WORLD.origin.x + VIEWPORT.width - WORLD.innerPadding - MINIMAP.width,
-      WORLD.origin.y + WORLD.innerPadding * 2,
+    this.minimap = new Minimap(
+      WORLD.origin.x +
+        VIEWPORT.width -
+        WORLD.innerPadding -
+        WORLD.origin.x -
+        MINIMAP.width,
+      WORLD.origin.y + WORLD.innerPadding + WORLD.origin.y,
       MINIMAP.width,
       MINIMAP.height,
       this
     )
+    this.cameras.addExisting(this.minimap)
+    const strokeWidth = 60
+    this.minimapFrame = new Phaser.GameObjects.Rectangle(
+      this,
+      WORLD.origin.x + strokeWidth / 2,
+      WORLD.origin.y + strokeWidth / 2,
+      WORLD.width - strokeWidth,
+      WORLD.height - strokeWidth
+    )
+    this.minimapFrame.setStrokeStyle(strokeWidth, 0xffffff, 0.5)
+    this.minimapFrame.setOrigin(0, 0)
+    this.add.existing(this.minimapFrame)
   }
 
   createGrid = () => {
-    return new ATGrid(
+    this.grid = new ATGrid(
       this,
-      WORLD.origin.x,
-      WORLD.origin.y,
+      0,
+      0,
       WORLD.width,
       WORLD.height,
       TILE_SIZE / 2,
@@ -150,45 +149,86 @@ export default class SiteScene extends Phaser.Scene {
       0xffffff,
       0.4
     )
+    this.grid.setOrigin(0)
+    this.grid.setPosition(WORLD.origin.x, WORLD.origin.y * 2)
+    this.add.existing(this.grid)
   }
 
   createRulers = () => {
     this.rulerH = new Ruler({
       scene: this,
-      width: WORLD.width,
+      width: WORLD.width - WORLD.origin.x,
       height: WORLD.innerPadding,
       rulerScale: TILE_SIZE / 2,
       unitsNum: NUM_TILES_WIDTH * 2,
-      fontSize: 12,
+      fontSize: 14,
       strokeColor: 0xffffff,
       strokeAlpha: 0.8,
     })
-
-    // this.rulerH.setPosition(0, 0)
+    this.rulerH.setPosition(WORLD.origin.x * 2, WORLD.origin.y)
     this.add.existing(this.rulerH)
 
     this.rulerV = new Ruler({
       scene: this,
       width: WORLD.innerPadding,
-      height: WORLD.height,
+      height: WORLD.height - WORLD.origin.y,
       rulerScale: TILE_SIZE / 2,
       unitsNum: NUM_TILES_HEIGHT * 2,
-      fontSize: 12,
-      useLetters: true,
+      fontSize: 14,
+      // useLetters: true,
       strokeColor: 0xffffff,
       strokeAlpha: 0.8,
     })
-
-    // this.rulerV.setPosition(0, 0)
+    this.rulerV.setPosition(WORLD.origin.x, WORLD.origin.y + 16)
     this.add.existing(this.rulerV)
 
-    this.originButton = new OriginButton(
-      this,
-      WORLD.origin.x,
-      WORLD.origin.y,
-      WORLD.innerPadding,
-      WORLD.innerPadding,
-      COLOR_HINT_PRIMARY
+    this.originButton = new OriginButton({
+      scene: this,
+      x: WORLD.origin.x,
+      y: WORLD.origin.y,
+      height: WORLD.innerPadding,
+      width: WORLD.innerPadding,
+      backgroundColor: COLOR_HINT_PRIMARY,
+      backgroundHoverColor: COLOR_HINT_SECONDARY,
+      clickHandler: () => {
+        this.player.moveTo(WORLD.origin.x, WORLD.origin.y)
+        return true
+      },
+    })
+    this.add.existing(this.originButton)
+  }
+
+  createMainNav = () => {
+    this.mainNav = new MainNav(
+      {
+        scene: this,
+        x: 0,
+        y: 0,
+        height: Math.floor(WORLD.origin.y),
+        width: VIEWPORT.width,
+        backgroundColor: COLOR_GRAY_MEDIUM,
+      },
+      [
+        { name: 'Archaeotype' },
+        { name: 'Quad 1' },
+        {
+          name: 'Collections',
+          linkColor: COLOR_HINT_PRIMARY,
+          callback: () => console.log('collection callback'),
+        },
+        {
+          name: 'Library',
+          linkColor: COLOR_HINT_PRIMARY,
+          callback: () => console.log('Library callback'),
+        },
+        {
+          name: 'Help',
+          linkColor: COLOR_HINT_PRIMARY,
+          callback: () => console.log('Help callback'),
+        },
+      ]
     )
+
+    this.add.existing(this.mainNav)
   }
 }

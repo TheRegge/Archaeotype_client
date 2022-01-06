@@ -118,7 +118,7 @@ export default class Ruler
     this.height = options.height
     this.rulerScale = options.rulerScale
     this.unitsNum = options.unitsNum
-    this.fontSize = options.fontSize || 12
+    this.fontSize = options.fontSize || 14
     this.useLetters = options.useLetters || false
     this.textColor = options.textColor || '#FFFFFF'
     this.strokeWidth = options.strokeWidth || 2
@@ -259,7 +259,7 @@ export default class Ruler
         coords.y,
         txt,
         {
-          fontFamily: 'Varela Round',
+          fontFamily: 'Cousine',
           fontSize: `${this.fontSize}px`,
           color: `${this.textColor}`,
         }

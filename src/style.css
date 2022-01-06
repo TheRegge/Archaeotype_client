@@ -11,7 +11,6 @@
 
 :root {
   --font-size: 16px;
-  --nav-height: 2rem;
 
   --color-hint-primary: #38a8dc;
   --color-hint-secondary: #e55f2a;
@@ -43,16 +42,6 @@ body {
 #phaser-app canvas {
   width: 1400px;
   height: 700px;
-}
-
-nav {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  padding: 0 1rem;
-  height: var(--nav-height);
-  background: var(--color-gray-light);
 }
 
 button {

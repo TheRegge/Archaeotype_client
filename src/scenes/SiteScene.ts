@@ -175,7 +175,7 @@ export default class SiteScene extends Phaser.Scene {
       rulerScale: TILE_SIZE / 2,
       unitsNum: NUM_TILES_HEIGHT * 2,
       fontSize: 14,
-      // useLetters: true,
+      useLetters: true,
       strokeColor: 0xffffff,
       strokeAlpha: 0.8,
     })

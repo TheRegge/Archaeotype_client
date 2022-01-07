@@ -35,7 +35,6 @@ export default class MainNav extends ContainerWithBg {
         0
       )
       this.add(txtLink)
-      console.log(link.name, txtLink.fullWidth, 'xpos', xpos)
 
       xpos += txtLink.fullWidth + this.padding
     })

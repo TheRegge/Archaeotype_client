@@ -17,11 +17,16 @@ import {
   COLOR_HINT_PRIMARY,
   COLOR_HINT_SECONDARY,
   COLOR_GRAY_MEDIUM,
+  COLOR_GRAY_DARK,
 } from '../main'
+import { Popup } from '~/classes/Popup'
 
 export default class SiteScene extends Phaser.Scene {
   private cursors
   private grid
+  private popup
+  private ignoredByMainCam: Phaser.GameObjects.GameObject[]
+  private ignoredByMinimap: Phaser.GameObjects.GameObject[]
   private mainNav
   private minimap
   private minimapFrame
@@ -32,6 +37,8 @@ export default class SiteScene extends Phaser.Scene {
 
   constructor() {
     super({ key: 'site' })
+    this.ignoredByMainCam = []
+    this.ignoredByMinimap = []
   }
 
   preload() {
@@ -40,8 +47,6 @@ export default class SiteScene extends Phaser.Scene {
   }
 
   create() {
-    const ignoredByMainCam: Phaser.GameObjects.GameObject[] = []
-    const ignoredByMinimap: Phaser.GameObjects.GameObject[] = []
     this.cursors = this.input.keyboard.createCursorKeys()
 
     this.physics.world.setBounds(
@@ -63,27 +68,30 @@ export default class SiteScene extends Phaser.Scene {
     // Player
     this.player = Player.getInstance(this, VIEWPORT.width, VIEWPORT.height)
     this.player.moveTo(WORLD.origin.x, WORLD.origin.y)
-    ignoredByMainCam.push(this.player)
+    this.ignoredByMainCam.push(this.player)
 
     this.createGrid()
-    ignoredByMinimap.push(this.grid)
+    this.ignoredByMinimap.push(this.grid)
 
     this.createMinimap()
-    ignoredByMainCam.push(this.minimap)
-    ignoredByMainCam.push(this.minimapFrame)
+    this.ignoredByMainCam.push(this.minimap)
+    this.ignoredByMainCam.push(this.minimapFrame)
 
     this.createRulers()
-    ignoredByMinimap.push(this.rulerH)
-    ignoredByMinimap.push(this.rulerV)
-    ignoredByMinimap.push(this.originButton)
+    this.ignoredByMinimap.push(this.rulerH)
+    this.ignoredByMinimap.push(this.rulerV)
+    this.ignoredByMinimap.push(this.originButton)
 
     this.createMainNav()
-    ignoredByMinimap.push(this.mainNav)
+    this.ignoredByMinimap.push(this.mainNav)
 
-    ignoredByMainCam.push(this.minimapFrame)
+    this.createPopup()
+    this.ignoredByMinimap.push(this.popup)
 
-    this.cameras.main.ignore(ignoredByMainCam)
-    this.minimap.ignore(ignoredByMinimap)
+    this.ignoredByMainCam.push(this.minimapFrame)
+
+    this.cameras.main.ignore(this.ignoredByMainCam)
+    this.minimap.ignore(this.ignoredByMinimap)
     this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
     this.scene.launch('mainNav')
   }
@@ -198,6 +206,22 @@ export default class SiteScene extends Phaser.Scene {
     this.add.existing(this.originButton)
   }
 
+  createPopup = () => {
+    const width = VIEWPORT.width / 2
+    const height = VIEWPORT.height * 0.75
+    this.popup = new Popup({
+      scene: this,
+      x: width / 2,
+      y: (VIEWPORT.height - height) / 2 + WORLD.innerPadding,
+      height,
+      width,
+      backgroundColor: COLOR_GRAY_DARK,
+      backgroundOpacity: 0.9,
+      clickHandler: () => this.popup.toggle(),
+    })
+    this.add.existing(this.popup)
+  }
+
   createMainNav = () => {
     this.mainNav = new MainNav(
       {
@@ -219,12 +243,39 @@ export default class SiteScene extends Phaser.Scene {
         {
           name: 'Library',
           linkColor: COLOR_HINT_PRIMARY,
-          callback: () => console.log('Library callback'),
+          callback: () => {
+            this.popup.showWithContent({
+              title: 'Library',
+              body: [
+                'WELCOME TO THE LIBRARY',
+                '----------------------',
+                'Hello, this is the content for the library.',
+                'I need to abstract the popup more.',
+              ],
+            })
+          },
         },
         {
           name: 'Help',
           linkColor: COLOR_HINT_PRIMARY,
-          callback: () => console.log('Help callback'),
+          callback: () => {
+            this.popup.showWithContent({
+              title: 'Archaeotype Help',
+              body: [
+                'MOVING AROUND:',
+                '-------------',
+                '- Use your keyboard arrow keys to move around the site, or drag the rectangle in the minimap.',
+                '- Hold down the "Shift" key, to move 4x faster!',
+                '- Click the white arrow with a blue background at the top left of the screen to reposition at the top left of the site.',
+                '',
+                'KEYBOARD SHORTCUTS:',
+                '------------------',
+                '- Show/hide the grid: G',
+                '- Show/hide the minimap: M',
+                '- Show/hide the rulers: R',
+              ],
+            })
+          },
         },
       ]
     )

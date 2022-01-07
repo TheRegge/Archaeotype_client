@@ -33,7 +33,6 @@ export default class LoadingScene extends Phaser.Scene {
     WebFont.load({
       google: {
         families: ['Cousine'],
-        text: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
       },
       loading: () => {
         console.info('loading fonts')

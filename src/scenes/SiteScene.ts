@@ -5,20 +5,7 @@ import ATGrid from '~/classes/ATGrid'
 import Ruler from '~/classes/Ruler'
 import OriginButton from '~/classes/OriginButton'
 import MainNav from '~/classes/MainNav'
-
-import {
-  TILE_SIZE,
-  NUM_TILES_HEIGHT,
-  NUM_TILES_WIDTH,
-  MINIMAP,
-  PLAYER_SPEED,
-  WORLD,
-  VIEWPORT,
-  COLOR_HINT_PRIMARY,
-  COLOR_HINT_SECONDARY,
-  COLOR_GRAY_MEDIUM,
-  COLOR_GRAY_DARK,
-} from '../main'
+import config from '~/common/Config'
 import { Popup } from '~/classes/Popup'
 
 export default class SiteScene extends Phaser.Scene {
@@ -50,24 +37,28 @@ export default class SiteScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys()
 
     this.physics.world.setBounds(
-      WORLD.origin.x,
-      WORLD.origin.y,
-      WORLD.width,
-      WORLD.height
+      config.WORLD.origin.x,
+      config.WORLD.origin.y,
+      config.WORLD.width,
+      config.WORLD.height
     )
 
     this.cameras.main.roundPixels = true
 
     // Add bg image
-    // TODO: image y pos should be set at WORLD.origin.y (not * 2), but this is a hack to fix a bug I don't understand yet
+    // TODO: image y pos should be set at config.WORLD.origin.y (not * 2), but this is a hack to fix a bug I don't understand yet
     this.add
-      .image(WORLD.origin.x * 2, WORLD.origin.y * 2, 'terrain')
+      .image(config.WORLD.origin.x * 2, config.WORLD.origin.y * 2, 'terrain')
       .setOrigin(0)
-    // .setPosition(WORLD.origin.x, WORLD.origin.y)
+    // .setPosition(WORLD.origin.x, config.WORLD.origin.y)
 
     // Player
-    this.player = Player.getInstance(this, VIEWPORT.width, VIEWPORT.height)
-    this.player.moveTo(WORLD.origin.x, WORLD.origin.y)
+    this.player = Player.getInstance(
+      this,
+      config.VIEWPORT.width,
+      config.VIEWPORT.height
+    )
+    this.player.moveTo(config.WORLD.origin.x, config.WORLD.origin.y)
     this.ignoredByMainCam.push(this.player)
 
     this.createGrid()
@@ -98,7 +89,7 @@ export default class SiteScene extends Phaser.Scene {
 
   update() {
     this.player.body.setVelocity(0)
-    let speed = PLAYER_SPEED
+    let speed = config.PLAYER_SPEED
 
     if (this.cursors.shift.isDown) {
       speed *= 4
@@ -119,24 +110,24 @@ export default class SiteScene extends Phaser.Scene {
 
   createMinimap = () => {
     this.minimap = new Minimap(
-      WORLD.origin.x +
-        VIEWPORT.width -
-        WORLD.innerPadding -
-        WORLD.origin.x -
-        MINIMAP.width,
-      WORLD.origin.y + WORLD.innerPadding + WORLD.origin.y,
-      MINIMAP.width,
-      MINIMAP.height,
+      config.WORLD.origin.x +
+        config.VIEWPORT.width -
+        config.WORLD.innerPadding -
+        config.WORLD.origin.x -
+        config.MINIMAP.width,
+      config.WORLD.origin.y + config.WORLD.innerPadding + config.WORLD.origin.y,
+      config.MINIMAP.width,
+      config.MINIMAP.height,
       this
     )
     this.cameras.addExisting(this.minimap)
     const strokeWidth = 60
     this.minimapFrame = new Phaser.GameObjects.Rectangle(
       this,
-      WORLD.origin.x + strokeWidth / 2,
-      WORLD.origin.y + strokeWidth / 2,
-      WORLD.width - strokeWidth,
-      WORLD.height - strokeWidth
+      config.WORLD.origin.x + strokeWidth / 2,
+      config.WORLD.origin.y + strokeWidth / 2,
+      config.WORLD.width - strokeWidth,
+      config.WORLD.height - strokeWidth
     )
     this.minimapFrame.setStrokeStyle(strokeWidth, 0xffffff, 0.5)
     this.minimapFrame.setOrigin(0, 0)
@@ -148,58 +139,58 @@ export default class SiteScene extends Phaser.Scene {
       this,
       0,
       0,
-      WORLD.width,
-      WORLD.height,
-      TILE_SIZE / 2,
-      TILE_SIZE / 2,
+      config.WORLD.width,
+      config.WORLD.height,
+      config.TILE_SIZE * config.TILE_SCALE,
+      config.TILE_SIZE * config.TILE_SCALE,
       undefined,
       undefined,
       0xffffff,
       0.4
     )
     this.grid.setOrigin(0)
-    this.grid.setPosition(WORLD.origin.x, WORLD.origin.y * 2)
+    this.grid.setPosition(config.WORLD.origin.x, config.WORLD.origin.y * 2)
     this.add.existing(this.grid)
   }
 
   createRulers = () => {
     this.rulerH = new Ruler({
       scene: this,
-      width: WORLD.width - WORLD.origin.x,
-      height: WORLD.innerPadding,
-      rulerScale: TILE_SIZE / 2,
-      unitsNum: NUM_TILES_WIDTH * 2,
+      width: config.WORLD.width - config.WORLD.origin.x,
+      height: config.WORLD.innerPadding,
+      rulerScale: config.TILE_SIZE * config.TILE_SCALE,
+      unitsNum: config.NUM_TILES_WIDTH / config.TILE_SCALE,
       fontSize: 14,
       strokeColor: 0xffffff,
       strokeAlpha: 0.8,
     })
-    this.rulerH.setPosition(WORLD.origin.x * 2, WORLD.origin.y)
+    this.rulerH.setPosition(config.WORLD.origin.x * 2, config.WORLD.origin.y)
     this.add.existing(this.rulerH)
 
     this.rulerV = new Ruler({
       scene: this,
-      width: WORLD.innerPadding,
-      height: WORLD.height - WORLD.origin.y,
-      rulerScale: TILE_SIZE / 2,
-      unitsNum: NUM_TILES_HEIGHT * 2,
+      width: config.WORLD.innerPadding,
+      height: config.WORLD.height - config.WORLD.origin.y,
+      rulerScale: config.TILE_SIZE * config.TILE_SCALE,
+      unitsNum: config.NUM_TILES_WIDTH / config.TILE_SCALE,
       fontSize: 14,
       useLetters: true,
       strokeColor: 0xffffff,
       strokeAlpha: 0.8,
     })
-    this.rulerV.setPosition(WORLD.origin.x, WORLD.origin.y + 16)
+    this.rulerV.setPosition(config.WORLD.origin.x, config.WORLD.origin.y + 16)
     this.add.existing(this.rulerV)
 
     this.originButton = new OriginButton({
       scene: this,
-      x: WORLD.origin.x,
-      y: WORLD.origin.y,
-      height: WORLD.innerPadding,
-      width: WORLD.innerPadding,
-      backgroundColor: COLOR_HINT_PRIMARY,
-      backgroundHoverColor: COLOR_HINT_SECONDARY,
+      x: config.WORLD.origin.x,
+      y: config.WORLD.origin.y,
+      height: config.WORLD.innerPadding,
+      width: config.WORLD.innerPadding,
+      backgroundColor: config.COLOR_HINT_PRIMARY,
+      backgroundHoverColor: config.COLOR_HINT_SECONDARY,
       clickHandler: () => {
-        this.player.moveTo(WORLD.origin.x, WORLD.origin.y)
+        this.player.moveTo(config.WORLD.origin.x, config.WORLD.origin.y)
         return true
       },
     })
@@ -207,15 +198,15 @@ export default class SiteScene extends Phaser.Scene {
   }
 
   createPopup = () => {
-    const width = VIEWPORT.width / 2
-    const height = VIEWPORT.height * 0.75
+    const width = config.VIEWPORT.width / 2
+    const height = config.VIEWPORT.height * 0.75
     this.popup = new Popup({
       scene: this,
       x: width / 2,
-      y: (VIEWPORT.height - height) / 2 + WORLD.innerPadding,
+      y: (config.VIEWPORT.height - height) / 2 + config.WORLD.innerPadding,
       height,
       width,
-      backgroundColor: COLOR_GRAY_DARK,
+      backgroundColor: config.COLOR_GRAY_DARK,
       backgroundOpacity: 0.9,
       clickHandler: () => this.popup.toggle(),
     })
@@ -228,21 +219,21 @@ export default class SiteScene extends Phaser.Scene {
         scene: this,
         x: 0,
         y: 0,
-        height: Math.floor(WORLD.origin.y),
-        width: VIEWPORT.width,
-        backgroundColor: COLOR_GRAY_MEDIUM,
+        height: Math.floor(config.WORLD.origin.y),
+        width: config.VIEWPORT.width,
+        backgroundColor: config.COLOR_GRAY_MEDIUM,
       },
       [
         { name: 'Archaeotype' },
         { name: 'Quad 1' },
         {
           name: 'Collections',
-          linkColor: COLOR_HINT_PRIMARY,
+          linkColor: config.COLOR_HINT_PRIMARY,
           callback: () => console.log('collection callback'),
         },
         {
           name: 'Library',
-          linkColor: COLOR_HINT_PRIMARY,
+          linkColor: config.COLOR_HINT_PRIMARY,
           callback: () => {
             this.popup.showWithContent({
               title: 'Library',
@@ -257,7 +248,7 @@ export default class SiteScene extends Phaser.Scene {
         },
         {
           name: 'Help',
-          linkColor: COLOR_HINT_PRIMARY,
+          linkColor: config.COLOR_HINT_PRIMARY,
           callback: () => {
             this.popup.showWithContent({
               title: 'Archaeotype Help',

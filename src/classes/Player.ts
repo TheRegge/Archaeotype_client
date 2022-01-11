@@ -1,5 +1,4 @@
-import { WORLD } from '~/main'
-
+import config from '~/common/Config'
 /**
  * Singleton class. The Player instantiates a rectangle
  * exactly the size of the visible portion of the terrain. The player
@@ -20,8 +19,8 @@ export default class Player extends Phaser.GameObjects.Rectangle {
   private constructor(scene: Phaser.Scene, width: number, height: number) {
     super(
       scene,
-      width / 2 + WORLD.origin.x,
-      height / 2 + WORLD.origin.y + 32,
+      width / 2 + config.WORLD.origin.x,
+      height / 2 + config.WORLD.origin.y + 32,
       width,
       height,
       0xff5555,

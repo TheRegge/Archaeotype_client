@@ -1,7 +1,7 @@
 import ContainerWithBg, { ContainerWithBgOptions } from './ContainerWithBg'
 import { hexToString } from '~/common/utils'
 import { navLink } from './MainNav'
-import { WORLD } from '~/main'
+import config from '~/common/Config'
 
 export default class TextLink extends ContainerWithBg {
   public padding
@@ -23,7 +23,7 @@ export default class TextLink extends ContainerWithBg {
       }
     )
 
-    const vPadding = (WORLD.origin.y - text.height) / 2
+    const vPadding = (config.WORLD.origin.y - text.height) / 2
     text.setPosition(
       Math.floor(text.x - text.width / 2 - padding),
       Math.floor(text.y - text.height / 2 - vPadding)

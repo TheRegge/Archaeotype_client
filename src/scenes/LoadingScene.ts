@@ -1,4 +1,4 @@
-import { VIEWPORT } from '../main'
+import config from '~/common/Config'
 
 declare var WebFont: any
 export default class LoadingScene extends Phaser.Scene {
@@ -29,7 +29,11 @@ export default class LoadingScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(VIEWPORT.width / 2, VIEWPORT.height / 2 - 80, 'logo')
+    this.add.image(
+      config.VIEWPORT.width / 2,
+      config.VIEWPORT.height / 2 - 80,
+      'logo'
+    )
     WebFont.load({
       google: {
         families: ['Cousine'],
@@ -39,7 +43,7 @@ export default class LoadingScene extends Phaser.Scene {
       },
       active: () => {
         const button = this.add
-          .dom(VIEWPORT.width / 2, VIEWPORT.height / 2 + 50)
+          .dom(config.VIEWPORT.width / 2, config.VIEWPORT.height / 2 + 50)
           .createFromCache('startBtn')
 
         button.addListener('click')

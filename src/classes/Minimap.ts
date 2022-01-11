@@ -1,4 +1,4 @@
-import { WORLD, MINIMAP_SCALE } from '../main'
+import config from '~/common/Config'
 import { IToggle } from './IToggle'
 
 export default class Minimap
@@ -15,6 +15,12 @@ export default class Minimap
     super(x, y, width, height)
 
     this.setRoundPixels(true)
+      .setBounds(
+        config.WORLD.origin.x,
+        config.WORLD.origin.y,
+        config.WORLD.width,
+        config.WORLD.height
+      )
       .setZoom(config.MINIMAP.scale)
       .centerToBounds()
       .setName('mini')

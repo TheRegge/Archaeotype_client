@@ -1,5 +1,5 @@
 import { IToggle } from './IToggle'
-import { WORLD } from '../main'
+import config from '~/common/Config'
 
 export type RulerUnitSettings = {
   type: 'vertical' | 'horizontal'
@@ -109,7 +109,6 @@ export default class Ruler
   private unitsNum: number
   private rulerScale: number
   private useLetters: boolean
-  private letters: string[]
   private textColor: string
   private textColorQuiet: string
   private strokeWidth: number
@@ -134,61 +133,6 @@ export default class Ruler
     this.strokeAlpha = options.strokeAlpha || 1
     this.backgroundColor = options.backgroundColor || 0x000000
     this.backgroundAlpha = options.backgroundAlpha || 0.6
-
-    this.letters = [
-      'A',
-      'B',
-      'C',
-      'D',
-      'E',
-      'F',
-      'G',
-      'H',
-      'I',
-      'J',
-      'K',
-      'L',
-      'M',
-      'N',
-      'O',
-      'P',
-      'Q',
-      'R',
-      'S',
-      'T',
-      'U',
-      'V',
-      'W',
-      'X',
-      'Y',
-      'Z',
-      'AA',
-      'BB',
-      'CC',
-      'DD',
-      'EE',
-      'FF',
-      'GG',
-      'HH',
-      'II',
-      'JJ',
-      'KK',
-      'LL',
-      'MM',
-      'NN',
-      'OO',
-      'PP',
-      'QQ',
-      'RR',
-      'SS',
-      'TT',
-      'UU',
-      'VV',
-      'WW',
-      'XX',
-      'YY',
-      'ZZ',
-    ]
 
     this.scene.input.keyboard.on('keydown-R', this.toggle)
 
@@ -238,7 +182,7 @@ export default class Ruler
         lineStartY = 0
         lineEndY = this.height / 2
       } else if (type === 'vertical') {
-        this.background.setY(WORLD.innerPadding)
+        this.background.setY(config.WORLD.innerPadding)
         y = i * this.rulerScale + this.width
         lineStartX = 0
         lineEndX = this.width / 2

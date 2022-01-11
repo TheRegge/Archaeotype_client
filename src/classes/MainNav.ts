@@ -1,4 +1,4 @@
-import { COLOR_GRAY_DARK, COLOR_GRAY_MEDIUM } from '~/main'
+import config from '~/common/Config'
 import ContainerWithBg, { ContainerWithBgOptions } from './ContainerWithBg'
 import TextLink from './TextLink'
 
@@ -23,8 +23,8 @@ export default class MainNav extends ContainerWithBg {
           y: 0,
           height: 0,
           width: 0,
-          backgroundColor: COLOR_GRAY_MEDIUM,
-          backgroundHoverColor: COLOR_GRAY_DARK,
+          backgroundColor: config.COLOR_GRAY_MEDIUM,
+          backgroundHoverColor: config.COLOR_GRAY_DARK,
           clickHandler: link.callback,
         },
         link,

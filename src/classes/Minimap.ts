@@ -15,8 +15,7 @@ export default class Minimap
     super(x, y, width, height)
 
     this.setRoundPixels(true)
-      .setBounds(WORLD.origin.x, WORLD.origin.y, WORLD.width, WORLD.height)
-      .setZoom(1 / MINIMAP_SCALE)
+      .setZoom(config.MINIMAP.scale)
       .centerToBounds()
       .setName('mini')
       .setBackgroundColor(0xf0f0f0)

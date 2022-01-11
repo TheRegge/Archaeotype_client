@@ -51,6 +51,12 @@ export type RulerOptions = {
   textColor?: string
 
   /**
+   * The color for the less visible text. Used for fractional ruler units.
+   * This is used as a CSS color format, like '#FF0000' for  red
+   */
+  textColorQuiet?: string
+
+  /**
    * The width of each unit tick on the ruler
    */
   strokeWidth?: number
@@ -105,6 +111,7 @@ export default class Ruler
   private useLetters: boolean
   private letters: string[]
   private textColor: string
+  private textColorQuiet: string
   private strokeWidth: number
   private strokeColor: number
   private strokeAlpha: number
@@ -121,6 +128,7 @@ export default class Ruler
     this.fontSize = options.fontSize || 14
     this.useLetters = options.useLetters || false
     this.textColor = options.textColor || '#FFFFFF'
+    this.textColorQuiet = options.textColorQuiet || '#aaaaaa'
     this.strokeWidth = options.strokeWidth || 2
     this.strokeColor = options.strokeColor || 0xffffff
     this.strokeAlpha = options.strokeAlpha || 1
@@ -252,7 +260,9 @@ export default class Ruler
         .setOrigin(0)
       this.add(tick)
 
-      const txt = this.useLetters ? this.letters[i - 1] : i + ''
+      const rulerNumber = i * config.TILE_SCALE
+      const txt = this.useLetters ? config.LETTERS[i - 1] : rulerNumber + ''
+
       const tickText = new Phaser.GameObjects.Text(
         this.scene,
         coords.x,
@@ -261,7 +271,10 @@ export default class Ruler
         {
           fontFamily: 'Cousine',
           fontSize: `${this.fontSize}px`,
-          color: `${this.textColor}`,
+          color:
+            (rulerNumber * 2) % 2 > 0 && !this.useLetters
+              ? `${this.textColorQuiet}`
+              : `${this.textColor}`,
         }
       )
 

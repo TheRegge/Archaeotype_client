@@ -1,4 +1,4 @@
-import { hexToString } from '~/common/utils'
+import utils from '~/common/Utils'
 import { IToggle } from '.'
 import ContainerWithBg, { ContainerWithBgOptions } from './ContainerWithBg'
 import config from '~/common/Config'
@@ -28,7 +28,7 @@ export class Popup extends ContainerWithBg implements IToggle {
       {
         fontFamily: 'Cousine',
         fontSize: '24px',
-        color: hexToString(config.COLOR_HINT_PRIMARY),
+        color: utils.hexToString(config.COLOR_HINT_PRIMARY),
       }
     )
     this.add(this.titleText)

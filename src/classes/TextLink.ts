@@ -1,5 +1,5 @@
 import ContainerWithBg, { ContainerWithBgOptions } from './ContainerWithBg'
-import { hexToString } from '~/common/utils'
+import utils from '~/common/Utils'
 import { navLink } from './MainNav'
 import config from '~/common/Config'
 
@@ -10,7 +10,7 @@ export default class TextLink extends ContainerWithBg {
     link: navLink,
     padding: number = 10
   ) {
-    const textColor = hexToString(link.linkColor) || 'white'
+    const textColor = utils.hexToString(link.linkColor) || 'white'
     const text = new Phaser.GameObjects.Text(
       options.scene,
       padding,

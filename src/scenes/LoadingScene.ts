@@ -20,6 +20,7 @@ export default class LoadingScene extends Phaser.Scene {
 
     // SiteScene Assets
     this.load.image('terrain', 'images/terrains/q1.jpg')
+    this.load.image('toplayer-tiles', 'images/tilesets/tileset-map-164px.png')
 
     import(/* webpackChunkName: "siteScene" */ './SiteScene').then(
       (SiteScene) => {

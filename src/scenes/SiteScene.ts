@@ -20,6 +20,9 @@ export default class SiteScene extends Phaser.Scene {
   private originButton
   private rulerH
   private rulerV
+  private tileMap
+  private topLayer
+  private topLayerTiles
   public player
 
   constructor() {
@@ -44,6 +47,7 @@ export default class SiteScene extends Phaser.Scene {
     )
 
     this.cameras.main.roundPixels = true
+    this.cameras.main.setName('MAIN')
 
     // Add bg image
     // TODO: image y pos should be set at config.WORLD.origin.y (not * 2), but this is a hack to fix a bug I don't understand yet
@@ -52,6 +56,17 @@ export default class SiteScene extends Phaser.Scene {
       .setOrigin(0)
     // .setPosition(WORLD.origin.x, config.WORLD.origin.y)
 
+    // Create tileMap
+    this.tileMap = this.createTileMap()
+    this.topLayerTiles = this.tileMap.addTilesetImage('toplayer-tiles')
+    this.topLayer = this.tileMap.createLayer(
+      0,
+      this.topLayerTiles,
+      config.WORLD.origin.x + config.H_OFFSET,
+      config.WORLD.origin.y + config.V_OFFSET
+    )
+    // handle clicking on map
+    this.input.on('pointerdown', this.handleMouseDown)
     // Player
     this.player = Player.getInstance(
       this,
@@ -120,6 +135,7 @@ export default class SiteScene extends Phaser.Scene {
       config.MINIMAP.height,
       this
     )
+    this.minimap.setName('MINIMAP')
     this.cameras.addExisting(this.minimap)
     const strokeWidth = 60
     this.minimapFrame = new Phaser.GameObjects.Rectangle(
@@ -272,5 +288,50 @@ export default class SiteScene extends Phaser.Scene {
     )
 
     this.add.existing(this.mainNav)
+  }
+
+  createTileMap = (): Phaser.Tilemaps.Tilemap => {
+    return this.make.tilemap({
+      data: this.makeTopLayerData(),
+      tileWidth: config.TILE_SIZE,
+      tileHeight: config.TILE_SIZE,
+    })
+  }
+
+  makeTopLayerData = () => {
+    // TODO: try loading json from db, if it is empty,
+    // then generate the tiles with zeros only
+    // const jsonData = this.cache.json.get('fakeData')
+
+    // return jsonData.data
+    let dataMap: number[][] = []
+    let numRows = config.NUM_TILES_WIDTH
+
+    while (numRows > 0) {
+      let row: number[] = []
+      let numCols = config.NUM_TILES_HEIGHT
+      while (numCols > 0) {
+        row.push(0)
+        numCols--
+      }
+      dataMap.push(row)
+      numRows--
+    }
+
+    return dataMap
+  }
+
+  handleMouseDown = (e) => {
+    if (e.camera.name === 'MAIN') {
+      const tile = this.tileMap.removeTileAtWorldXY(
+        e.worldX,
+        e.worldY,
+        false,
+        false,
+        this.cameras.main,
+        this.topLayer
+      ) as Phaser.Tilemaps.Tile
+      tile && tile.destroy()
+    }
   }
 }

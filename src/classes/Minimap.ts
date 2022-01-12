@@ -23,7 +23,6 @@ export default class Minimap
       )
       .setZoom(config.MINIMAP.scale)
       .centerToBounds()
-      .setName('mini')
       .setBackgroundColor(0xf0f0f0)
 
     scene.input.keyboard.on('keydown-M', this.toggle)

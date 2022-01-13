@@ -145,6 +145,8 @@ summary {
 
 html {
   font-size: var(--font-size);
+  font-family: 'Cousine';
+  color: var(--color-gray-100);
 }
 
 body {
@@ -164,6 +166,25 @@ body {
 #phaser-app canvas {
   width: 1400px;
   height: 700px;
+}
+
+/* Form */
+input {
+  padding: 0.5em;
+  margin: 0.4em 0 1em 0;
+
+  border-radius: 0.2em;
+  border: none;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+}
+
+.form > div {
+  display: flex;
+  flex-direction: column;
 }
 
 button {
@@ -189,4 +210,8 @@ button:hover {
 
 button.large {
   font-size: 1.5rem;
+}
+
+button[type='submit'] {
+  margin-top: 1rem;
 }

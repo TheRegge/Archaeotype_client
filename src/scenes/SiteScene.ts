@@ -7,6 +7,7 @@ import OriginButton from '~/classes/OriginButton'
 import MainNav from '~/classes/MainNav'
 import config from '~/common/Config'
 import { Popup } from '~/classes/Popup'
+import Artifact from '~/classes/Artifact'
 
 export default class SiteScene extends Phaser.Scene {
   private cursors
@@ -66,7 +67,7 @@ export default class SiteScene extends Phaser.Scene {
       config.WORLD.origin.y + config.V_OFFSET
     )
     // handle clicking on map
-    this.input.on('pointerdown', this.handleMouseDown)
+    this.input.on('pointerdown', this.handlePointerdown)
     // Player
     this.player = Player.getInstance(
       this,
@@ -321,17 +322,40 @@ export default class SiteScene extends Phaser.Scene {
     return dataMap
   }
 
-  handleMouseDown = (e) => {
-    if (e.camera.name === 'MAIN') {
-      const tile = this.tileMap.removeTileAtWorldXY(
-        e.worldX,
-        e.worldY,
-        false,
-        false,
-        this.cameras.main,
-        this.topLayer
-      ) as Phaser.Tilemaps.Tile
-      tile && tile.destroy()
-    }
+  /**
+   * handler method for the 'pointerdown' event of the current scene.
+   *
+   * @memberof SiteScene
+   */
+  handlePointerdown = (e, gameObjects: Phaser.GameObjects.GameObject[]) => {
+    if (this.clickDoesNotRemoveTileGuard(e, gameObjects)) return
+
+    const tile = this.tileMap.removeTileAtWorldXY(
+      e.worldX,
+      e.worldY,
+      false,
+      false,
+      this.cameras.main,
+      this.topLayer
+    ) as Phaser.Tilemaps.Tile
+    tile && tile.destroy()
+  }
+
+  /**
+   * Guard method: Checks if the callback of a click event should NOT remove a tile from the top layer
+   *
+   * A 'guard' method will interrupt the flow of a function when returning true
+   *
+   * @memberof SiteScene
+   */
+  clickDoesNotRemoveTileGuard = (
+    e: any,
+    gameObjects: Phaser.GameObjects.GameObject[]
+  ): boolean => {
+    return (
+      (gameObjects.length > 0 &&
+        gameObjects[0] instanceof Artifact === false) ||
+      e.camera.name !== 'MAIN'
+    )
   }
 }

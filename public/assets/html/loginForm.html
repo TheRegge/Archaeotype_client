@@ -1,0 +1,20 @@
+<div id="loginForm" class="form">
+  <div>
+    <label for="username">Email or password</label>
+    <input type="text" id="username">
+  </div>
+  <div>
+    <label for="password">Password</label>
+    <input type="password" id="password">
+  </div>
+  <button type="submit" class="large" name="loginButton">Login</button>
+</div>
+
+
+<script type="text/javascript">
+  const form = document.getElementById('loginForm')
+  console.log('form:', form)
+  form.addEventListener('submit', (e) => {
+    e.preventDefault()
+  })
+</script>

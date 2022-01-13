@@ -11,7 +11,7 @@ export default class LoadingScene extends Phaser.Scene {
 
     // Current scene assets
     this.load.image('logo', 'images/Archaeotype-Logo.png')
-    this.load.html('startBtn', 'html/startButton.html')
+    this.load.html('loginForm', 'html/loginForm.html')
 
     this.load.script(
       'webfont',
@@ -32,7 +32,7 @@ export default class LoadingScene extends Phaser.Scene {
   create() {
     this.add.image(
       config.VIEWPORT.width / 2,
-      config.VIEWPORT.height / 2 - 80,
+      config.VIEWPORT.height / 4,
       'logo'
     )
     WebFont.load({
@@ -43,16 +43,33 @@ export default class LoadingScene extends Phaser.Scene {
         console.info('loading fonts')
       },
       active: () => {
-        const button = this.add
+        const form = this.add
           .dom(config.VIEWPORT.width / 2, config.VIEWPORT.height / 2 + 50)
-          .createFromCache('startBtn')
+          .createFromCache('loginForm')
 
-        button.addListener('click')
-        button.on('click', () => {
-          button.removeListener('click')
-          this.scene.start('site')
+        form.addListener('click')
+        form.on('click', (e: any) => {
+          if (e.target.name === 'loginButton') {
+            const inputUsername = form.getChildByID(
+              'username'
+            ) as HTMLInputElement
+            const inputPassword = form.getChildByID(
+              'password'
+            ) as HTMLInputElement
+
+            if (this.checkLogin(inputUsername.value, inputPassword.value)) {
+              form.removeListener('click')
+              this.scene.start('site')
+            } else {
+              console.log('bad')
+            }
+          }
         })
       },
     })
+  }
+
+  checkLogin = (username: string, password: string): boolean => {
+    return username.toLowerCase() === '' && password === ''
   }
 }

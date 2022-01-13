@@ -10,7 +10,7 @@ const GameConfig: Phaser.Types.Core.GameConfig = {
   dom: {
     createContainer: true,
   },
-  backgroundColor: config.COLOR_GRAY_LIGHTER,
+  backgroundColor: config.COLOR_GRAY_700,
   scale: {
     mode: Phaser.Scale.NONE,
   },

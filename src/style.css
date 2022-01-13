@@ -131,10 +131,16 @@ summary {
   --color-hint-primary: #38a8dc;
   --color-hint-secondary: #e55f2a;
 
-  --color-gray-dark: #262626;
-  --color-gray-medium: #454545;
-  --color-gray-light: #696969;
-  --color-gray-lighter: #bababa;
+  --color-gray-50: #fafafa;
+  --color-gray-100: #f4f4f5;
+  --color-gray-200: #e4e4e7;
+  --color-gray-300: #d4d4d8;
+  --color-gray-400: #a1a1aa;
+  --color-gray-500: #71717a;
+  --color-gray-600: #52525b;
+  --color-gray-700: #3f3f46;
+  --color-gray-800: #27272a;
+  --color-gray-900: #18181b;
 }
 
 html {
@@ -144,7 +150,7 @@ html {
 body {
   margin: 0;
   overflow: hidden;
-  background-color: var(--color-gray-dark);
+  background-color: var(--color-gray-900);
 }
 
 #phaser-app {
@@ -166,8 +172,8 @@ button {
   border-radius: 0.2em;
   padding: 0.5em 2em;
   cursor: pointer;
-  background-color: var(--color-gray-medium);
-  color: var(--color-gray-lighter);
+  background-color: var(--color-gray-800);
+  color: var(--color-gray-200);
   letter-spacing: 0.03em;
   transition: background-color 100ms ease-out;
 }

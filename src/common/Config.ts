@@ -115,10 +115,17 @@ export class Config {
    */
   readonly GAME_HEIGHT = 700
 
-  readonly COLOR_GRAY_DARK = 0x262626
-  readonly COLOR_GRAY_MEDIUM = 0x454545
-  readonly COLOR_GRAY_LIGHT = 0x696969
-  readonly COLOR_GRAY_LIGHTER = 0xbababa
+  readonly COLOR_GRAY_50 = 0xfafafa
+  readonly COLOR_GRAY_100 = 0xf4f4f5
+  readonly COLOR_GRAY_200 = 0xe4e4e7
+  readonly COLOR_GRAY_300 = 0xd4d4d8
+  readonly COLOR_GRAY_400 = 0xa1a1aa
+  readonly COLOR_GRAY_500 = 0x71717a
+  readonly COLOR_GRAY_600 = 0x52525b
+  readonly COLOR_GRAY_700 = 0x3f3f46
+  readonly COLOR_GRAY_800 = 0x27272a
+  readonly COLOR_GRAY_900 = 0x18181b
+
   readonly COLOR_HINT_PRIMARY = 0x38a8dc
   readonly COLOR_HINT_SECONDARY = 0xe55f2a
 

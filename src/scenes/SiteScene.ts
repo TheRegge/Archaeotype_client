@@ -222,7 +222,7 @@ export default class SiteScene extends Phaser.Scene {
       y: (config.VIEWPORT.height - height) / 2 + config.WORLD.innerPadding,
       height,
       width,
-      backgroundColor: config.COLOR_GRAY_DARK,
+      backgroundColor: config.COLOR_GRAY_900,
       backgroundOpacity: 0.9,
       clickHandler: () => this.popup.toggle(),
     })
@@ -237,7 +237,7 @@ export default class SiteScene extends Phaser.Scene {
         y: 0,
         height: Math.floor(config.WORLD.origin.y),
         width: config.VIEWPORT.width,
-        backgroundColor: config.COLOR_GRAY_MEDIUM,
+        backgroundColor: config.COLOR_GRAY_700,
       },
       [
         { name: 'Archaeotype' },

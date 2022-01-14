@@ -1,7 +1,7 @@
-import utils from '~/common/Utils'
+import utils from '../common/Utils'
 import { IToggle } from '.'
 import ContainerWithBg, { ContainerWithBgOptions } from './ContainerWithBg'
-import config from '~/common/Config'
+import config from '../common/Config'
 
 export type PopupOptions = {
   title: string

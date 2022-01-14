@@ -1,5 +1,5 @@
 import { IToggle } from './IToggle'
-import config from '~/common/Config'
+import config from '../common/Config'
 
 export type RulerUnitSettings = {
   type: 'vertical' | 'horizontal'

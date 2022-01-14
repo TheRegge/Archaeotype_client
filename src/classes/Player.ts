@@ -1,4 +1,4 @@
-import config from '~/common/Config'
+import config from '../common/Config'
 /**
  * Singleton class. The Player instantiates a rectangle
  * exactly the size of the visible portion of the terrain. The player

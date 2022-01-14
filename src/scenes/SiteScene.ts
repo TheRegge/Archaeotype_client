@@ -1,13 +1,13 @@
 import Phaser from 'phaser'
-import Player from '~/classes/Player'
-import Minimap from '~/classes/Minimap'
-import ATGrid from '~/classes/ATGrid'
-import Ruler from '~/classes/Ruler'
-import OriginButton from '~/classes/OriginButton'
-import MainNav from '~/classes/MainNav'
-import config from '~/common/Config'
-import { Popup } from '~/classes/Popup'
-import Artifact from '~/classes/Artifact'
+import Player from '../classes/Player'
+import Minimap from '../classes/Minimap'
+import ATGrid from '../classes/ATGrid'
+import Ruler from '../classes/Ruler'
+import OriginButton from '../classes/OriginButton'
+import MainNav from '../classes/MainNav'
+import config from '../common/Config'
+import { Popup } from '../classes/Popup'
+import Artifact from '../classes/Artifact'
 
 export default class SiteScene extends Phaser.Scene {
   private cursors

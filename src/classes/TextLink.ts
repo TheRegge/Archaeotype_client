@@ -1,7 +1,7 @@
 import ContainerWithBg, { ContainerWithBgOptions } from './ContainerWithBg'
-import utils from '~/common/Utils'
+import utils from '../common/Utils'
 import { navLink } from './MainNav'
-import config from '~/common/Config'
+import config from '../common/Config'
 
 export default class TextLink extends ContainerWithBg {
   public padding

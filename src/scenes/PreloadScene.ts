@@ -1,4 +1,4 @@
-import config from '~/common/Config'
+import config from '../common/Config'
 
 declare var WebFont: any
 

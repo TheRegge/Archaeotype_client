@@ -3,10 +3,11 @@ import config from '~/common/Config'
 declare var WebFont: any
 export default class LoadingScene extends Phaser.Scene {
   constructor() {
-    super('Loading')
+    super({ key: 'login' })
   }
 
   preload() {
+    console.log('LOGIN SCENE')
     this.load.setPath('/assets/')
 
     // Current scene assets

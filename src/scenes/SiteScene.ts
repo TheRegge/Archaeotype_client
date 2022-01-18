@@ -34,7 +34,11 @@ export default class SiteScene extends Phaser.Scene {
 
   preload() {
     // Assets for this scene are preloaded
-    // in the previous scene (LoadingScene)
+    // in the previous scene (PreloadScene)
+    this.load.image(
+      'artifactPlaceholder',
+      './assets/images/artifacts/onmap/archaeotype-artifact_placeholder.png'
+    )
   }
 
   create() {

@@ -8,11 +8,10 @@ export default class LoadingScene extends Phaser.Scene {
 
   preload() {
     console.log('LOGIN SCENE')
-    this.load.setPath('/assets/')
 
     // Current scene assets
-    this.load.image('logo', 'images/Archaeotype-Logo.png')
-    this.load.html('loginForm', 'html/loginForm.html')
+    this.load.image('logo', './assets/images/Archaeotype-Logo.png')
+    this.load.html('loginForm', './assets/html/loginForm.html')
 
     this.load.script(
       'webfont',
@@ -20,8 +19,11 @@ export default class LoadingScene extends Phaser.Scene {
     )
 
     // SiteScene Assets
-    this.load.image('terrain', 'images/terrains/q1.jpg')
-    this.load.image('toplayer-tiles', 'images/tilesets/tileset-map-164px.png')
+    this.load.image('terrain', './assets/images/terrains/q1.jpg')
+    this.load.image(
+      'toplayer-tiles',
+      './assets/images/tilesets/tileset-map-164px.png'
+    )
 
     import(/* webpackChunkName: "siteScene" */ './SiteScene').then(
       (SiteScene) => {

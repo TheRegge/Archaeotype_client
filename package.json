@@ -4,7 +4,7 @@
 	"description": "A typescript template project for Phaser 3 using Parceljs",
 	"scripts": {
 		"start": "parcel src/index.html -p 3000",
-		"build": "parcel build src/index.html",
+		"build": "parcel build src/index.html --public-url ./ --no-source-maps",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"lint": "eslint ./src --ext .js,.jsx,.ts,.tsx"
 	},
@@ -22,6 +22,7 @@
 		"eslint": "^6.8.0",
 		"minimist": "^1.2.5",
 		"parcel": "^2.0.0-rc.0",
+		"parcel-reporter-static-files-copy": "^1.3.4",
 		"postcss": "^8.4.4",
 		"prettier": "^2.5.1",
 		"typedoc": "^0.22.10",

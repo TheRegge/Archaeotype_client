@@ -33,7 +33,7 @@ export default class Artifact extends Phaser.GameObjects.Image {
     Utils.lazzyLoadImage(
       this.scene,
       this,
-      'image',
+      artifactData.src,
       artifactData.src,
       artifactData.imageSizeInPixels.width,
       artifactData.imageSizeInPixels.height

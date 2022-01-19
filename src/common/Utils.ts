@@ -60,6 +60,37 @@ export class Utils {
     return degrees * (Math.PI / 180)
   }
 
+  /**
+   * lazzyLoadImage
+   *
+   * Loads an image file and use it to replace the existing
+   * texture of the image passed as a parameter.
+   *
+   * @param {Phaser.Scene} scene The scene in which the image was created.
+   * @param {Phaser.GameObjects.Image} image The image we want to change the texture of.
+   * @param {string} imageName The image 'name' key on the scene.
+   * @param {string} src The image source path of the new image to load
+   * @memberof Utils
+   */
+  lazzyLoadImage(
+    scene: Phaser.Scene,
+    image: Phaser.GameObjects.Image,
+    imageName: string,
+    src: string,
+    width?: number,
+    height?: number
+  ) {
+    let loader = new Phaser.Loader.LoaderPlugin(scene)
+    loader.image(imageName, src)
+
+    loader.once(Phaser.Loader.Events.COMPLETE, () => {
+      image.setTexture(imageName)
+      if (width && height) {
+        image.setSize(width, height)
+      }
+    })
+    loader.start()
+  }
 }
 
 export default Utils.getInstance()

@@ -109,6 +109,10 @@ export default class SiteScene extends Phaser.Scene {
 
   update() {
     this.player.body.setVelocity(0)
+    this.moveWithKeys()
+  }
+
+  moveWithKeys = () => {
     let speed = config.PLAYER_SPEED
 
     if (this.cursors.shift.isDown) {

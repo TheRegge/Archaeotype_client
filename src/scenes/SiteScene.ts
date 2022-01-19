@@ -313,9 +313,9 @@ export default class SiteScene extends Phaser.Scene {
   makeTopLayerData = () => {
     // TODO: try loading json from db, if it is empty,
     // then generate the tiles with zeros only
-    // const jsonData = this.cache.json.get('fakeData')
+    const jsonData = this.cache.json.get('fakeTiles')
 
-    // return jsonData.data
+    return jsonData.data
     let dataMap: number[][] = []
     let numRows = config.NUM_TILES_WIDTH
 

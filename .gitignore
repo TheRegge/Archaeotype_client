@@ -5,3 +5,4 @@
 /.DS_Store
 # dev stuff
 public/assets/fakeTilesData.json
+public/assets/artifacts.json

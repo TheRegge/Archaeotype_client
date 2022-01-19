@@ -59,7 +59,10 @@ export default class SiteScene extends Phaser.Scene {
     this.add
       .image(config.WORLD.origin.x * 2, config.WORLD.origin.y * 2, 'terrain')
       .setOrigin(0)
-    // .setPosition(WORLD.origin.x, config.WORLD.origin.y)
+
+    // Place Artifacts on Map
+    const artifactsJson = this.cache.json.get('artifacts')
+    this.placeArtifacts(artifactsJson.artifacts)
 
     // Create tileMap
     this.tileMap = this.createTileMap()
@@ -328,6 +331,14 @@ export default class SiteScene extends Phaser.Scene {
     }
 
     return dataMap
+  }
+
+  placeArtifacts = (artifactsData) => {
+    artifactsData.forEach((data) => {
+      console.log(data)
+      const artifact = new Artifact(this, data)
+      this.add.existing(artifact)
+    })
   }
 
   /**

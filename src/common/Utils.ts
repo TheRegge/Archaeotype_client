@@ -94,6 +94,24 @@ export class Utils {
       loader.start()
     })
   }
+
+  /**
+   * Return a JSON formatted string of the representing
+   * the game object WITH its data full object.
+   *
+   * Why? For some reason, `Phaser.GameObjects.GameObject.toJSON`
+   * returns a representation of the game object, but with its
+   * data object EMPTY! (at least Phaser.GameObjects.Image.toJSON
+   * does.)
+   *
+   * @param {Phaser.GameObjects.GameObject} go
+   * @returns {string}
+   * @memberof Utils
+   */
+  gameObjectToJSONWithData(go: Phaser.GameObjects.GameObject): string {
+    const json = go.toJSON()
+    json.data = go.data.getAll()
+    return JSON.stringify(json)
   }
 }
 

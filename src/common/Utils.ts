@@ -49,6 +49,17 @@ export class Utils {
     return n * Config.ONE_METER_PIXELS
   }
 
+  /**
+   * Converts degrees to randians.
+   *
+   * @param {number} degrees The value in degrees to convert into radians.
+   * @returns {number} The converted value in radians.
+   * @memberof Utils
+   */
+  degreesToRandian(degrees: number): number {
+    return degrees * (Math.PI / 180)
+  }
+
 }
 
 export default Utils.getInstance()

@@ -30,6 +30,7 @@ export default class Artifact extends Phaser.GameObjects.Image {
 
     this.setOrigin(0.5, 0.5)
     this.setRotation(Utils.degreesToRandian(artifactData.displayAngle))
+
     Utils.lazzyLoadImage(
       this.scene,
       this,
@@ -37,6 +38,22 @@ export default class Artifact extends Phaser.GameObjects.Image {
       artifactData.src,
       artifactData.imageSizeInPixels.width,
       artifactData.imageSizeInPixels.height
-    )
+    ).then(() => {
+      this.setInteractive({
+        hitArea: new Phaser.Geom.Rectangle(0, 0, this.width, this.height),
+        cursor: 'pointer',
+      })
+      this.on(Phaser.Input.Events.POINTER_DOWN, this.handlePointerdown)
+      this.on(Phaser.GameObjects.Events.DESTROY, this.handleDestroy)
+    })
+  }
+
+  handlePointerdown = (e) => {
+    // console.log('handlePointerdown', e)
+    console.log(JSON.parse(Utils.gameObjectToJSONWithData(this)))
+  }
+
+  handleDestroy = () => {
+    this.removeAllListeners()
   }
 }

@@ -25,9 +25,8 @@ export class Utils {
    * Converts an hexadecimal number
    * to a CSS hex color string.
    *
-   *
-   * @param {(number | undefined)} n
-   * @returns {(string | undefined)}
+   * @param {(number | undefined)} n an hexadecimal number to convert (ex: 0xd0ab1e)
+   * @returns {(string | undefined)} a string representing the hexadecimal number for use in CSS
    * @memberof Utils
    */
   hexToString(n: number | undefined): string | undefined {

@@ -335,7 +335,6 @@ export default class SiteScene extends Phaser.Scene {
 
   placeArtifacts = (artifactsData) => {
     artifactsData.forEach((data) => {
-      console.log(data)
       const artifact = new Artifact(this, data)
       this.add.existing(artifact)
     })

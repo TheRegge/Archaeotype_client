@@ -1,3 +1,5 @@
+import Config from './Config'
+
 /**
  * Utils singleton class
  *
@@ -32,6 +34,21 @@ export class Utils {
     if (n) return '#' + n.toString(16)
     return undefined
   }
+
+  /**
+   * metersToPixels
+   *
+   * Converts a number in meters into a number of pixels
+   * according to the game's scale.
+   *
+   * @param {number} n the distance in meters to convert.
+   * @returns {number} the number of pixels at the game scale representing the distance in meters.
+   * @memberof Utils
+   */
+  metersToPixels(n: number): number {
+    return n * Config.ONE_METER_PIXELS
+  }
+
 }
 
 export default Utils.getInstance()

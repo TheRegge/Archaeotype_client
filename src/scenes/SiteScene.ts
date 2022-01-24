@@ -8,6 +8,7 @@ import MainNav from '../classes/MainNav'
 import config from '../common/Config'
 import { Popup } from '../classes/Popup'
 import Artifact from '../classes/Artifact'
+import Measurer from '../classes/Measurer'
 
 export default class SiteScene extends Phaser.Scene {
   private cursors
@@ -90,6 +91,11 @@ export default class SiteScene extends Phaser.Scene {
     this.createMinimap()
     this.ignoredByMainCam.push(this.minimap)
     this.ignoredByMainCam.push(this.minimapFrame)
+
+    const measurer = new Measurer({
+      scene: this,
+    })
+    this.add.existing(measurer)
 
     this.createRulers()
     this.ignoredByMinimap.push(this.rulerH)
@@ -292,6 +298,7 @@ export default class SiteScene extends Phaser.Scene {
                 '- G: Show/hide the grid.',
                 '- M: Show/hide the minimap.',
                 '- R: Show/hide the rulers.',
+                '- Z: Show/hide the measuring tape.',
               ],
             })
           },

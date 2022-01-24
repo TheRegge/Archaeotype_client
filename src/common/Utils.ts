@@ -49,6 +49,20 @@ export class Utils {
   }
 
   /**
+   * pixelToMeters
+   *
+   * Converts a distance in pixels into a distance in meters
+   * according to game's scale.
+   *
+   * @param {number} n the distance in pixels to be converted.
+   * @returns {number} the converted distance in meters
+   * @memberof Utils
+   */
+  pixelsToMeters(n: number): number {
+    return n / Config.ONE_METER_PIXELS
+  }
+
+  /**
    * Converts degrees to randians.
    *
    * @param {number} degrees The value in degrees to convert into radians.

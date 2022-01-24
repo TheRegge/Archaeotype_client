@@ -1,5 +1,6 @@
 import { IToggle } from './IToggle'
-import config from '../common/Config'
+import Config from '../common/Config'
+import Utils from '../common/Utils'
 
 export type RulerUnitSettings = {
   type: 'vertical' | 'horizontal'
@@ -64,12 +65,12 @@ export type RulerOptions = {
   /**
    * The color of each unit tick on the ruler
    */
-  strokeColor?: number
+  tickColor?: number
 
   /**
    * The opacity of each unit tick on the ruler
    */
-  strokeAlpha?: number
+  tickAlpha?: number
 
   /**
    * The background color of the ruler
@@ -112,8 +113,8 @@ export default class Ruler
   private textColor: string
   private textColorQuiet: string
   private strokeWidth: number
-  private strokeColor: number
-  private strokeAlpha: number
+  private tickColor: number
+  private tickAlpha: number
   private backgroundColor: number
   private backgroundAlpha: number
 
@@ -129,8 +130,8 @@ export default class Ruler
     this.textColor = options.textColor || '#FFFFFF'
     this.textColorQuiet = options.textColorQuiet || '#aaaaaa'
     this.strokeWidth = options.strokeWidth || 2
-    this.strokeColor = options.strokeColor || 0xffffff
-    this.strokeAlpha = options.strokeAlpha || 1
+    this.tickColor = options.tickColor || 0xffffff
+    this.tickAlpha = options.tickAlpha || 1
     this.backgroundColor = options.backgroundColor || 0x000000
     this.backgroundAlpha = options.backgroundAlpha || 0.6
 
@@ -180,12 +181,12 @@ export default class Ruler
       if (type === 'horizontal') {
         x = i * this.rulerScale
         lineStartY = 0
-        lineEndY = this.height / 2
+        lineEndY = this.height / 3
       } else if (type === 'vertical') {
-        this.background.setY(config.WORLD.innerPadding)
+        this.background.setY(Config.WORLD.innerPadding)
         y = i * this.rulerScale + this.width
         lineStartX = 0
-        lineEndX = this.width / 2
+        lineEndX = this.width / 3
       }
 
       const coords = { x, y, lineStartX, lineStartY, lineEndX, lineEndY }
@@ -200,39 +201,83 @@ export default class Ruler
         coords.lineEndY
       )
       tick
-        .setStrokeStyle(this.strokeWidth, this.strokeColor, this.strokeAlpha)
+        .setStrokeStyle(this.strokeWidth, this.tickColor, this.tickAlpha)
         .setOrigin(0)
       this.add(tick)
 
-      const rulerNumber = i * config.TILE_SCALE
-      const txt = this.useLetters ? config.LETTERS[i - 1] : rulerNumber + ''
+      // const tileNumber = i * Config.TILE_SCALE
+      const tileNumber = i
+      const rulerNumber = i * Config.TILE_SCALE
+      const tileNumberTxt = this.useLetters
+        ? Config.LETTERS[i - 1]
+        : '' + tileNumber
 
-      const tickText = new Phaser.GameObjects.Text(
+      const tileTextObj = new Phaser.GameObjects.Text(
         this.scene,
         coords.x,
         coords.y,
-        txt,
+        tileNumberTxt,
         {
           fontFamily: 'Cousine',
           fontSize: `${this.fontSize}px`,
           color:
-            (rulerNumber * 2) % 2 > 0 && !this.useLetters
+            (tileNumber * 2) % 2 > 0 && !this.useLetters
               ? `${this.textColorQuiet}`
               : `${this.textColor}`,
         }
       )
 
+      const tickTextObj = new Phaser.GameObjects.Text(
+        this.scene,
+        coords.x,
+        coords.y,
+        rulerNumber + 'm',
+        {
+          fontFamily: 'Cousine',
+          fontSize: `${Math.floor(this.fontSize * (4 / 5))}px`,
+          color: `${Utils.hexToString(this.tickColor)}`,
+        }
+      )
+
       if (type === 'horizontal') {
         // Center the text horizontally between the ticks
-        tickText.setX(tickText.x - tickText.width / 2 - this.rulerScale / 2)
-        tickText.setY(tickText.y + tickText.height / 2)
+        tileTextObj.setX(
+          Math.floor(
+            tileTextObj.x - tileTextObj.width / 2 - this.rulerScale / 2
+          )
+        )
+        tileTextObj.setY(Math.floor(tileTextObj.y + tileTextObj.height / 2))
+
+        tickTextObj.setX(Math.floor(tickTextObj.x - tickTextObj.width / 2))
+
+        // Move the last one a bit more to the left so we can read it
+        if (i === this.unitsNum) {
+          tickTextObj.setX(Math.floor(tickTextObj.x - tickTextObj.width / 2))
+        }
+        tickTextObj.setY(Math.floor(tickTextObj.y + this.height / 2))
       } else if (type === 'vertical') {
         // Move text in a bit, so it fits in the width of the ruler
-        tickText.setX(tickText.x - tickText.width / 2 + this.width / 2)
+        tileTextObj.setX(
+          Math.floor(tileTextObj.x - tileTextObj.width / 2 + this.width / 2)
+        )
         // Center the text vertically between the ticks
-        tickText.setY(tickText.y - tickText.height / 2 - this.rulerScale / 2)
+        tileTextObj.setY(
+          Math.floor(
+            tileTextObj.y - tileTextObj.height / 2 - this.rulerScale / 2
+          )
+        )
+
+        // Adjust the tick text
+        tickTextObj.setX(Math.floor(tickTextObj.x + this.width / 2))
+        tickTextObj.setRotation(Utils.degreesToRandian(270))
+        tickTextObj.setY(Math.floor(tickTextObj.y + tickTextObj.width / 2))
+        if (i === this.unitsNum) {
+          tickTextObj.setY(Math.floor(tickTextObj.y - tickTextObj.width / 2))
+        }
       }
-      this.add(tickText)
+
+      this.add(tickTextObj)
+      this.add(tileTextObj)
     }
   }
 }

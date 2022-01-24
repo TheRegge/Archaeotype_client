@@ -188,9 +188,9 @@ export default class SiteScene extends Phaser.Scene {
       height: config.WORLD.innerPadding,
       rulerScale: config.TILE_SIZE,
       unitsNum: config.NUM_TILES_WIDTH,
-      fontSize: 14,
-      strokeColor: 0xffffff,
-      strokeAlpha: 0.8,
+      fontSize: 15,
+      tickColor: config.COLOR_HINT_PRIMARY,
+      tickAlpha: 1,
     })
     this.rulerH.setPosition(config.WORLD.origin.x * 2, config.WORLD.origin.y)
     this.add.existing(this.rulerH)
@@ -201,10 +201,10 @@ export default class SiteScene extends Phaser.Scene {
       height: config.WORLD.height - config.WORLD.origin.y,
       rulerScale: config.TILE_SIZE,
       unitsNum: config.NUM_TILES_HEIGHT,
-      fontSize: 14,
+      fontSize: 15,
       useLetters: true,
-      strokeColor: 0xffffff,
-      strokeAlpha: 0.8,
+      tickColor: config.COLOR_HINT_PRIMARY,
+      tickAlpha: 1,
     })
     this.rulerV.setPosition(config.WORLD.origin.x, config.WORLD.origin.y + 16)
     this.add.existing(this.rulerV)

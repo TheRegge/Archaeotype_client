@@ -28,7 +28,6 @@ export default class PreloadScene extends Phaser.Scene {
 
     this.load.on('complete', () => {
       progress.destroy()
-      console.log('COMPLETE')
       this.scene.start('login')
     })
 

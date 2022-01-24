@@ -7,8 +7,6 @@ export default class LoadingScene extends Phaser.Scene {
   }
 
   preload() {
-    console.log('LOGIN SCENE')
-
     // Current scene assets
     this.load.image('logo', './assets/images/Archaeotype-Logo.png')
     this.load.html('loginForm', './assets/html/loginForm.html')

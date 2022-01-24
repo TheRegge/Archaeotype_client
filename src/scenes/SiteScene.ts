@@ -289,9 +289,9 @@ export default class SiteScene extends Phaser.Scene {
                 '',
                 'KEYBOARD SHORTCUTS:',
                 '⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻',
-                '- Show/hide the grid: G',
-                '- Show/hide the minimap: M',
-                '- Show/hide the rulers: R',
+                '- G: Show/hide the grid.',
+                '- M: Show/hide the minimap.',
+                '- R: Show/hide the rulers.',
               ],
             })
           },

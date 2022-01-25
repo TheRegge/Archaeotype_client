@@ -22,6 +22,10 @@ export default class LoadingScene extends Phaser.Scene {
       'toplayer-tiles',
       './assets/images/tilesets/tileset-map-164px.png'
     )
+    this.load.image(
+      'artifactPlaceholder',
+      './assets/images/artifacts/onmap/archaeotype-artifact_placeholder.png'
+    )
 
     import(/* webpackChunkName: "siteScene" */ './SiteScene').then(
       (SiteScene) => {

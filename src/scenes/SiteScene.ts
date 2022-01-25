@@ -363,7 +363,7 @@ export default class SiteScene extends Phaser.Scene {
       this.cameras.main,
       this.topLayer
     ) as Phaser.Tilemaps.Tile
-    tile && tile.destroy()
+    if (tile) tile.destroy()
   }
 
   /**

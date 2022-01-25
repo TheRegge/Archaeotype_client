@@ -33,14 +33,10 @@ export default class SiteScene extends Phaser.Scene {
     this.ignoredByMinimap = []
   }
 
-  preload() {
-    // Assets for this scene are preloaded
-    // in the previous scene (PreloadScene)
-    this.load.image(
-      'artifactPlaceholder',
-      './assets/images/artifacts/onmap/archaeotype-artifact_placeholder.png'
-    )
-  }
+  // preload() {
+  // Assets for this scene are preloaded
+  // in the previous scene (PreloadScene)
+  // }
 
   create() {
     this.cursors = this.input.keyboard.createCursorKeys()

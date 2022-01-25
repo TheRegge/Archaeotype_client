@@ -47,5 +47,9 @@ export default class PreloadScene extends Phaser.Scene {
     )
     this.load.json('fakeTiles', './assets/fakeTilesData.json')
     this.load.json('artifacts', './assets/artifacts.json')
+    this.load.image(
+      'artifactPlaceholder',
+      './assets/images/artifacts/onmap/archaeotype-artifact_placeholder.png'
+    )
   }
 }

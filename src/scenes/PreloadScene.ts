@@ -39,7 +39,7 @@ export default class PreloadScene extends Phaser.Scene {
       'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js'
     )
 
-    // SiteScene Assets
+    // QuadScene Assets
     this.load.image('terrain', './assets/images/terrains/q1.jpg')
     this.load.image(
       'toplayer-tiles',

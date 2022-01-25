@@ -80,7 +80,7 @@ Production files will be placed in the `dist` folder. Then upload those files to
     ├── public
     ├── src
     │   ├── scenes
-    │   │   ├── SiteScene.ts
+    │   │   ├── QuadScene.ts
     │   ├── index.html
     │   ├── main.ts
     ├── package.json
@@ -92,7 +92,7 @@ This template assumes you will want to organize your code into multiple files an
 
 TypeScript files are intended for the `src` folder. `main.ts` is the entry point referenced by `index.html`.
 
-Other than that there is no opinion on how you should structure your project. There is a `scenes` folder in `src` where the `SiteScene.ts` lives but you can do whatever you want.
+Other than that there is no opinion on how you should structure your project. There is a `scenes` folder in `src` where the `QuadScene.ts` lives but you can do whatever you want.
 
 ## Static Assets
 

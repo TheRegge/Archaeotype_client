@@ -92,9 +92,9 @@ export type RulerOptions = {
 /**
  * Create a Ruler
  *
- * Rulers appear on the top and left side of the Site scene and
+ * Rulers appear on the top and left side of the Quad scene and
  * enable the students to describe the coordinates of an object
- * on the site.
+ * on the quad.
  *
  * __Note:__ A ruler can be either horizontal or vertical. This is
  * decided by the ratio of `width / height`

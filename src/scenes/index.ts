@@ -1,5 +1,5 @@
 import PreloadScene from './PreloadScene'
-import SiteScene from './SiteScene'
+import QuadScene from './QuadScene'
 import LoginScene from './LoginScene'
 
-export { LoginScene, PreloadScene, SiteScene }
+export { LoginScene, PreloadScene, QuadScene }

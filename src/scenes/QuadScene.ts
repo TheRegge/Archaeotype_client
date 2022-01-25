@@ -10,7 +10,7 @@ import { Popup } from '../classes/Popup'
 import Artifact from '../classes/Artifact'
 import Measurer from '../classes/Measurer'
 
-export default class SiteScene extends Phaser.Scene {
+export default class QuadScene extends Phaser.Scene {
   private cursors
   private grid
   private popup
@@ -28,7 +28,7 @@ export default class SiteScene extends Phaser.Scene {
   public player
 
   constructor() {
-    super({ key: 'site' })
+    super({ key: 'quad' })
     this.ignoredByMainCam = []
     this.ignoredByMinimap = []
   }
@@ -285,9 +285,9 @@ export default class SiteScene extends Phaser.Scene {
               body: [
                 'MOVING AROUND:',
                 '⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻',
-                '- Use your keyboard arrow keys ⬅️ ➡️ ⬆️ ⬇️ to move around the site, or drag the rectangle in the minimap.',
+                '- Use your keyboard arrow keys ⬅️ ➡️ ⬆️ ⬇️ to move around the quad, or drag the rectangle in the minimap.',
                 '- Hold down the "Shift" key, to move 4x faster!',
-                '- Click the white arrow with a blue background at the top left of the screen to reposition at the top left of the site.',
+                '- Click the white arrow with a blue background at the top left of the screen to reposition at the top left of the quad.',
                 '',
                 'KEYBOARD SHORTCUTS:',
                 '⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻',
@@ -346,7 +346,7 @@ export default class SiteScene extends Phaser.Scene {
   /**
    * handler method for the 'pointerdown' event of the current scene.
    *
-   * @memberof SiteScene
+   * @memberof QuadScene
    */
   handlePointerdown = (e, gameObjects: Phaser.GameObjects.GameObject[]) => {
     if (this.clickDoesNotRemoveTileGuard(e, gameObjects)) return
@@ -367,7 +367,7 @@ export default class SiteScene extends Phaser.Scene {
    *
    * A 'guard' method will interrupt the flow of a function when returning true
    *
-   * @memberof SiteScene
+   * @memberof QuadScene
    */
   clickDoesNotRemoveTileGuard = (
     e: any,

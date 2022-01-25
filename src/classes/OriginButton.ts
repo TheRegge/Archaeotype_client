@@ -1,4 +1,3 @@
-import { SiteScene } from 'scenes'
 import { IToggle } from './IToggle'
 import ContainerWithBg, { ContainerWithBgOptions } from './ContainerWithBg'
 export default class OriginButton extends ContainerWithBg implements IToggle {

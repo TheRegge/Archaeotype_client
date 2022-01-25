@@ -2,8 +2,8 @@ import config from '../common/Config'
 /**
  * Singleton class. The Player instantiates a rectangle
  * exactly the size of the visible portion of the terrain. The player
- * is not displayed in the Site scene, but visible on the minimap. The
- * player can move around the site using the arrow keys (and + SHIFT for
+ * is not displayed in the Quad scene, but visible on the minimap. The
+ * player can move around the quad using the arrow keys (and + SHIFT for
  * 4X faster) or by dragging it on the mini map
  *
  */

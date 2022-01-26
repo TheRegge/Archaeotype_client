@@ -9,13 +9,9 @@ export default class SiteScene extends Phaser.Scene {
     super({ key: 'site' })
   }
 
-  preload() {
-    import(/* webpackChunkName: "QuadScene" */ './QuadScene').then(
-      (QuadScene) => {
-        this.game.scene.add('quad', QuadScene.default, false)
-      }
-    )
-  }
+  // preload() {
+  //  Assets preloaded in  PreloadScene
+  // }
 
   create() {
     this.add

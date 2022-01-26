@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import { PreloadScene, LoginScene } from './scenes'
+import { PreloadScene, LoginScene, QuadScene } from './scenes'
 import config from './common/Config'
 
 const GameConfig: Phaser.Types.Core.GameConfig = {
@@ -17,7 +17,7 @@ const GameConfig: Phaser.Types.Core.GameConfig = {
   physics: {
     default: 'arcade',
   },
-  scene: [PreloadScene, LoginScene],
+  scene: [PreloadScene, LoginScene, QuadScene],
 }
 
 export default new Phaser.Game(GameConfig)

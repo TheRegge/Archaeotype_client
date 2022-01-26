@@ -38,7 +38,7 @@ export default class LoadingScene extends Phaser.Scene {
     this.add.image(
       config.VIEWPORT.width / 2,
       config.VIEWPORT.height / 4,
-      'logo'
+      'logosvg'
     )
     WebFont.load({
       google: {

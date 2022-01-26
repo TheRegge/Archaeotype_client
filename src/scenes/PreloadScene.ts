@@ -31,8 +31,7 @@ export default class PreloadScene extends Phaser.Scene {
       this.scene.start('login')
     })
 
-    // Current scene assets
-    this.load.image('logo', './assets/images/Archaeotype-Logo.png')
+    this.load.svg('logosvg', './assets/images/Archaeotype-logo.svg')
     this.load.html('loginForm', './assets/html/loginForm.html')
     this.load.script(
       'webfont',

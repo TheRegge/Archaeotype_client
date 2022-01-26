@@ -264,6 +264,13 @@ export default class QuadScene extends Phaser.Scene {
       { name: 'Archaeotype', textColor: config.COLOR_HINT_SECONDARY },
       { name: 'Quad 1' },
       {
+        name: 'Switch Quad',
+        ...baseLinkOptions,
+        callback: () => {
+          this.scene.switch('site')
+        },
+      },
+      {
         name: 'Collections',
         ...baseLinkOptions,
         callback: () => console.log('collection callback'),

@@ -4,6 +4,7 @@ import TextLink from './TextLink'
 
 export type navLink = {
   name: string
+  textColor?: number
   linkColor?: number
   linkHoverColor?: number
   backgroundColor?: number

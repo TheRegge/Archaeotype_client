@@ -11,7 +11,10 @@ export default class TextLink extends ContainerWithBg {
     link: navLink,
     padding: number = 10
   ) {
-    const textColor = utils.hexToString(link.linkColor) || 'white'
+    const textColor =
+      utils.hexToString(link.linkColor) ||
+      utils.hexToString(link.textColor) ||
+      'white'
     const text = new Phaser.GameObjects.Text(
       options.scene,
       padding,

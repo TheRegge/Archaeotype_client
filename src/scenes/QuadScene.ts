@@ -261,7 +261,7 @@ export default class QuadScene extends Phaser.Scene {
     }
 
     const navLinks = [
-      { name: 'Archaeotype' },
+      { name: 'Archaeotype', textColor: config.COLOR_HINT_SECONDARY },
       { name: 'Quad 1' },
       {
         name: 'Collections',

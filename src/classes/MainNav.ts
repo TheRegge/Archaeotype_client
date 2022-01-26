@@ -5,17 +5,20 @@ import TextLink from './TextLink'
 export type navLink = {
   name: string
   linkColor?: number
+  linkHoverColor?: number
+  backgroundColor?: number
+  backgroundHoverColor?: number
   callback?: () => void
 }
 
 export default class MainNav extends ContainerWithBg {
   public padding: number
 
-  public constructor(options: ContainerWithBgOptions, links: navLink[]) {
-    super(options)
+  public constructor(navOptions: ContainerWithBgOptions, navLinks: navLink[]) {
+    super(navOptions)
     this.padding = 10
     let xpos = this.padding
-    links.forEach((link, index) => {
+    navLinks.forEach((link, index) => {
       const txtLink = new TextLink(
         {
           scene: this.scene,
@@ -23,8 +26,9 @@ export default class MainNav extends ContainerWithBg {
           y: 0,
           height: 0,
           width: 0,
-          backgroundColor: config.COLOR_GRAY_700,
-          backgroundHoverColor: config.COLOR_GRAY_900,
+          backgroundColor: link.backgroundColor || config.COLOR_GRAY_700,
+          backgroundHoverColor:
+            link.backgroundHoverColor || config.COLOR_GRAY_900,
           clickHandler: link.callback,
         },
         link,

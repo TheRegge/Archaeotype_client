@@ -42,5 +42,6 @@ export default class MainNav extends ContainerWithBg {
 
       xpos += txtLink.fullWidth + this.padding
     })
+    this.scene.add.existing(this)
   }
 }

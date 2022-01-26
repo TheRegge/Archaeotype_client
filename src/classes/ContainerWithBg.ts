@@ -8,6 +8,7 @@ export type ContainerWithBgOptions = {
   backgroundOpacity?: number
   backgroundHoverColor?: number
   clickHandler?: () => void
+  hoverHandler?: (isHover: boolean) => void
   scrollFactorX?: number
   scrollFactorY?: number
 }
@@ -26,6 +27,7 @@ export default class ContainerWithBg extends Phaser.GameObjects.Container {
       backgroundOpacity = 1,
       backgroundHoverColor,
       clickHandler,
+      hoverHandler,
       scrollFactorX = 0,
       scrollFactorY = 0,
     } = options
@@ -60,18 +62,28 @@ export default class ContainerWithBg extends Phaser.GameObjects.Container {
       })
     }
 
-    if (backgroundHoverColor) {
-      this.on('pointerup', () => {
+    this.on('pointerup', () => {
+      if (backgroundHoverColor) {
         this.background.setFillStyle(backgroundHoverColor, backgroundOpacity)
-      })
+      }
+    })
 
-      this.on('pointerover', () => {
+    this.on('pointerover', () => {
+      if (backgroundHoverColor) {
         this.background.setFillStyle(backgroundHoverColor, backgroundOpacity)
-      })
+      }
+      if (hoverHandler) {
+        hoverHandler(true)
+      }
+    })
 
-      this.on('pointerout', () => {
+    this.on('pointerout', () => {
+      if (backgroundHoverColor) {
         this.background.setFillStyle(backgroundColor, backgroundOpacity)
-      })
-    }
+      }
+      if (hoverHandler) {
+        hoverHandler(false)
+      }
+    })
   }
 }

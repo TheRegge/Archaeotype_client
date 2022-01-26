@@ -6,6 +6,9 @@
 export class Config {
   private static instance: Config
 
+  // Site bg image is scaled for 1px == 1m
+  private site_bg_width_pixels = 1376
+  private site_bg_height_pixels = 972
   /**
    * The width of the quad image in pixels.
    *

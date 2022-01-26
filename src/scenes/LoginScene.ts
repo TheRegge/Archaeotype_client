@@ -7,29 +7,10 @@ export default class LoadingScene extends Phaser.Scene {
   }
 
   preload() {
-    // Current scene assets
-    this.load.image('logo', './assets/images/Archaeotype-Logo.png')
-    this.load.html('loginForm', './assets/html/loginForm.html')
-
-    this.load.script(
-      'webfont',
-      'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js'
-    )
-
-    // QuadScene Assets
-    this.load.image('terrain', './assets/images/terrains/q1.jpg')
-    this.load.image(
-      'toplayer-tiles',
-      './assets/images/tilesets/tileset-map-164px.png'
-    )
-    this.load.image(
-      'artifactPlaceholder',
-      './assets/images/artifacts/onmap/archaeotype-artifact_placeholder.png'
-    )
-
-    import(/* webpackChunkName: "QuadScene" */ './QuadScene').then(
-      (QuadScene) => {
-        this.game.scene.add('quad', QuadScene.default, false)
+    // Load some stuff that did not need to be loaded right away
+    import(/* webpackChunkName: "SiteScene" */ './SiteScene').then(
+      (SiteScene) => {
+        this.game.scene.add('site', SiteScene.default, false)
       }
     )
   }
@@ -64,7 +45,7 @@ export default class LoadingScene extends Phaser.Scene {
 
             if (this.checkLogin(inputUsername.value, inputPassword.value)) {
               form.removeListener('click')
-              this.scene.start('quad')
+              this.scene.start('site')
             } else {
               console.log('bad')
             }

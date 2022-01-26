@@ -25,7 +25,7 @@ export default class SiteScene extends Phaser.Scene {
     this.createMainNav()
 
     this.input.on('pointerdown', () => {
-      this.scene.start('quad')
+      this.scene.switch('quad')
     })
   }
 

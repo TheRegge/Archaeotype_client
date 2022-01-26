@@ -6,14 +6,9 @@ export default class LoadingScene extends Phaser.Scene {
     super({ key: 'login' })
   }
 
-  preload() {
-    // Load some stuff that did not need to be loaded right away
-    import(/* webpackChunkName: "SiteScene" */ './SiteScene').then(
-      (SiteScene) => {
-        this.game.scene.add('site', SiteScene.default, false)
-      }
-    )
-  }
+  // preload() {
+  // assets loaded in PreloadScene
+  // }
 
   create() {
     this.add.image(

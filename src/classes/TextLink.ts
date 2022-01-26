@@ -5,6 +5,7 @@ import config from '../common/Config'
 
 export default class TextLink extends ContainerWithBg {
   public padding
+
   public constructor(
     options: ContainerWithBgOptions,
     link: navLink,
@@ -33,9 +34,17 @@ export default class TextLink extends ContainerWithBg {
     options.width = Math.ceil(text.width + 2 * padding)
     options.height = Math.ceil(text.height + 2 * vPadding)
 
+    const hexLinkHoverColor = utils.hexToString(link.linkHoverColor)
+    const hexLinkColor = utils.hexToString(link.linkColor)
+    options.hoverHandler = (isHover: boolean) => {
+      text.setStyle({
+        color: isHover ? hexLinkHoverColor : hexLinkColor,
+      })
+    }
     super(options)
 
     this.padding = padding
+
     this.add(text)
   }
 

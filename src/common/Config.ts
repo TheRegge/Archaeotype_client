@@ -130,7 +130,7 @@ export class Config {
   readonly COLOR_GRAY_900 = 0x18181b
 
   readonly COLOR_HINT_PRIMARY = 0x38a8dc
-  readonly COLOR_HINT_SECONDARY = 0xe55f2a
+  readonly COLOR_HINT_SECONDARY = 0xe45f2a
 
   /**
    * The sequence of letters to be optionally

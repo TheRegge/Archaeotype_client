@@ -7,21 +7,21 @@ export class Config {
   private static instance: Config
 
   /**
-   * The width of the terrain image in pixels.
+   * The width of the quad image in pixels.
    *
    * @memberof Config
    */
-  private terrain_image_width_pixels = 4100
+  private quad_bg_width_pixels = 4100
 
   /**
-   * The height of the terrain image in pixels.
+   * The height of the quad image in pixels.
    *
    * @memberof Config
    */
-  private terrain_image_height_pixels = 4100
+  private quad_bg_height_pixels = 4100
 
   /**
-   * The real-world width of a squad.
+   * The real-world width of a quad.
    *
    * This is only used to calculate the scale
    * of the map on screen, so the width
@@ -29,7 +29,7 @@ export class Config {
    *
    * @memberof Config
    */
-  private terrain_width_meters = 50
+  private quad_width_meters = 50
 
   /**
    * The number of screen pixels representing 1 meter
@@ -37,8 +37,8 @@ export class Config {
    *
    * @memberof Config
    */
-  readonly ONE_METER_PIXELS =
-    this.terrain_image_width_pixels / this.terrain_width_meters
+  readonly QUAD_ONE_METER_PIXELS =
+    this.quad_bg_width_pixels / this.quad_width_meters
 
   /**
    * The scale of one tile.
@@ -201,30 +201,30 @@ export class Config {
    *
    * @memberof Config
    */
-  readonly TILE_SIZE = this.TILE_SCALE * this.ONE_METER_PIXELS
+  readonly TILE_SIZE = this.TILE_SCALE * this.QUAD_ONE_METER_PIXELS
 
   /**
    * The number of tiles across the width of the terrain.
 
-   * Derived from the size of the terrain image and the scale
+   * Derived from the size of the quad image and the scale
    * of the tile.
    *
    * @memberof Config
    */
-  readonly NUM_TILES_WIDTH = this.terrain_image_width_pixels / this.TILE_SIZE
+  readonly NUM_TILES_WIDTH = this.quad_bg_width_pixels / this.TILE_SIZE
 
   /**
-   * The number of tiles across the height of the terrain.
+   * The number of tiles across the height of the quad.
 
-   * Derived from the size of the terrain image and the scale
+   * Derived from the size of the quad image and the scale
    * of the tile.
    *
    * @memberof Config
    */
-  readonly NUM_TILES_HEIGHT = this.terrain_image_height_pixels / this.TILE_SIZE
+  readonly NUM_TILES_HEIGHT = this.quad_bg_height_pixels / this.TILE_SIZE
 
   /**
-   * An object describing the full viewable terrain.
+   * An object describing the full viewable quad.
    *
    * @memberof Config
    */
@@ -243,7 +243,7 @@ export class Config {
    * part of the software. It's really the size of the Phaser game.
    *
    * It contains UI elements like the main navigation as well
-   * as the visible part of the terrain.
+   * as the visible part of the quad.
    *
    * @memberof Config
    */

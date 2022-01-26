@@ -244,65 +244,71 @@ export default class QuadScene extends Phaser.Scene {
   }
 
   createMainNav = () => {
-    this.mainNav = new MainNav(
-      {
-        scene: this,
-        x: 0,
-        y: 0,
-        height: Math.floor(config.WORLD.origin.y),
-        width: config.VIEWPORT.width,
-        backgroundColor: config.COLOR_GRAY_700,
-      },
-      [
-        { name: 'Archaeotype' },
-        { name: 'Quad 1' },
-        {
-          name: 'Collections',
-          linkColor: config.COLOR_HINT_PRIMARY,
-          callback: () => console.log('collection callback'),
-        },
-        {
-          name: 'Library',
-          linkColor: config.COLOR_HINT_PRIMARY,
-          callback: () => {
-            this.popup.showWithContent({
-              title: 'Library',
-              body: [
-                'WELCOME TO THE LIBRARY',
-                '----------------------',
-                'Hello, this is the content for the library.',
-                'I need to abstract the popup more.',
-              ],
-            })
-          },
-        },
-        {
-          name: 'Help',
-          linkColor: config.COLOR_HINT_PRIMARY,
-          callback: () => {
-            this.popup.showWithContent({
-              title: 'Archaeotype Help',
-              body: [
-                'MOVING AROUND:',
-                '⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻',
-                '- Use your keyboard arrow keys ⬅️ ➡️ ⬆️ ⬇️ to move around the quad, or drag the rectangle in the minimap.',
-                '- Hold down the "Shift" key, to move 4x faster!',
-                '- Click the white arrow with a blue background at the top left of the screen to reposition at the top left of the quad.',
-                '',
-                'KEYBOARD SHORTCUTS:',
-                '⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻',
-                '- G: Show/hide the grid.',
-                '- M: Show/hide the minimap.',
-                '- R: Show/hide the rulers.',
-                '- Z: Show/hide the measuring tape.',
-              ],
-            })
-          },
-        },
-      ]
-    )
+    const navOptions = {
+      scene: this,
+      x: 0,
+      y: 0,
+      height: Math.floor(config.WORLD.origin.y),
+      width: config.VIEWPORT.width,
+      backgroundColor: config.COLOR_GRAY_700,
+    }
 
-    this.add.existing(this.mainNav)
+    const baseLinkOptions = {
+      linkColor: config.COLOR_HINT_PRIMARY,
+      linkHoverColor: 0xffffff,
+      backgroundColor: config.COLOR_GRAY_700,
+      backgroundHoverColor: config.COLOR_HINT_PRIMARY,
+    }
+
+    const navLinks = [
+      { name: 'Archaeotype' },
+      { name: 'Quad 1' },
+      {
+        name: 'Collections',
+        ...baseLinkOptions,
+        callback: () => console.log('collection callback'),
+      },
+      {
+        name: 'Library',
+        ...baseLinkOptions,
+        callback: () => {
+          this.popup.showWithContent({
+            title: 'Library',
+            body: [
+              'WELCOME TO THE LIBRARY',
+              '----------------------',
+              'Hello, this is the content for the library.',
+              'I need to abstract the popup more.',
+            ],
+          })
+        },
+      },
+      {
+        name: 'Help',
+        ...baseLinkOptions,
+        callback: () => {
+          this.popup.showWithContent({
+            title: 'Archaeotype Help',
+            body: [
+              'MOVING AROUND:',
+              '⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻',
+              '- Use your keyboard arrow keys ⬅️ ➡️ ⬆️ ⬇️ to move around the quad, or drag the rectangle in the minimap.',
+              '- Hold down the "Shift" key, to move 4x faster!',
+              '- Click the white arrow with a blue background at the top left of the screen to reposition at the top left of the quad.',
+              '',
+              'KEYBOARD SHORTCUTS:',
+              '⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻',
+              '- G: Show/hide the grid.',
+              '- M: Show/hide the minimap.',
+              '- R: Show/hide the rulers.',
+              '- Z: Show/hide the measuring tape.',
+            ],
+          })
+        },
+      },
+    ]
+
+    this.mainNav = new MainNav(navOptions, navLinks)
   }
 
   createTileMap = (): Phaser.Tilemaps.Tilemap => {

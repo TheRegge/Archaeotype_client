@@ -109,7 +109,6 @@ export default class QuadScene extends Phaser.Scene {
     this.cameras.main.ignore(this.ignoredByMainCam)
     this.minimap.ignore(this.ignoredByMinimap)
     this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
-    this.scene.launch('mainNav')
   }
 
   update() {

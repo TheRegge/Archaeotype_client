@@ -29,7 +29,6 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.on('complete', () => {
       progress.destroy()
       this.scene.start('login')
-      this.scene.remove('preload')
     })
 
     // LoginScene Assets

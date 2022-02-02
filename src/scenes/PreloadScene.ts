@@ -47,7 +47,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('terrain', './assets/images/terrains/q1.jpg')
     this.load.image(
       'toplayer-tiles',
-      './assets/images/tilesets/tileset-map-164px.png'
+      './assets/images/tilesets/tileset-map-1312_2px.png'
     )
     this.load.image(
       'artifactPlaceholder',

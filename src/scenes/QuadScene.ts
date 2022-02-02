@@ -334,7 +334,14 @@ export default class QuadScene extends BaseScene {
     // then generate the tiles with zeros only
     const jsonData = this.cache.json.get('fakeTiles')
 
-    return jsonData.data
+    return jsonData.data.map((arr) => {
+      return arr.map((tile) => {
+        if (tile === 0) {
+          return Math.round(Math.random() * 63)
+        }
+        return tile
+      })
+    })
     let dataMap: number[][] = []
     let numRows = config.NUM_TILES_WIDTH
 

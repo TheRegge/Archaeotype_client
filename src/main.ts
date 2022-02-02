@@ -7,6 +7,7 @@ const GameConfig: Phaser.Types.Core.GameConfig = {
   parent: 'phaser-app',
   width: config.VIEWPORT.width,
   height: config.VIEWPORT.height,
+  pixelArt: true,
   dom: {
     createContainer: true,
   },

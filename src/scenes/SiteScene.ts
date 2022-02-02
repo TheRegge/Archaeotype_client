@@ -87,23 +87,9 @@ export default class SiteScene extends BaseScene {
       backgroundColor: config.COLOR_GRAY_700,
     }
 
-    const baseLinkOptions = {
-      linkColor: config.COLOR_HINT_PRIMARY,
-      linkHoverColor: 0xffffff,
-      backgroundColor: config.COLOR_GRAY_700,
-      backgroundHoverColor: config.COLOR_HINT_PRIMARY,
-    }
-
     const navLinks = [
-      { name: 'Archaeotype' },
-      { name: 'Choose Quad' },
-      {
-        ...baseLinkOptions,
-        name: 'Test',
-        callback: () => {
-          this.switchScene('quad')
-        },
-      },
+      { name: 'Archaeotype', textColor: config.COLOR_HINT_SECONDARY },
+      { name: 'Choose Your Quad' },
     ]
 
     this.mainNav = new MainNav(navOptions, navLinks)

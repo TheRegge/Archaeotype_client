@@ -62,6 +62,8 @@ export class Config {
    */
   readonly MINIMAP_SCALE = 1 / 20
 
+  readonly SITE_PIXEL_TO_METER_SCALE = 1 / 2
+
   /**
    * The speed at which the viewport
    * spans accross the full terrain

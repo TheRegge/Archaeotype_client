@@ -132,7 +132,7 @@ export class Config {
   readonly COLOR_GRAY_900 = 0x18181b
 
   readonly COLOR_HINT_PRIMARY = 0x38a8dc
-  readonly COLOR_HINT_SECONDARY = 0xe45f2a
+  readonly COLOR_HINT_SECONDARY = 0xfbbf24
 
   readonly SCENE_TRANSITION_TIME = 500
 

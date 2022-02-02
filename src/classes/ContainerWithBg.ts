@@ -16,6 +16,7 @@ export type ContainerWithBgOptions = {
 
 export default class ContainerWithBg extends Phaser.GameObjects.Container {
   public background: Phaser.GameObjects.Rectangle
+  public clickHandler: (() => void) | undefined
 
   public constructor(options: ContainerWithBgOptions) {
     const {
@@ -36,6 +37,8 @@ export default class ContainerWithBg extends Phaser.GameObjects.Container {
 
     super(scene, x, y)
 
+    this.clickHandler = clickHandler
+
     this.background = new Phaser.GameObjects.Rectangle(
       this.scene,
       0,
@@ -51,18 +54,18 @@ export default class ContainerWithBg extends Phaser.GameObjects.Container {
     this.setSize(width, height)
     this.setPosition(x + width / 2, y + height / 2)
 
-    if (clickHandler || backgroundHoverColor) {
+    if (this.clickHandler || backgroundHoverColor) {
       this.setInteractive({
         hitArea: this.background,
         cursor: 'pointer',
       })
     }
 
-    if (clickHandler) {
-      this.on('pointerdown', () => {
-        clickHandler()
-      })
-    }
+    this.on('pointerdown', () => {
+      if (this.clickHandler) {
+        this.clickHandler()
+      }
+    })
 
     this.on('pointerup', () => {
       if (backgroundHoverColor) {

@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import BaseScene from './BaseScene'
 import Player from '../classes/Player'
 import Minimap from '../classes/Minimap'
 import ATGrid from '../classes/ATGrid'
@@ -10,7 +11,7 @@ import { Popup } from '../classes/Popup'
 import Artifact from '../classes/Artifact'
 import Measurer from '../classes/Measurer'
 
-export default class QuadScene extends Phaser.Scene {
+export default class QuadScene extends BaseScene {
   private cursors
   private grid
   private popup
@@ -39,6 +40,9 @@ export default class QuadScene extends Phaser.Scene {
   // }
 
   create() {
+    // Fade in
+    this.transitionIn()
+
     this.cursors = this.input.keyboard.createCursorKeys()
 
     this.physics.world.setBounds(
@@ -266,7 +270,7 @@ export default class QuadScene extends Phaser.Scene {
         name: 'Switch Quad',
         ...baseLinkOptions,
         callback: () => {
-          this.scene.switch('site')
+          this.switchScene('site')
         },
       },
       {

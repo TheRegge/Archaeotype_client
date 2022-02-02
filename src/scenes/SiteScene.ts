@@ -1,8 +1,10 @@
 import Phaser from 'phaser'
+import BaseScene from './BaseScene'
 import MainNav from '../classes/MainNav'
 import config from '../common/Config'
+
 // 83.06% is how much I reduced the original image from Paul
-export default class SiteScene extends Phaser.Scene {
+export default class SiteScene extends BaseScene {
   private mainNav
 
   constructor() {
@@ -14,6 +16,8 @@ export default class SiteScene extends Phaser.Scene {
   // }
 
   create() {
+    this.transitionIn()
+
     this.add
       .image(
         config.VIEWPORT.width / 2,
@@ -23,10 +27,6 @@ export default class SiteScene extends Phaser.Scene {
       .setOrigin(0.5, 1)
 
     this.createMainNav()
-
-    this.input.on('pointerdown', () => {
-      this.scene.switch('quad')
-    })
   }
 
   createMainNav = () => {
@@ -53,7 +53,7 @@ export default class SiteScene extends Phaser.Scene {
         ...baseLinkOptions,
         name: 'Test',
         callback: () => {
-          console.log('Test in SiteScene Nav')
+          this.switchScene('quad')
         },
       },
     ]

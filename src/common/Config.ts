@@ -132,6 +132,8 @@ export class Config {
   readonly COLOR_HINT_PRIMARY = 0x38a8dc
   readonly COLOR_HINT_SECONDARY = 0xe45f2a
 
+  readonly SCENE_TRANSITION_TIME = 500
+
   /**
    * The sequence of letters to be optionally
    * displayed in the rulers instead of numbers.

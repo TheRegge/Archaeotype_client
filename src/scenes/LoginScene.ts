@@ -1,7 +1,8 @@
+import BaseScene from './BaseScene'
 import config from '../common/Config'
 
 declare var WebFont: any
-export default class LoadingScene extends Phaser.Scene {
+export default class LoadingScene extends BaseScene {
   constructor() {
     super({ key: 'login' })
   }
@@ -11,6 +12,8 @@ export default class LoadingScene extends Phaser.Scene {
   // }
 
   create() {
+    this.transitionIn()
+
     this.add.image(
       config.VIEWPORT.width / 2,
       config.VIEWPORT.height / 4,
@@ -39,8 +42,10 @@ export default class LoadingScene extends Phaser.Scene {
             ) as HTMLInputElement
 
             if (this.checkLogin(inputUsername.value, inputPassword.value)) {
-              form.removeListener('click')
-              this.scene.start('site')
+              this.transitionOut(() => {
+                form.removeListener('click')
+                this.scene.start('site')
+              })
             } else {
               console.log('bad')
             }

@@ -38,6 +38,13 @@ export default class QuadScene extends BaseScene {
   // Assets for this scene are preloaded
   // in the previous scene (PreloadScene)
   // }
+  init() {
+    super.init()
+  }
+
+  setup() {
+    console.log(this.data.get('quad'))
+  }
 
   create() {
     // Fade in
@@ -265,7 +272,7 @@ export default class QuadScene extends BaseScene {
 
     const navLinks = [
       { name: 'Archaeotype', textColor: config.COLOR_HINT_SECONDARY },
-      { name: 'Quad 1' },
+      { name: this.data.get('quad').name },
       {
         name: 'Switch Quad',
         ...baseLinkOptions,

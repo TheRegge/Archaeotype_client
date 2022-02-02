@@ -7,6 +7,7 @@ export default class BaseScene extends Phaser.Scene {
   public red: number
   public green: number
   public blue: number
+
   constructor(sceneInit: string | Phaser.Types.Scenes.SettingsConfig) {
     let keyString
     if (typeof sceneInit === 'object' && sceneInit.hasOwnProperty('key')) {
@@ -31,8 +32,18 @@ export default class BaseScene extends Phaser.Scene {
   }
 
   init() {
-    this.scene.scene.events.on('wake', () => this.transitionIn())
+    this.setup()
+    this.events.on('wake', () => {
+      this.setup()
+      this.transitionIn()
+    })
+
+    this.events.on('sleep', () => {
+      this.setup()
+    })
   }
+
+  setup() {}
 
   transitionIn() {
     this.cameras.main.fadeFrom(

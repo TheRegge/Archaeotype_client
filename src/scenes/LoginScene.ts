@@ -24,7 +24,7 @@ export default class LoadingScene extends BaseScene {
         families: ['Cousine'],
       },
       loading: () => {
-        console.info('loading fonts')
+        // console.info('loading fonts')
       },
       active: () => {
         const form = this.add

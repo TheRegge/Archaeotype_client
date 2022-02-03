@@ -26,7 +26,7 @@ export class Popup extends ContainerWithBg implements IToggle {
       Math.floor(this.padding - this.height / 2),
       '',
       {
-        fontFamily: 'Cousine',
+        fontFamily: config.GOOGLE_FONT_FAMILY,
         fontSize: '24px',
         color: utils.hexToString(config.COLOR_HINT_PRIMARY),
       }
@@ -39,7 +39,7 @@ export class Popup extends ContainerWithBg implements IToggle {
       Math.floor(this.padding - this.height / 2),
       'Close X',
       {
-        fontFamily: 'Cousine',
+        fontFamily: config.GOOGLE_FONT_FAMILY,
         fontSize: '12px',
         color: 'white',
       }
@@ -56,7 +56,7 @@ export class Popup extends ContainerWithBg implements IToggle {
       Math.floor(this.padding - this.height / 2),
       '',
       {
-        fontFamily: 'Cousine',
+        fontFamily: config.GOOGLE_FONT_FAMILY,
         fontSize: '14px',
         color: '#eeeeee',
         padding: {

@@ -21,7 +21,7 @@ export default class LoadingScene extends BaseScene {
     )
     WebFont.load({
       google: {
-        families: ['Cousine'],
+        families: [config.GOOGLE_FONT_FAMILY],
       },
       loading: () => {
         // console.info('loading fonts')

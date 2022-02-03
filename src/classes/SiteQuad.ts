@@ -34,7 +34,7 @@ export default class SiteQuad extends ContainerWithBg {
       Math.round(this.background.height + 5),
       this.getData('quad').name,
       {
-        fontFamily: config.FONT_FAMILY,
+        fontFamily: config.GOOGLE_FONT_FAMILY,
         fontSize: '10px',
         color: 'black',
         backgroundColor: 'white',

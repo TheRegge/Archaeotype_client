@@ -10,6 +10,7 @@ import config from '../common/Config'
 import { Popup } from '../classes/Popup'
 import Artifact from '../classes/Artifact'
 import Measurer from '../classes/Measurer'
+import data from '../common/Data'
 
 export default class QuadScene extends BaseScene {
   private cursors
@@ -17,6 +18,11 @@ export default class QuadScene extends BaseScene {
   private popup
   private ignoredByMainCam: Phaser.GameObjects.GameObject[]
   private ignoredByMinimap: Phaser.GameObjects.GameObject[]
+  private layer0
+  private layer1
+  private layer2
+  private layer3
+  private layer4
   private mainNav
   private minimap
   private minimapFrame
@@ -26,27 +32,57 @@ export default class QuadScene extends BaseScene {
   private tileMap
   private topLayer
   private topLayerTiles
+  private sceneReady: boolean
   public player
 
   constructor() {
     super({ key: 'quad' })
     this.ignoredByMainCam = []
     this.ignoredByMinimap = []
+    this.sceneReady = false
   }
 
   // preload() {
   // Assets for this scene are preloaded
   // in the previous scene (PreloadScene)
   // }
+
   init() {
     super.init()
   }
 
   setup() {
-    console.log(this.data.get('quad'))
+    if (this.mainNav) this.createMainNav()
+
+    if (this.tileMap) {
+      const toplayer = this.topLayer as Phaser.Tilemaps.TilemapLayer
+      toplayer.destroy()
+      this.createTileMap().then((tilemap) => {
+        this.populateTileMap(tilemap)
+      })
+    }
+
+    // Place artifacts on the map
+    this.getArtifacts().then((artifacts) => {
+      this.placeArtifacts(artifacts)
+    })
+  }
+
+  cleanup() {
+    this.player.reset()
+
+    // remove artifacts
+    this.destroyArtifacts()
   }
 
   create() {
+    this.layer0 = this.add.layer()
+    this.layer1 = this.add.layer()
+    this.layer2 = this.add.layer()
+    this.layer3 = this.add.layer()
+    this.layer4 = this.add.layer()
+    this.ignoredByMinimap.push(this.layer4)
+
     // Fade in
     this.transitionIn()
 
@@ -64,67 +100,72 @@ export default class QuadScene extends BaseScene {
 
     // Add bg image
     // TODO: image y pos should be set at config.WORLD.origin.y (not * 2), but this is a hack to fix a bug I don't understand yet
-    this.add
+    const bgImage = this.add
       .image(config.WORLD.origin.x * 2, config.WORLD.origin.y * 2, 'terrain')
       .setOrigin(0)
 
-    // Place Artifacts on Map
-    const artifactsJson = this.cache.json.get('artifacts')
-    this.placeArtifacts(artifactsJson.artifacts)
+    this.layer0.add([bgImage])
 
     // Create tileMap
-    this.tileMap = this.createTileMap()
-    this.topLayerTiles = this.tileMap.addTilesetImage('toplayer-tiles')
-    this.topLayer = this.tileMap.createLayer(
-      0,
-      this.topLayerTiles,
-      config.WORLD.origin.x + config.H_OFFSET,
-      config.WORLD.origin.y + config.V_OFFSET
-    )
+    this.createTileMap().then((tilemap) => {
+      this.populateTileMap(tilemap)
+
+      // Player
+      this.player = Player.getInstance(
+        this,
+        config.VIEWPORT.width,
+        config.VIEWPORT.height
+      )
+      this.player.reset()
+      this.ignoredByMainCam.push(this.player)
+
+      this.createGrid()
+      this.ignoredByMinimap.push(this.grid)
+
+      this.createMinimap()
+      this.ignoredByMainCam.push(this.minimap)
+      this.ignoredByMainCam.push(this.minimapFrame)
+
+      const measurer = new Measurer({
+        scene: this,
+      })
+      this.add.existing(measurer)
+
+      this.createRulers()
+      this.ignoredByMinimap.push(this.rulerH)
+      this.ignoredByMinimap.push(this.rulerV)
+      this.ignoredByMinimap.push(this.originButton)
+
+      this.createMainNav()
+      this.ignoredByMinimap.push(this.mainNav)
+
+      this.createPopup()
+      this.ignoredByMinimap.push(this.popup)
+
+      this.ignoredByMainCam.push(this.minimapFrame)
+
+      this.cameras.main.ignore(this.ignoredByMainCam)
+      this.minimap.ignore(this.ignoredByMinimap)
+      this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
+      this.sceneReady = true
+    })
     // handle clicking on map
     this.input.on('pointerdown', this.handlePointerdown)
-    // Player
-    this.player = Player.getInstance(
-      this,
-      config.VIEWPORT.width,
-      config.VIEWPORT.height
-    )
-    this.player.moveTo(config.WORLD.origin.x, config.WORLD.origin.y)
-    this.ignoredByMainCam.push(this.player)
-
-    this.createGrid()
-    this.ignoredByMinimap.push(this.grid)
-
-    this.createMinimap()
-    this.ignoredByMainCam.push(this.minimap)
-    this.ignoredByMainCam.push(this.minimapFrame)
-
-    const measurer = new Measurer({
-      scene: this,
-    })
-    this.add.existing(measurer)
-
-    this.createRulers()
-    this.ignoredByMinimap.push(this.rulerH)
-    this.ignoredByMinimap.push(this.rulerV)
-    this.ignoredByMinimap.push(this.originButton)
-
-    this.createMainNav()
-    this.ignoredByMinimap.push(this.mainNav)
-
-    this.createPopup()
-    this.ignoredByMinimap.push(this.popup)
-
-    this.ignoredByMainCam.push(this.minimapFrame)
-
-    this.cameras.main.ignore(this.ignoredByMainCam)
-    this.minimap.ignore(this.ignoredByMinimap)
-    this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
   }
 
   update() {
+    if (!this.sceneReady) return
+
     this.player.body.setVelocity(0)
     this.moveWithKeys()
+  }
+
+  destroyArtifacts = () => {
+    const layer1 = this.layer1 as Phaser.GameObjects.Layer
+    const artifacts = layer1.getChildren()
+    artifacts.forEach((artifact) => {
+      artifact.destroy()
+    })
   }
 
   moveWithKeys = () => {
@@ -171,7 +212,8 @@ export default class QuadScene extends BaseScene {
     )
     this.minimapFrame.setStrokeStyle(strokeWidth, 0xffffff, 0.5)
     this.minimapFrame.setOrigin(0, 0)
-    this.add.existing(this.minimapFrame)
+    // this.add.existing(this.minimapFrame)
+    this.layer3.add([this.minimapFrame])
   }
 
   createGrid = () => {
@@ -190,7 +232,8 @@ export default class QuadScene extends BaseScene {
     )
     this.grid.setOrigin(0)
     this.grid.setPosition(config.WORLD.origin.x, config.WORLD.origin.y * 2)
-    this.add.existing(this.grid)
+    // this.add.existing(this.grid)
+    this.layer3.add(this.grid)
   }
 
   createRulers = () => {
@@ -205,7 +248,7 @@ export default class QuadScene extends BaseScene {
       tickAlpha: 1,
     })
     this.rulerH.setPosition(config.WORLD.origin.x * 2, config.WORLD.origin.y)
-    this.add.existing(this.rulerH)
+    // this.add.existing(this.rulerH)
 
     this.rulerV = new Ruler({
       scene: this,
@@ -219,7 +262,7 @@ export default class QuadScene extends BaseScene {
       tickAlpha: 1,
     })
     this.rulerV.setPosition(config.WORLD.origin.x, config.WORLD.origin.y + 16)
-    this.add.existing(this.rulerV)
+    // this.add.existing(this.rulerV)
 
     this.originButton = new OriginButton({
       scene: this,
@@ -234,7 +277,8 @@ export default class QuadScene extends BaseScene {
         return true
       },
     })
-    this.add.existing(this.originButton)
+    // this.add.existing(this.originButton)
+    this.layer3.add([this.rulerH, this.rulerV, this.originButton])
   }
 
   createPopup = () => {
@@ -250,7 +294,8 @@ export default class QuadScene extends BaseScene {
       backgroundOpacity: 0.9,
       clickHandler: () => this.popup.toggle(),
     })
-    this.add.existing(this.popup)
+    // this.add.existing(this.popup)
+    this.layer4.add([this.popup])
   }
 
   createMainNav = () => {
@@ -326,22 +371,37 @@ export default class QuadScene extends BaseScene {
     ]
 
     this.mainNav = new MainNav(navOptions, navLinks)
+    this.layer4.add([this.mainNav])
   }
 
-  createTileMap = (): Phaser.Tilemaps.Tilemap => {
-    return this.make.tilemap({
-      data: this.makeTopLayerData(),
+  createTileMap = async (): Promise<Phaser.Tilemaps.Tilemap> => {
+    const topLayerData = await this.makeTopLayerData()
+    const tilemap = this.make.tilemap({
+      data: topLayerData,
       tileWidth: config.TILE_SIZE,
       tileHeight: config.TILE_SIZE,
     })
+    return tilemap
   }
 
-  makeTopLayerData = () => {
-    // TODO: try loading json from db, if it is empty,
-    // then generate the tiles with zeros only
-    const jsonData = this.cache.json.get('fakeTiles')
+  populateTileMap(tilemap: Phaser.Tilemaps.Tilemap): void {
+    this.tileMap = tilemap as Phaser.Tilemaps.Tilemap
+    this.topLayerTiles = this.tileMap.addTilesetImage('toplayer-tiles')
+    this.topLayer = this.tileMap.createLayer(
+      0,
+      this.topLayerTiles,
+      config.WORLD.origin.x + config.H_OFFSET,
+      config.WORLD.origin.y + config.V_OFFSET
+    )
+    this.layer2.add([this.topLayer])
+  }
 
-    return jsonData.data.map((arr) => {
+  makeTopLayerData = async () => {
+    let jsonData = await data.getTiles(this.data.get('quad').id).catch(() => {
+      return this.fillAllTiles()
+    })
+
+    return jsonData.map((arr) => {
       return arr.map((tile) => {
         if (tile === 0) {
           return Math.round(Math.random() * 63)
@@ -349,6 +409,9 @@ export default class QuadScene extends BaseScene {
         return tile
       })
     })
+  }
+
+  protected fillAllTiles(): number[][] {
     let dataMap: number[][] = []
     let numRows = config.NUM_TILES_WIDTH
 
@@ -366,10 +429,16 @@ export default class QuadScene extends BaseScene {
     return dataMap
   }
 
+  getArtifacts = async () => {
+    let artifacts = await data.getArtifacts(this.data.get('quad').id)
+    return artifacts
+  }
+
   placeArtifacts = (artifactsData) => {
     artifactsData.forEach((data) => {
       const artifact = new Artifact(this, data)
-      this.add.existing(artifact)
+      // this.add.existing(artifact)
+      this.layer1.add([artifact])
     })
   }
 

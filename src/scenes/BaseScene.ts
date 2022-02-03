@@ -39,11 +39,13 @@ export default class BaseScene extends Phaser.Scene {
     })
 
     this.events.on('sleep', () => {
-      this.setup()
+      this.cleanup()
     })
   }
 
   setup() {}
+
+  cleanup() {}
 
   transitionIn() {
     this.cameras.main.fadeFrom(

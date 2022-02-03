@@ -106,4 +106,8 @@ export default class Player extends Phaser.GameObjects.Rectangle {
       y + Player.instance.height / 2
     )
   }
+
+  reset() {
+    Player.instance.moveTo(config.WORLD.origin.x, config.WORLD.origin.y)
+  }
 }

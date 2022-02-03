@@ -1,5 +1,5 @@
 import Utils from '../common/Utils'
-import Config from '../common/Config'
+import config from '../common/Config'
 
 export type ArtifactData = {
   id: string
@@ -20,9 +20,9 @@ export default class Artifact extends Phaser.GameObjects.Image {
   public constructor(scene: Phaser.Scene, artifactData: ArtifactData) {
     super(
       scene,
-      Config.WORLD.origin.x +
+      config.WORLD.origin.x +
         Utils.metersToPixels(artifactData.coordinatesInMeters.x),
-      Config.WORLD.origin.y * 2 +
+      config.WORLD.origin.y * 2 +
         Utils.metersToPixels(artifactData.coordinatesInMeters.y),
       'artifactPlaceholder'
     )

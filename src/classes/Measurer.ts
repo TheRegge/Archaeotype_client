@@ -1,5 +1,5 @@
 import { IToggle } from './IToggle'
-import Config from '../common/Config'
+import config from '../common/Config'
 import Utils from '../common/Utils'
 import MeasurePoint from './MeasurePoint'
 
@@ -30,15 +30,15 @@ export default class Measurer
     super(options.scene, 0, 0)
 
     this.startPointA = new Phaser.Geom.Point(
-      Config.VIEWPORT.width / 4,
-      Config.VIEWPORT.height / 2
+      config.VIEWPORT.width / 4,
+      config.VIEWPORT.height / 2
     )
     this.startPointB = new Phaser.Geom.Point(
-      (Config.VIEWPORT.width / 4) * 3,
-      Config.VIEWPORT.height / 2
+      (config.VIEWPORT.width / 4) * 3,
+      config.VIEWPORT.height / 2
     )
-    this.width = Config.VIEWPORT.width
-    this.height = Config.VIEWPORT.height
+    this.width = config.VIEWPORT.width
+    this.height = config.VIEWPORT.height
 
     this.visible = false
 
@@ -47,8 +47,8 @@ export default class Measurer
     // CREATE POINTS
     this.pointA = new MeasurePoint(
       this.scene,
-      Config.VIEWPORT.width / 4,
-      Config.VIEWPORT.height / 2,
+      config.VIEWPORT.width / 4,
+      config.VIEWPORT.height / 2,
       15,
       0xffff00,
       0.2,
@@ -60,8 +60,8 @@ export default class Measurer
 
     this.pointB = new MeasurePoint(
       this.scene,
-      (Config.VIEWPORT.width / 4) * 3,
-      Config.VIEWPORT.height / 2,
+      (config.VIEWPORT.width / 4) * 3,
+      config.VIEWPORT.height / 2,
       15,
       0xffff00,
       0.2,

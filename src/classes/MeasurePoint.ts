@@ -1,4 +1,4 @@
-import Config from '../common/Config'
+import config from '../common/Config'
 import Utils from '../common/Utils'
 
 export default class MeasurePoint extends Phaser.GameObjects.Ellipse {

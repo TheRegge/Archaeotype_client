@@ -1,4 +1,4 @@
-import Config from './Config'
+import config from './Config'
 
 /**
  * Utils singleton class
@@ -45,7 +45,7 @@ export class Utils {
    * @memberof Utils
    */
   metersToPixels(n: number): number {
-    return n * Config.QUAD_ONE_METER_PIXELS
+    return n * config.QUAD_ONE_METER_PIXELS
   }
 
   /**
@@ -59,7 +59,7 @@ export class Utils {
    * @memberof Utils
    */
   pixelsToMeters(n: number): number {
-    return n / Config.QUAD_ONE_METER_PIXELS
+    return n / config.QUAD_ONE_METER_PIXELS
   }
 
   /**

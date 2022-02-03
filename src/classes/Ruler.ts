@@ -1,5 +1,5 @@
 import { IToggle } from './IToggle'
-import Config from '../common/Config'
+import config from '../common/Config'
 import Utils from '../common/Utils'
 
 export type RulerUnitSettings = {
@@ -183,7 +183,7 @@ export default class Ruler
         lineStartY = 0
         lineEndY = this.height / 3
       } else if (type === 'vertical') {
-        this.background.setY(Config.WORLD.innerPadding)
+        this.background.setY(config.WORLD.innerPadding)
         y = i * this.rulerScale + this.width
         lineStartX = 0
         lineEndX = this.width / 3
@@ -205,11 +205,11 @@ export default class Ruler
         .setOrigin(0)
       this.add(tick)
 
-      // const tileNumber = i * Config.TILE_SCALE
+      // const tileNumber = i * config.TILE_SCALE
       const tileNumber = i
-      const rulerNumber = i * Config.TILE_SCALE
+      const rulerNumber = i * config.TILE_SCALE
       const tileNumberTxt = this.useLetters
-        ? Config.LETTERS[i - 1]
+        ? config.LETTERS[i - 1]
         : '' + tileNumber
 
       const tileTextObj = new Phaser.GameObjects.Text(

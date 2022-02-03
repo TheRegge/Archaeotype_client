@@ -70,9 +70,9 @@ export default class SiteScene extends BaseScene {
         backgroundOpacity: 0.8,
         backgroundHoverColor: config.COLOR_HINT_PRIMARY,
         backgroundHoverOpacity: 0.8,
+        data: { quad },
       })
 
-      squad.setData('quad', quad)
       this.add.existing(squad)
     })
   }

@@ -12,6 +12,7 @@ export type ContainerWithBgOptions = {
   hoverHandler?: (isHover: boolean) => void
   scrollFactorX?: number
   scrollFactorY?: number
+  data?: { quad?: object }
 }
 
 export default class ContainerWithBg extends Phaser.GameObjects.Container {

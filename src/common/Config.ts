@@ -34,6 +34,8 @@ export class Config {
    */
   private quad_width_meters = 50
 
+  readonly FONT_FAMILY = 'Cousine'
+
   /**
    * The number of screen pixels representing 1 meter
    * in the real world.

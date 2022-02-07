@@ -5,6 +5,7 @@ import config from '../../common/Config'
 import { ContainerWithBg, ContainerWithBgOptions } from '../../classes'
 import TextLink from '../../classes/TextLink'
 import { QuadScene } from '..'
+import { ArtifactData } from '../../classes/Artifact'
 
 export default class LabSubScene extends BaseScene {
   public width: number
@@ -26,14 +27,10 @@ export default class LabSubScene extends BaseScene {
     y: number
   }
 
-  public data: any
-
   constructor() {
     const { H_OFFSET, V_OFFSET, VIEWPORT, WORLD } = config
 
     super({ key: 'lab' })
-
-    this.data = null
 
     this.padding = 20
 
@@ -80,8 +77,9 @@ export default class LabSubScene extends BaseScene {
     }
   }
 
-  create(data) {
-    this.data = data
+  create(data: { fromScene: Phaser.Scene; artifact: ArtifactData }) {
+    this.data.set('artifact', data.artifact)
+    this.data.set('fromScene', data.fromScene)
 
     const background = new ContainerWithBg({
       scene: this,
@@ -133,7 +131,7 @@ export default class LabSubScene extends BaseScene {
   }
 
   close() {
-    const fromScene = this.data.fromScene as QuadScene
+    const fromScene = this.data.get('fromScene') as QuadScene
     fromScene.scene.wake()
     this.scene.sleep()
   }

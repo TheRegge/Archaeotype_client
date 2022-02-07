@@ -199,6 +199,47 @@ export class Config {
     'ZZ',
   ]
 
+  private baseText = {
+    color: '#FFFFFF',
+    fontSize: '16px',
+    fontFamily: this.GOOGLE_FONT_FAMILY,
+  }
+
+  readonly text = {
+    h1: {
+      ...this.baseText,
+      fontSize: '36px',
+    },
+    h2: {
+      ...this.baseText,
+      fontSize: '24px',
+    },
+    h3: {
+      ...this.baseText,
+      fontSize: '18px',
+    },
+    h4: {
+      ...this.baseText,
+      fontSize: '16px',
+    },
+    h5: {
+      ...this.baseText,
+      fontSize: '16px',
+    },
+    h6: {
+      ...this.baseText,
+      fontSize: '16px',
+    },
+    p: {
+      ...this.baseText,
+      fontSize: '16px',
+    },
+    small: {
+      ...this.baseText,
+      fontSize: '10px',
+    },
+  }
+
   // Derived values
 
   /**

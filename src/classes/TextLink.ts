@@ -15,14 +15,14 @@ export default class TextLink extends ContainerWithBg {
       utils.hexToString(link.linkColor) ||
       utils.hexToString(link.textColor) ||
       'white'
+
     const text = new Phaser.GameObjects.Text(
       options.scene,
       padding,
       padding,
       link.name.toUpperCase(),
       {
-        fontFamily: 'Cousine',
-        fontSize: '16px',
+        ...config.text.p,
         color: textColor,
       }
     )

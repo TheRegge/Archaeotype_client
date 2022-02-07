@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import BaseScene from './BaseScene'
+import LabSubScene from './subScenes/LabSubScene'
 import Player from '../classes/Player'
 import Minimap from '../classes/Minimap'
 import ATGrid from '../classes/ATGrid'
@@ -437,9 +438,22 @@ export default class QuadScene extends BaseScene {
   placeArtifacts = (artifactsData) => {
     artifactsData.forEach((data) => {
       const artifact = new Artifact(this, data)
-      // this.add.existing(artifact)
       this.layer1.add([artifact])
     })
+  }
+
+  clickArtifactCallback = (artifact) => {
+    const toScene = this.scene.get('lab')
+    const data = {
+      fromScene: this,
+      artifact,
+    }
+    if (toScene) {
+      toScene.scene.wake()
+    } else {
+      this.scene.add('lab', LabSubScene, true, data)
+    }
+    this.scene.pause('quad')
   }
 
   /**

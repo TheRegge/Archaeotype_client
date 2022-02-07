@@ -1,5 +1,6 @@
 import Utils from '../common/Utils'
 import config from '../common/Config'
+import { QuadScene } from '../scenes'
 
 export type ArtifactData = {
   id: string
@@ -27,7 +28,6 @@ export default class Artifact extends Phaser.GameObjects.Image {
       'artifactPlaceholder'
     )
     this.setData(artifactData)
-
     this.setOrigin(0.5, 0.5)
     this.setRotation(Utils.degreesToRandian(artifactData.displayAngle))
 
@@ -48,9 +48,17 @@ export default class Artifact extends Phaser.GameObjects.Image {
     })
   }
 
-  handlePointerdown = (e) => {
-    // console.log('handlePointerdown', e)
-    console.log(JSON.parse(Utils.gameObjectToJSONWithData(this)))
+  handlePointerdown = () => {
+    // console.log(
+    //   this.getData([
+    //     'name',
+    //     'weightInGrams',
+    //     'heightInCentimeters',
+    //     'materials',
+    //   ])
+    // )
+    const scene = this.scene as QuadScene
+    scene.clickArtifactCallback(this.data.getAll())
   }
 
   handleDestroy = () => {

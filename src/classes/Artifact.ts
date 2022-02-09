@@ -49,14 +49,6 @@ export default class Artifact extends Phaser.GameObjects.Image {
   }
 
   handlePointerdown = () => {
-    // console.log(
-    //   this.getData([
-    //     'name',
-    //     'weightInGrams',
-    //     'heightInCentimeters',
-    //     'materials',
-    //   ])
-    // )
     const scene = this.scene as QuadScene
     scene.clickArtifactCallback(this.data.getAll())
   }

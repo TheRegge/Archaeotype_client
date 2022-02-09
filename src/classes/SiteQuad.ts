@@ -46,7 +46,6 @@ export default class SiteQuad extends ContainerWithBg {
   }
 
   handleClick() {
-    console.log(this.getData('quad'))
     const toScene = this.scene.scene.manager.getScene('quad')
     toScene.data.set('quad', this.getData('quad'))
 

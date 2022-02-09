@@ -33,7 +33,7 @@ export default class MainNav extends ContainerWithBg {
           clickHandler: link.callback,
         },
         link,
-        16
+        15
       )
       txtLink.setPosition(
         xpos - Math.floor(this.width / 2) + txtLink.fullWidth / 2,

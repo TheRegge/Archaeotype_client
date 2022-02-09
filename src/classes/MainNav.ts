@@ -19,7 +19,7 @@ export default class MainNav extends ContainerWithBg {
     super(navOptions)
     this.padding = 10
     let xpos = this.padding
-    navLinks.forEach((link, index) => {
+    navLinks.forEach((link) => {
       const txtLink = new TextLink(
         {
           scene: this.scene,

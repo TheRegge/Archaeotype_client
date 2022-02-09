@@ -12,6 +12,9 @@ import { Popup } from '../classes/Popup'
 import Artifact from '../classes/Artifact'
 import Measurer from '../classes/Measurer'
 import data from '../common/Data'
+import { ArtifactData } from '../classes/Artifact'
+import HelpSubScene from './subScenes/HelpSubScene'
+import CollectionsSubScene from './subScenes/CollectionsSubscene'
 
 export default class QuadScene extends BaseScene {
   private cursors
@@ -271,8 +274,8 @@ export default class QuadScene extends BaseScene {
       y: config.WORLD.origin.y,
       height: config.WORLD.innerPadding,
       width: config.WORLD.innerPadding,
-      backgroundColor: config.COLOR_HINT_PRIMARY,
-      backgroundHoverColor: config.COLOR_HINT_SECONDARY,
+      backgroundColor: config.COLOR_HINT_PRIMARY_STRONG,
+      backgroundHoverColor: config.COLOR_HINT_SECONDARY_STRONG,
       clickHandler: () => {
         this.player.moveTo(config.WORLD.origin.x, config.WORLD.origin.y)
         return true
@@ -329,7 +332,21 @@ export default class QuadScene extends BaseScene {
       {
         name: 'Collections',
         ...baseLinkOptions,
-        callback: () => console.log('collection callback'),
+        callback: () => {
+          const toScene = this.scene.get('collections')
+          const data = {
+            fromScene: this,
+            htmlTagName: 'collections',
+            htmlData: {},
+          }
+
+          if (toScene) {
+            toScene.scene.wake()
+          } else {
+            this.scene.add('collections', CollectionsSubScene, true, data)
+          }
+          this.scene.pause(this.scene.key)
+        },
       },
       {
         name: 'Library',
@@ -350,23 +367,19 @@ export default class QuadScene extends BaseScene {
         name: 'Help',
         ...baseLinkOptions,
         callback: () => {
-          this.popup.showWithContent({
-            title: 'Archaeotype Help',
-            body: [
-              'MOVING AROUND:',
-              '⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻',
-              '- Use your keyboard arrow keys ⬅️ ➡️ ⬆️ ⬇️ to move around the quad, or drag the rectangle in the minimap.',
-              '- Hold down the "Shift" key, to move 4x faster!',
-              '- Click the white arrow with a blue background at the top left of the screen to reposition at the top left of the quad.',
-              '',
-              'KEYBOARD SHORTCUTS:',
-              '⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻',
-              '- G: Show/hide the grid.',
-              '- M: Show/hide the minimap.',
-              '- R: Show/hide the rulers.',
-              '- Z: Show/hide the measuring tape.',
-            ],
-          })
+          const toScene = this.scene.get('help')
+          const data = {
+            fromScene: this,
+            htmlTagName: 'help',
+            htmlData: {},
+          }
+
+          if (toScene) {
+            toScene.scene.wake()
+          } else {
+            this.scene.add('help', HelpSubScene, true, data)
+          }
+          this.scene.pause(this.scene.key)
         },
       },
     ]
@@ -442,12 +455,26 @@ export default class QuadScene extends BaseScene {
     })
   }
 
-  clickArtifactCallback = (artifact) => {
+  /**
+   * Callback function called when clicking on an Artifact.
+   *
+   * The function is called from the artifact.
+   *
+   * **Note:** We use `scene.pause/resume` for the quad scene because
+   * it pauses all the scene's systems but leaves it visible. We
+   * use `scene.sleep/wake` for the LabSubscene because it needs to
+   * be hidden when not active.
+   *
+   * @memberof QuadScene
+   */
+  clickArtifactCallback = (artifact: ArtifactData) => {
     const toScene = this.scene.get('lab')
     const data = {
       fromScene: this,
-      artifact,
+      htmlTagName: 'labForm',
+      htmlData: artifact,
     }
+
     if (toScene) {
       toScene.scene.wake()
     } else {

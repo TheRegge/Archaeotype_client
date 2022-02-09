@@ -47,7 +47,7 @@ export default class LoadingScene extends BaseScene {
                 this.scene.start('site')
               })
             } else {
-              console.log('bad')
+              console.log('bad login')
             }
           }
         })

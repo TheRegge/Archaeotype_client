@@ -49,6 +49,7 @@ export default class PreloadScene extends Phaser.Scene {
       'toplayer-tiles',
       './assets/images/tilesets/tileset-map-1312_2px.png'
     )
+
     this.load.image(
       'artifactPlaceholder',
       './assets/images/artifacts/onmap/archaeotype-artifact_placeholder.png'
@@ -60,5 +61,10 @@ export default class PreloadScene extends Phaser.Scene {
       'artifactPlaceholder',
       './assets/images/artifacts/onmap/archaeotype-artifact_placeholder.png'
     )
+
+    // SubScenes
+    this.load.html('labForm', './assets/html/labForm.html')
+    this.load.html('help', './assets/html/help.html')
+    this.load.html('collections', './assets/html/collections.html')
   }
 }

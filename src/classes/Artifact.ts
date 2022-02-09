@@ -14,6 +14,7 @@ export type ArtifactData = {
   displayAngle: number
   isPainting: boolean
   materials: string[]
+  fileName: string
   src: string
   altSrc: string[]
 }
@@ -50,7 +51,7 @@ export default class Artifact extends Phaser.GameObjects.Image {
 
   handlePointerdown = () => {
     const scene = this.scene as QuadScene
-    scene.clickArtifactCallback(this.data.getAll())
+    scene.clickArtifactCallback(this.data.getAll() as ArtifactData)
   }
 
   handleDestroy = () => {

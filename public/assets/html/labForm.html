@@ -1,0 +1,105 @@
+<div id="labForm" class="form subscene_container labForm">
+  <h2>THE LAB</h2>
+  <input class="radio" id="one" name="group" type="radio" checked>
+  <input class="radio" id="two" name="group" type="radio">
+  <input class="radio" id="three" name="group" type="radio">
+  <div class="tabs">
+    <label for="one" id="one-tab" class="tab">VIEW</label>
+    <label for="two" id="two-tab" class="tab">MEASURE</label>
+    <label for="three" id="three-tab" class="tab">WEIGH</label>
+  </div>
+  <div class="panels">
+    <div class="panel" id="one-panel">
+      <div class="flex-row">
+        <div class="flex-column">
+          <div class="preview">
+            <div class="zoom">
+              <img id="zoomImage" src="">
+            </div>
+          </div>
+        </div>
+        <div class="flex-column">
+          <div class="flex-column">
+            <label for="name">Label</label>
+            <input type="text" id="name" placeholder="Enter a name for the artifact">
+          </div>
+          <div class="flex-column">
+            <div class="flex-row">
+              <div class="flex-column">
+                <label for="foundBy">Found by</label>
+                <input class="third" type="text" id="foundBy" value="Regis">
+              </div>
+              <div class="flex-column">
+                <label for="row">Row</label>
+                <input class="third" type="text" id="row" value="4" disabled>
+              </div>
+              <div class="flex-column">
+                <label for="column">Column</label>
+                <input type="text" class="third" id="column" value="C" disabled>
+              </div>
+            </div>
+
+            <div class="flex-row">
+
+              <div class="flex-column">
+                <label for="weight">Weight</label>
+                <div class="third is_unit is_unit__g">
+                  <input type="text" class="third" id="weight" value="32" disabled>
+                </div>
+              </div>
+
+              <div class="flex-column">
+                <label for="width">Width</label>
+                <div class="third is_unit is_unit__m">
+                  <input class="third" type="text" id="row" value="0.27" disabled>
+                </div>
+              </div>
+
+              <div class="flex-column">
+                <label for="height">Height</label>
+                <div class="third is_unit is_unit__m">
+                  <input type="text" class="third" id="column" value="0.42" disabled>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+          <div class="flex-row">
+            <div class="flex-column">
+              <label for="colors">Colors</label>
+              <input type="text" id="colors" name="colors" placeholder="Type color separated by a comma.">
+            </div>
+          </div>
+
+          <div class="flex-row">
+            <p><strong>Materials:</strong> Iron</p>
+          </div>
+        </div>
+
+        <div class="flex-column space-between">
+          <div class="flex-row">
+            <div class="flex-column">
+              <label for="notes">Notes</label>
+              <textarea id="notes" placeholder="Enter any additional observations here." rows="10"></textarea>
+            </div>
+          </div>
+          <div class="flex-row">
+            <div class="flex-column">
+              <button class="cancel">Cancel</button>
+            </div>
+            <div class="flex-column">
+              <button class="submit">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- end one-panel -->
+    <div class="panel" id="two-panel">
+      panel two content
+    </div><!-- end two-panel -->
+    <div class="panel" id="three-panel">
+      panel three content
+    </div><!-- end three-panel -->
+  </div><!-- end tabs -->
+</div>

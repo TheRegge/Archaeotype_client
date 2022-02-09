@@ -201,44 +201,48 @@ export class Config {
     'ZZ',
   ]
 
+  private baseFontSize = 16
+  private px = (n: number) => `${n}px`
+
   private baseText = {
     color: '#FFFFFF',
-    fontSize: '16px',
+    fontSize: `${this.baseFontSize}px`,
     fontFamily: this.GOOGLE_FONT_FAMILY,
+    padding: { x: 0, y: 0 },
   }
 
   readonly text = {
     h1: {
       ...this.baseText,
-      fontSize: '36px',
+      fontSize: this.px(this.baseFontSize * 2.25),
     },
     h2: {
       ...this.baseText,
-      fontSize: '24px',
+      fontSize: this.px(this.baseFontSize * 1.5),
     },
     h3: {
       ...this.baseText,
-      fontSize: '18px',
+      fontSize: this.px(this.baseFontSize * 1.125),
     },
     h4: {
       ...this.baseText,
-      fontSize: '16px',
+      fontSize: this.px(this.baseFontSize),
     },
     h5: {
       ...this.baseText,
-      fontSize: '16px',
+      fontSize: this.px(this.baseFontSize),
     },
     h6: {
       ...this.baseText,
-      fontSize: '16px',
+      fontSize: this.px(this.baseFontSize),
     },
     p: {
       ...this.baseText,
-      fontSize: '16px',
+      fontSize: this.px(this.baseFontSize),
     },
     small: {
       ...this.baseText,
-      fontSize: '10px',
+      fontSize: this.px(this.baseFontSize * 0.625),
     },
   }
 

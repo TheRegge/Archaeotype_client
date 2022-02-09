@@ -9,7 +9,7 @@ export default class BaseScene extends Phaser.Scene {
   public blue: number
 
   constructor(sceneInit: string | Phaser.Types.Scenes.SettingsConfig) {
-    let keyString
+    let keyString: string | undefined
     if (typeof sceneInit === 'object' && sceneInit.hasOwnProperty('key')) {
       keyString = sceneInit.key
     } else if (typeof sceneInit === 'string') {

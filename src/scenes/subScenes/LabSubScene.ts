@@ -1,14 +1,74 @@
 import BaseSubScene from '../subScenes/BaseSubScene'
-
+type UpdatableElement = {
+  el: HTMLElement | HTMLInputElement
+  data: { valueType: string; value: string | number }
+}
 export default class LabSubScene extends BaseSubScene {
+  public elements: UpdatableElement[]
+
   constructor() {
     super('lab')
+    this.elements = []
   }
 
   initHTML() {
-    const artifact = this.data.get('htmlData')
-    const foundByInput = document.getElementById('foundBy') as HTMLInputElement
-    foundByInput.value = 'REGIS'
+    const { artifact, tile } = this.data.get('htmlData')
+
+    this.elements = [
+      {
+        el: document.getElementById('foundBy') as HTMLInputElement,
+        data: {
+          valueType: 'value',
+          value: 'Someone',
+        },
+      },
+      {
+        el: document.getElementById('weight') as HTMLInputElement,
+        data: {
+          valueType: 'value',
+          value: artifact.weightInGrams / 1000 + '',
+        },
+      },
+      {
+        el: document.getElementById('height') as HTMLInputElement,
+        data: {
+          valueType: 'value',
+          value: artifact.heightInCentimeters / 1000 + '',
+        },
+      },
+      {
+        el: document.getElementById('width') as HTMLInputElement,
+        data: {
+          valueType: 'value',
+          value: artifact.widthInCentimeters / 100 + '',
+        },
+      },
+      {
+        el: document.getElementById('row') as HTMLInputElement,
+        data: {
+          valueType: 'value',
+          value: tile.row,
+        },
+      },
+      {
+        el: document.getElementById('column') as HTMLInputElement,
+        data: {
+          valueType: 'value',
+          value: tile.column,
+        },
+      },
+      {
+        el: document.getElementById('materials') as HTMLSpanElement,
+        data: {
+          valueType: 'innerText',
+          value: artifact.materials.join(', '),
+        },
+      },
+    ]
+
+    this.elements.forEach((element) => {
+      element.el[element.data.valueType] = element.data.value
+    })
 
     const submit = document.querySelector('button.cancel') as HTMLButtonElement
     submit.onclick = () => {

@@ -79,4 +79,25 @@ export default class BaseScene extends Phaser.Scene {
       }
     )
   }
+
+  getTileCoordsFromWorldCoords(
+    x: number,
+    y: number,
+    horizontalIsLetters: boolean = false,
+    verticalIsLetters: boolean = false
+  ): { row: number | string; column: number | string } {
+    let row: number | string = Math.ceil(y / config.TILE_SCALE)
+
+    if (verticalIsLetters) {
+      row = config.LETTERS[row - 1]
+    }
+
+    let column: number | string = Math.ceil(x / config.TILE_SCALE)
+
+    if (horizontalIsLetters) {
+      column = config.LETTERS[column - 1]
+    }
+
+    return { row, column }
+  }
 }

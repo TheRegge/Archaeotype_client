@@ -472,11 +472,19 @@ export default class QuadScene extends BaseScene {
     const data = {
       fromScene: this,
       htmlTagName: 'labForm',
-      htmlData: artifact,
+      htmlData: {
+        artifact,
+        tile: this.getTileCoordsFromWorldCoords(
+          artifact.coordinatesInMeters.x,
+          artifact.coordinatesInMeters.y,
+          false,
+          true
+        ),
+      },
     }
 
     if (toScene) {
-      toScene.scene.wake()
+      this.scene.wake('lab', data)
     } else {
       this.scene.add('lab', LabSubScene, true, data)
     }

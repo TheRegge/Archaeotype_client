@@ -76,6 +76,15 @@ export default class BaseSubScene extends BaseScene {
     }
   }
 
+  init(): void {
+    super.init()
+    this.events.on('wake', (input, newData) => {
+      this.data.set('fromScene', newData.fromScene)
+      this.data.set('htmlData', newData.htmlData)
+      this.initHTML()
+    })
+  }
+
   create(data: {
     fromScene: Phaser.Scene
     htmlTagName: string

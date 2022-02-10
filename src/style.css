@@ -250,8 +250,8 @@ button[type='submit'] {
 
 /* Lab form components */
 .subscene_container .preview {
-  width: calc(var(--input-width) * 1.5);
-  height: calc(var(--input-width) * 1.5);
+  width: calc(var(--input-width) * 1.45);
+  height: calc(var(--input-width) * 1.45);
   background-color: var(--color-gray-700);
   text-align: center;
   /* position: relative; */

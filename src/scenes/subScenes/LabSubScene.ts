@@ -2,6 +2,10 @@ import BaseSubScene from '../subScenes/BaseSubScene'
 type UpdatableElement = {
   el: HTMLElement | HTMLInputElement
   data: { valueType: string; value: string | number }
+  action?: {
+    event: string
+    callback: (e) => void
+  }
 }
 export default class LabSubScene extends BaseSubScene {
   public elements: UpdatableElement[]
@@ -67,7 +71,17 @@ export default class LabSubScene extends BaseSubScene {
     ]
 
     this.elements.forEach((element) => {
-      element.el[element.data.valueType] = element.data.value
+      if (element.data) {
+        element.el[element.data.valueType] = element.data.value
+      }
+
+      if (element.action) {
+        this.eventsCancellables.push(element.el)
+        element.el.addEventListener(
+          element.action.event,
+          element.action.callback
+        )
+      }
     })
 
     const submit = document.querySelector('button.cancel') as HTMLButtonElement

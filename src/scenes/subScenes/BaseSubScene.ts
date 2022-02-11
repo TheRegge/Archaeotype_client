@@ -11,6 +11,7 @@ export default class BaseSubScene extends BaseScene {
   public padding: number
   public margin: number
   public html
+  public eventsCancellables: Element[]
 
   public local: {
     x: (val: number) => number
@@ -74,6 +75,8 @@ export default class BaseSubScene extends BaseScene {
           ),
       },
     }
+
+    this.eventsCancellables = []
   }
 
   init(): void {
@@ -142,7 +145,17 @@ export default class BaseSubScene extends BaseScene {
     this.add.existing(closeButton)
   }
 
+  cleanup() {
+    // Cancel HTML elements events
+    this.eventsCancellables.forEach((el) => {
+      el.replaceWith(el.cloneNode(true))
+    })
+  }
+
   close() {
+    this.cleanup()
+
+    // Switch scene
     const fromScene = this.data.get('fromScene')
     fromScene.scene.resume()
     this.scene.sleep()

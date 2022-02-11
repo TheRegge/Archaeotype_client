@@ -341,7 +341,7 @@ export default class QuadScene extends BaseScene {
           }
 
           if (toScene) {
-            toScene.scene.wake()
+            this.scene.wake('collections', data)
           } else {
             this.scene.add('collections', CollectionsSubScene, true, data)
           }
@@ -375,7 +375,7 @@ export default class QuadScene extends BaseScene {
           }
 
           if (toScene) {
-            toScene.scene.wake()
+            this.scene.wake('help', data)
           } else {
             this.scene.add('help', HelpSubScene, true, data)
           }

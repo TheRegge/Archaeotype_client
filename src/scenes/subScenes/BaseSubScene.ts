@@ -10,7 +10,7 @@ export default class BaseSubScene extends BaseScene {
   public height: number
   public padding: number
   public margin: number
-  public html
+  public html: any
   public eventsCancellables: Element[]
 
   public local: {
@@ -83,7 +83,7 @@ export default class BaseSubScene extends BaseScene {
     super.init()
     this.input.keyboard.on('keydown-ESC', this.close.bind(this))
 
-    this.events.on('wake', (input, newData) => {
+    this.events.on('wake', (input: any, newData: any) => {
       this.data.set('fromScene', newData.fromScene)
       this.data.set('htmlData', newData.htmlData)
       this.initHTML()

@@ -1,4 +1,5 @@
 import config from '../common/Config'
+import Auth from '../common/Auth'
 
 declare var WebFont: any
 
@@ -28,7 +29,24 @@ export default class PreloadScene extends Phaser.Scene {
 
     this.load.on('complete', () => {
       progress.destroy()
-      this.scene.start('login')
+      // Load google fonts
+      WebFont.load({
+        google: {
+          families: [config.GOOGLE_FONT_FAMILY],
+        },
+        active: () => {
+          if (!Auth.checkLogin()) {
+            this.scene.start('login')
+          } else {
+            const user = Auth.user
+            if (user?.role_id === 1) {
+              this.scene.start('site')
+            } else {
+              this.scene.start('quad')
+            }
+          }
+        },
+      })
     })
 
     // LoginScene Assets

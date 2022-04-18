@@ -320,6 +320,12 @@ export class Config {
     height: this.WORLD.height * this.MINIMAP_SCALE,
   }
 
+  readonly API_URL = 'http://dev-regis.dalton.org:8080/'
+
+  readonly LOCAL_STORAGE_API_TOKEN_NAME = 'archaeotype_api_token'
+
+  readonly LOCAL_STORAGE_USER_NAME = 'archaeotype_user'
+
   private constructor() {
     // no need to do anything, just make it private
     // so it cannot instantiate new instances from outside

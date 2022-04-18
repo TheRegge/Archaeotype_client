@@ -1,5 +1,9 @@
 import BaseScene from './BaseScene'
 import config from '../common/Config'
+import Auth from '../common/Auth'
+
+import axios from 'axios'
+import { errors } from 'jose'
 
 declare var WebFont: any
 export default class LoadingScene extends BaseScene {
@@ -41,21 +45,35 @@ export default class LoadingScene extends BaseScene {
               'password'
             ) as HTMLInputElement
 
-            if (this.checkLogin(inputUsername.value, inputPassword.value)) {
-              this.transitionOut(() => {
-                form.removeListener('click')
-                this.scene.start('site')
-              })
-            } else {
-              console.log('bad login')
-            }
+            const errorsDiv: Element = form.getChildByID('loginErrors')
+            Auth.login(
+              inputUsername.value,
+              inputPassword.value,
+              (isLoggedin, data = '') => {
+                if (isLoggedin) {
+                  this.transitionOut(() => {
+                    form.removeListener('click')
+                    const user = Auth.user
+                    if (user?.role_id === 1) {
+                      this.scene.start('site')
+                    } else {
+                      this.scene.start('quad')
+                    }
+                  })
+                } else {
+                  const errors: string[] = []
+                  if (data.data) {
+                    for (const item in data.data.messages) {
+                      errors.push('* ' + data.data.messages[item])
+                    }
+                    errorsDiv.innerHTML = errors.join('<br />')
+                  }
+                }
+              }
+            )
           }
         })
       },
     })
-  }
-
-  checkLogin = (username: string, password: string): boolean => {
-    return username.toLowerCase() === '' && password === ''
   }
 }

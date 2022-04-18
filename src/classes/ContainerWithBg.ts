@@ -8,7 +8,7 @@ export type ContainerWithBgOptions = {
   backgroundOpacity?: number
   backgroundHoverColor?: number
   backgroundHoverOpacity?: number
-  clickHandler?: () => void
+  clickHandler?: (scene?: Phaser.Scene) => void
   hoverHandler?: (isHover: boolean) => void
   scrollFactorX?: number
   scrollFactorY?: number
@@ -17,7 +17,7 @@ export type ContainerWithBgOptions = {
 
 export default class ContainerWithBg extends Phaser.GameObjects.Container {
   public background: Phaser.GameObjects.Rectangle
-  public clickHandler: (() => void) | undefined
+  public clickHandler: ((scene?: Phaser.Scene) => void) | undefined
 
   public constructor(options: ContainerWithBgOptions) {
     const {
@@ -64,7 +64,7 @@ export default class ContainerWithBg extends Phaser.GameObjects.Container {
 
     this.on('pointerdown', () => {
       if (this.clickHandler) {
-        this.clickHandler()
+        this.clickHandler(this.scene)
       }
     })
 

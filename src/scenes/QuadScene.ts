@@ -15,6 +15,8 @@ import data from '../common/Data'
 import { ArtifactData } from '../classes/Artifact'
 import HelpSubScene from './subScenes/HelpSubScene'
 import CollectionsSubScene from './subScenes/CollectionsSubscene'
+import Auth from '../common/Auth'
+import { User } from '../common/Types'
 
 export default class QuadScene extends BaseScene {
   private cursors
@@ -37,6 +39,7 @@ export default class QuadScene extends BaseScene {
   private topLayer
   private topLayerTiles
   private sceneReady: boolean
+  private user: User | null
   public player
 
   constructor() {
@@ -44,6 +47,7 @@ export default class QuadScene extends BaseScene {
     this.ignoredByMainCam = []
     this.ignoredByMinimap = []
     this.sceneReady = false
+    this.user = Auth.user
   }
 
   // preload() {
@@ -56,6 +60,12 @@ export default class QuadScene extends BaseScene {
   }
 
   setup() {
+    this.user = Auth.user
+
+    if (this.user && this.user.role_id > 1) {
+      this.data.set('quad', this.user.quad)
+    }
+
     if (this.mainNav) this.createMainNav()
 
     if (this.tileMap) {
@@ -325,6 +335,7 @@ export default class QuadScene extends BaseScene {
       {
         name: 'Switch Quad',
         ...baseLinkOptions,
+        maxRoleId: 1,
         callback: () => {
           this.switchScene('site')
         },
@@ -444,7 +455,7 @@ export default class QuadScene extends BaseScene {
   }
 
   getArtifacts = async () => {
-    let artifacts = await data.getArtifacts(this.data.get('quad').id)
+    let artifacts = await data.getArtifacts(parseInt(this.data.get('quad').id))
     return artifacts
   }
 

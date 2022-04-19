@@ -38,8 +38,8 @@ export default class PreloadScene extends Phaser.Scene {
           if (!Auth.checkLogin()) {
             this.scene.start('login')
           } else {
-            const user = Auth.user
-            if (user?.role_id === 1) {
+            if (Auth.isAdmin()) {
+              console.log('goint to site')
               this.scene.start('site')
             } else {
               this.scene.start('quad')

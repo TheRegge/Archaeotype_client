@@ -52,6 +52,10 @@ export class Auth {
     return false
   }
 
+  isAdmin(): boolean {
+    return (this.user && this.user.role_id * 1 === 1) || false
+  }
+
   login(
     email: string,
     password: string,

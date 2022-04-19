@@ -54,7 +54,7 @@ export default class LoadingScene extends BaseScene {
                   this.transitionOut(() => {
                     form.removeListener('click')
                     const user = Auth.user
-                    if (user?.role_id === 1) {
+                    if (Auth.isAdmin()) {
                       this.scene.start('site')
                     } else {
                       this.scene.start('quad')

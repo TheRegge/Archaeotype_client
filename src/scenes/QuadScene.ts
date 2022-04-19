@@ -11,7 +11,7 @@ import config from '../common/Config'
 import { Popup } from '../classes/Popup'
 import Artifact from '../classes/Artifact'
 import Measurer from '../classes/Measurer'
-import data from '../common/Data'
+import Data from '../common/Data'
 import { ArtifactData } from '../classes/Artifact'
 import HelpSubScene from './subScenes/HelpSubScene'
 import CollectionsSubScene from './subScenes/CollectionsSubscene'
@@ -73,13 +73,13 @@ export default class QuadScene extends BaseScene {
       toplayer.destroy()
       this.createTileMap().then((tilemap) => {
         this.populateTileMap(tilemap)
+
+        // Place artifacts on the map
+        this.getArtifacts().then((artifacts) => {
+          this.placeArtifacts(artifacts)
+        })
       })
     }
-
-    // Place artifacts on the map
-    this.getArtifacts().then((artifacts) => {
-      this.placeArtifacts(artifacts)
-    })
   }
 
   cleanup() {
@@ -112,17 +112,21 @@ export default class QuadScene extends BaseScene {
     this.cameras.main.roundPixels = true
     this.cameras.main.setName('MAIN')
 
-    // Add bg image
-    // TODO: image y pos should be set at config.WORLD.origin.y (not * 2), but this is a hack to fix a bug I don't understand yet
-    const bgImage = this.add
-      .image(config.WORLD.origin.x * 2, config.WORLD.origin.y * 2, 'terrain')
-      .setOrigin(0)
-
-    this.layer0.add([bgImage])
-
     // Create tileMap
     this.createTileMap().then((tilemap) => {
       this.populateTileMap(tilemap)
+      // Place artifacts on the map
+      this.getArtifacts().then((artifacts) => {
+        this.placeArtifacts(artifacts)
+      })
+
+      // Add bg image
+      // TODO: image y pos should be set at config.WORLD.origin.y (not * 2), but this is a hack to fix a bug I don't understand yet
+      const bgImage = this.add
+        .image(config.WORLD.origin.x * 2, config.WORLD.origin.y * 2, 'terrain')
+        .setOrigin(0)
+
+      this.layer0.add([bgImage])
 
       // Player
       this.player = Player.getInstance(
@@ -422,7 +426,7 @@ export default class QuadScene extends BaseScene {
   }
 
   makeTopLayerData = async () => {
-    let jsonData = await data.getTiles(this.data.get('quad').id).catch(() => {
+    let jsonData = await Data.getTiles(this.data.get('quad').id).catch(() => {
       return this.fillAllTiles()
     })
 
@@ -455,7 +459,7 @@ export default class QuadScene extends BaseScene {
   }
 
   getArtifacts = async () => {
-    let artifacts = await data.getArtifacts(parseInt(this.data.get('quad').id))
+    let artifacts = await Data.getArtifacts(parseInt(this.data.get('quad').id))
     return artifacts
   }
 
@@ -507,18 +511,31 @@ export default class QuadScene extends BaseScene {
    *
    * @memberof QuadScene
    */
-  handlePointerdown = (e, gameObjects: Phaser.GameObjects.GameObject[]) => {
+  handlePointerdown = async (
+    e,
+    gameObjects: Phaser.GameObjects.GameObject[]
+  ) => {
     if (this.clickDoesNotRemoveTileGuard(e, gameObjects)) return
 
-    const tile = this.tileMap.removeTileAtWorldXY(
+    const tile: Phaser.Tilemaps.Tile | null = this.tileMap.removeTileAtWorldXY(
       e.worldX,
       e.worldY,
-      false,
+      true,
       false,
       this.cameras.main,
       this.topLayer
     ) as Phaser.Tilemaps.Tile
-    if (tile) tile.destroy()
+    if (tile) {
+      console.log('TILE', tile)
+      tile.destroy()
+      await Data.saveDestroyedTile(
+        this.data.get('quad').id,
+        tile.x,
+        tile.y,
+        Auth.user?.id || 99,
+        () => {}
+      )
+    }
   }
 
   /**

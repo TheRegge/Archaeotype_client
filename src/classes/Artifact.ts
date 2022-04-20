@@ -42,16 +42,10 @@ export default class Artifact extends Phaser.GameObjects.Image {
     ).then(() => {
       this.setInteractive({
         hitArea: new Phaser.Geom.Rectangle(0, 0, this.width, this.height),
-        cursor: 'pointer',
+        // cursor: 'pointer',
       })
-      this.on(Phaser.Input.Events.POINTER_DOWN, this.handlePointerdown)
       this.on(Phaser.GameObjects.Events.DESTROY, this.handleDestroy)
     })
-  }
-
-  handlePointerdown = () => {
-    const scene = this.scene as QuadScene
-    scene.clickArtifactCallback(this.data.getAll() as ArtifactData)
   }
 
   handleDestroy = () => {

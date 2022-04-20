@@ -24,11 +24,11 @@ export default class QuadScene extends BaseScene {
   private popup
   private ignoredByMainCam: Phaser.GameObjects.GameObject[]
   private ignoredByMinimap: Phaser.GameObjects.GameObject[]
-  private layer0
-  private layer1
-  private layer2
-  private layer3
-  private layer4
+  private layer0_bgImage
+  private layer1_artifacts
+  private layer2_toptiles
+  private layer3_UI_1
+  private layer4_UI_2
   private mainNav
   private minimap
   private minimapFrame
@@ -90,12 +90,12 @@ export default class QuadScene extends BaseScene {
   }
 
   create() {
-    this.layer0 = this.add.layer()
-    this.layer1 = this.add.layer()
-    this.layer2 = this.add.layer()
-    this.layer3 = this.add.layer()
-    this.layer4 = this.add.layer()
-    this.ignoredByMinimap.push(this.layer4)
+    this.layer0_bgImage = this.add.layer()
+    this.layer1_artifacts = this.add.layer()
+    this.layer2_toptiles = this.add.layer()
+    this.layer3_UI_1 = this.add.layer()
+    this.layer4_UI_2 = this.add.layer()
+    this.ignoredByMinimap.push(this.layer4_UI_2)
 
     // Fade in
     this.transitionIn()
@@ -126,7 +126,7 @@ export default class QuadScene extends BaseScene {
         .image(config.WORLD.origin.x * 2, config.WORLD.origin.y * 2, 'terrain')
         .setOrigin(0)
 
-      this.layer0.add([bgImage])
+      this.layer0_bgImage.add([bgImage])
 
       // Player
       this.player = Player.getInstance(
@@ -179,8 +179,8 @@ export default class QuadScene extends BaseScene {
   }
 
   destroyArtifacts = () => {
-    const layer1 = this.layer1 as Phaser.GameObjects.Layer
-    const artifacts = layer1.getChildren()
+    const layer1_artifacts = this.layer1_artifacts as Phaser.GameObjects.Layer
+    const artifacts = layer1_artifacts.getChildren()
     artifacts.forEach((artifact) => {
       artifact.destroy()
     })
@@ -231,7 +231,7 @@ export default class QuadScene extends BaseScene {
     this.minimapFrame.setStrokeStyle(strokeWidth, 0xffffff, 0.5)
     this.minimapFrame.setOrigin(0, 0)
     // this.add.existing(this.minimapFrame)
-    this.layer3.add([this.minimapFrame])
+    this.layer3_UI_1.add([this.minimapFrame])
   }
 
   createGrid = () => {
@@ -251,7 +251,7 @@ export default class QuadScene extends BaseScene {
     this.grid.setOrigin(0)
     this.grid.setPosition(config.WORLD.origin.x, config.WORLD.origin.y * 2)
     // this.add.existing(this.grid)
-    this.layer3.add(this.grid)
+    this.layer3_UI_1.add(this.grid)
   }
 
   createRulers = () => {
@@ -296,7 +296,7 @@ export default class QuadScene extends BaseScene {
       },
     })
     // this.add.existing(this.originButton)
-    this.layer3.add([this.rulerH, this.rulerV, this.originButton])
+    this.layer3_UI_1.add([this.rulerH, this.rulerV, this.originButton])
   }
 
   createPopup = () => {
@@ -313,7 +313,7 @@ export default class QuadScene extends BaseScene {
       clickHandler: () => this.popup.toggle(),
     })
     // this.add.existing(this.popup)
-    this.layer4.add([this.popup])
+    this.layer4_UI_2.add([this.popup])
   }
 
   createMainNav = () => {
@@ -400,7 +400,7 @@ export default class QuadScene extends BaseScene {
     ]
 
     this.mainNav = new MainNav(navOptions, navLinks)
-    this.layer4.add([this.mainNav])
+    this.layer4_UI_2.add([this.mainNav])
   }
 
   createTileMap = async (): Promise<Phaser.Tilemaps.Tilemap> => {
@@ -409,6 +409,7 @@ export default class QuadScene extends BaseScene {
       data: topLayerData,
       tileWidth: config.TILE_SIZE,
       tileHeight: config.TILE_SIZE,
+      insertNull: true, // Do not create a tile when the data is -1
     })
     return tilemap
   }
@@ -422,15 +423,15 @@ export default class QuadScene extends BaseScene {
       config.WORLD.origin.x + config.H_OFFSET,
       config.WORLD.origin.y + config.V_OFFSET
     )
-    this.layer2.add([this.topLayer])
+    this.layer2_toptiles.add([this.topLayer])
   }
 
   makeTopLayerData = async () => {
-    let jsonData = await Data.getTiles(this.data.get('quad').id).catch(() => {
+    let tilesData = await Data.getTiles(this.data.get('quad').id).catch(() => {
       return this.fillAllTiles()
     })
 
-    return jsonData.map((arr) => {
+    return tilesData.map((arr) => {
       return arr.map((tile) => {
         if (tile === 0) {
           return Math.round(Math.random() * 63)
@@ -440,6 +441,13 @@ export default class QuadScene extends BaseScene {
     })
   }
 
+  /**
+   * Used when the tiles data is not available.
+   *
+   * @protected
+   * @returns {number[][]}
+   * @memberof QuadScene
+   */
   protected fillAllTiles(): number[][] {
     let dataMap: number[][] = []
     let numRows = config.NUM_TILES_WIDTH
@@ -466,7 +474,7 @@ export default class QuadScene extends BaseScene {
   placeArtifacts = (artifactsData) => {
     artifactsData.forEach((data) => {
       const artifact = new Artifact(this, data)
-      this.layer1.add([artifact])
+      this.layer1_artifacts.add([artifact])
     })
   }
 
@@ -512,21 +520,23 @@ export default class QuadScene extends BaseScene {
    * @memberof QuadScene
    */
   handlePointerdown = async (
-    e,
+    pointer: Phaser.Input.Pointer,
     gameObjects: Phaser.GameObjects.GameObject[]
   ) => {
-    if (this.clickDoesNotRemoveTileGuard(e, gameObjects)) return
+    if (this.clickDoesNotRemoveTileGuard(pointer, gameObjects)) return
+
+    const artifactData = gameObjects[0]?.data.getAll() as ArtifactData
 
     const tile: Phaser.Tilemaps.Tile | null = this.tileMap.removeTileAtWorldXY(
-      e.worldX,
-      e.worldY,
+      pointer.worldX,
+      pointer.worldY,
       true,
       false,
       this.cameras.main,
       this.topLayer
     ) as Phaser.Tilemaps.Tile
+
     if (tile) {
-      console.log('TILE', tile)
       tile.destroy()
       await Data.saveDestroyedTile(
         this.data.get('quad').id,
@@ -535,6 +545,8 @@ export default class QuadScene extends BaseScene {
         Auth.user?.id || 99,
         () => {}
       )
+    } else if (artifactData) {
+      this.clickArtifactCallback(artifactData)
     }
   }
 
@@ -546,13 +558,13 @@ export default class QuadScene extends BaseScene {
    * @memberof QuadScene
    */
   clickDoesNotRemoveTileGuard = (
-    e: any,
+    pointer: Phaser.Input.Pointer,
     gameObjects: Phaser.GameObjects.GameObject[]
   ): boolean => {
     return (
       (gameObjects.length > 0 &&
         gameObjects[0] instanceof Artifact === false) ||
-      e.camera.name !== 'MAIN'
+      pointer.camera.name !== 'MAIN'
     )
   }
 }

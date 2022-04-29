@@ -39,8 +39,7 @@ export default class PreloadScene extends Phaser.Scene {
             this.scene.start('login')
           } else {
             if (Auth.isAdmin()) {
-              console.log('goint to site')
-              this.scene.start('site')
+              this.scene.start('projects')
             } else {
               this.scene.start('quad')
             }

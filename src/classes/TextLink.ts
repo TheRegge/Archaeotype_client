@@ -14,6 +14,8 @@ import config from '../common/Config'
  * @extends {ContainerWithBg}
  */
 export default class TextLink extends ContainerWithBg {
+  public text: Phaser.GameObjects.Text
+
   public constructor(
     options: ContainerWithBgOptions,
     link: navLink,
@@ -61,6 +63,7 @@ export default class TextLink extends ContainerWithBg {
       })
     }
     super(options)
+    this.text = text
 
     this.add(text)
   }

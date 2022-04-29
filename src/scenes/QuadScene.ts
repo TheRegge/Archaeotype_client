@@ -561,10 +561,15 @@ export default class QuadScene extends BaseScene {
     pointer: Phaser.Input.Pointer,
     gameObjects: Phaser.GameObjects.GameObject[]
   ): boolean => {
-    return (
-      (gameObjects.length > 0 &&
-        gameObjects[0] instanceof Artifact === false) ||
-      pointer.camera.name !== 'MAIN'
+    console.log(gameObjects)
+    if (
+      gameObjects.length > 0 &&
+      gameObjects[0] instanceof Artifact === false &&
+      this.isEditing
     )
+      return true
+    if (pointer.camera.name !== 'MAIN') return true
+
+    return false
   }
 }

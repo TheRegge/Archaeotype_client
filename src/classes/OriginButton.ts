@@ -1,4 +1,4 @@
-import { IToggle } from './IToggle'
+import { IToggle } from '../common/Interfaces'
 import ContainerWithBg, { ContainerWithBgOptions } from './ContainerWithBg'
 export default class OriginButton extends ContainerWithBg implements IToggle {
   public constructor(options: ContainerWithBgOptions) {

@@ -1,4 +1,4 @@
-import { IToggle } from './IToggle'
+import { IToggle } from '../common/Interfaces'
 import config from '../common/Config'
 import Utils from '../common/Utils'
 

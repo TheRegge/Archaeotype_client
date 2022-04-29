@@ -19,3 +19,39 @@ export type User = {
   role_id: number
   username: string
 }
+
+export type UpdatableElement = {
+  el: HTMLElement | HTMLInputElement
+  data: { valueType: string; value: string | number }
+  action?: {
+    event: string
+    callback: (e) => void
+  }
+}
+
+export type ArtifactData = {
+  id: string
+  mapId: string
+  name: string
+  coordinatesInMeters: { x: number; y: number }
+  imageSizeInPixels: { width: number; height: number }
+  weightInGrams: number
+  heightInCentimeters: number
+  widthCentimeters: number
+  displayAngle: number
+  isPainting: boolean
+  materials: string[]
+  fileName: string
+  src: string
+  altSrc: string[]
+}
+
+export type ArtifactInChoserData = {
+  id: string
+  name: string
+  widthInMeters: number
+  heightInMeters: number
+  mainImageId?: number
+  inscriptions?: string[]
+  label?: string
+}

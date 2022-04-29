@@ -1,12 +1,5 @@
 import BaseSubScene from '../subScenes/BaseSubScene'
-type UpdatableElement = {
-  el: HTMLElement | HTMLInputElement
-  data: { valueType: string; value: string | number }
-  action?: {
-    event: string
-    callback: (e) => void
-  }
-}
+import { UpdatableElement } from '../../common/Types'
 export default class LabSubScene extends BaseSubScene {
   public elements: UpdatableElement[]
 
@@ -91,11 +84,11 @@ export default class LabSubScene extends BaseSubScene {
 
     const imageContainer = document.querySelector('.zoom') as HTMLElement
     const img = document.getElementById('zoomImage') as HTMLImageElement
-    img.src = `assets/images/artifacts/huge/${artifact.fileName}.jpg`
+    img.src = `assets/images/artifacts/full/${artifact.fileName}.jpg`
 
     imageContainer.onmousemove = (event) => zoom(event)
 
-    imageContainer.style.backgroundImage = `url("assets/images/artifacts/huge/${artifact.fileName}.jpg")`
+    imageContainer.style.backgroundImage = `url("assets/images/artifacts/full/${artifact.fileName}.jpg")`
 
     const zoom = (e: MouseEvent | TouchEvent) => {
       let imageZoom = e.currentTarget as HTMLDivElement

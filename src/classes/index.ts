@@ -1,5 +1,5 @@
 import ATGrid from './ATGrid'
-import { IToggle } from './IToggle'
+import { IToggle } from '../common/Interfaces'
 import Minimap from './Minimap'
 import OriginButton from './OriginButton'
 import Player from './Player'

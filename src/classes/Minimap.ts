@@ -1,5 +1,5 @@
 import config from '../common/Config'
-import { IToggle } from './IToggle'
+import { IToggle } from '../common/Interfaces'
 
 export default class Minimap
   extends Phaser.Cameras.Scene2D.Camera

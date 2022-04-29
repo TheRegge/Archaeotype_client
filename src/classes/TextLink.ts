@@ -42,7 +42,7 @@ export default class TextLink extends ContainerWithBg {
       Math.floor(text.y - text.height / 2 - padding)
     )
 
-    if (!link.callback) options.backgroundHoverColor = undefined
+    if (!link.callback) options.backgroundOverColor = undefined
     options.width = Math.ceil(text.width + 2 * padding)
     // options.height = Math.ceil(text.height + 2 * vPadding)
     options.height = Math.ceil(text.height + 2 * padding)

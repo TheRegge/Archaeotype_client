@@ -68,8 +68,7 @@ export default class SiteScene extends BaseScene {
         height: 50 * config.SITE_PIXEL_TO_METER_SCALE,
         backgroundColor: config.COLOR_HINT_SECONDARY,
         backgroundOpacity: 0.8,
-        backgroundHoverColor: config.COLOR_HINT_PRIMARY,
-        backgroundHoverOpacity: 0.8,
+        backgroundOverColor: config.COLOR_HINT_PRIMARY,
         data: { quad },
       })
 

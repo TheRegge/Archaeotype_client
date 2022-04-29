@@ -289,7 +289,7 @@ export default class QuadScene extends BaseScene {
       height: config.WORLD.innerPadding,
       width: config.WORLD.innerPadding,
       backgroundColor: config.COLOR_HINT_PRIMARY_STRONG,
-      backgroundHoverColor: config.COLOR_HINT_SECONDARY_STRONG,
+      backgroundOverColor: config.COLOR_HINT_SECONDARY_STRONG,
       clickHandler: () => {
         this.player.moveTo(config.WORLD.origin.x, config.WORLD.origin.y)
         return true
@@ -330,7 +330,7 @@ export default class QuadScene extends BaseScene {
       linkColor: config.COLOR_HINT_PRIMARY,
       linkHoverColor: 0xffffff,
       backgroundColor: config.COLOR_GRAY_700,
-      backgroundHoverColor: config.COLOR_HINT_PRIMARY,
+      backgroundOverColor: config.COLOR_HINT_PRIMARY,
     }
 
     const navLinks = [

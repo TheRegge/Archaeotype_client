@@ -10,7 +10,7 @@ export type navLink = {
   linkHoverColor?: number
   maxRoleId?: number
   backgroundColor?: number
-  backgroundHoverColor?: number
+  backgroundOverColor?: number
   callback?: (scene?: Phaser.Scene) => void
 }
 
@@ -35,7 +35,7 @@ export default class MainNav extends ContainerWithBg {
         height: 0,
         width: 0,
         backgroundColor: config.COLOR_GRAY_700,
-        backgroundHoverColor: config.COLOR_HINT_PRIMARY,
+        backgroundOverColor: config.COLOR_HINT_PRIMARY,
         clickHandler: () => {
           Auth.logout(() => {
             window.location.reload()
@@ -47,7 +47,7 @@ export default class MainNav extends ContainerWithBg {
         linkColor: config.COLOR_HINT_PRIMARY,
         linkHoverColor: 0xffffff,
         backgroundColor: config.COLOR_GRAY_700,
-        backgroundHoverColor: config.COLOR_HINT_PRIMARY,
+        backgroundOverColor: config.COLOR_HINT_PRIMARY,
         callback: () => {},
       },
       15
@@ -89,8 +89,8 @@ export default class MainNav extends ContainerWithBg {
           height: 0,
           width: 0,
           backgroundColor: link.backgroundColor || config.COLOR_GRAY_700,
-          backgroundHoverColor:
-            link.backgroundHoverColor || config.COLOR_GRAY_900,
+          backgroundOverColor:
+            link.backgroundOverColor || config.COLOR_GRAY_900,
           clickHandler: link.callback,
         },
         link,

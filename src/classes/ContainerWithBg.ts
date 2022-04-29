@@ -6,8 +6,8 @@ export type ContainerWithBgOptions = {
   width: number
   backgroundColor: number
   backgroundOpacity?: number
-  backgroundHoverColor?: number
-  backgroundHoverOpacity?: number
+  backgroundOverColor?: number
+  backgroundOverOpacity?: number
   clickHandler?: (scene?: Phaser.Scene) => void
   hoverHandler?: (isHover: boolean) => void
   scrollFactorX?: number
@@ -28,8 +28,8 @@ export default class ContainerWithBg extends Phaser.GameObjects.Container {
       width,
       backgroundColor = 0x000000,
       backgroundOpacity = 1,
-      backgroundHoverColor,
-      backgroundHoverOpacity,
+      backgroundOverColor,
+      backgroundOverOpacity,
       clickHandler,
       hoverHandler,
       scrollFactorX = 0,
@@ -55,7 +55,7 @@ export default class ContainerWithBg extends Phaser.GameObjects.Container {
     this.setSize(width, height)
     this.setPosition(x + width / 2, y + height / 2)
 
-    if (this.clickHandler || backgroundHoverColor) {
+    if (this.clickHandler || backgroundOverColor) {
       this.setInteractive({
         hitArea: this.background,
         cursor: 'pointer',
@@ -69,16 +69,15 @@ export default class ContainerWithBg extends Phaser.GameObjects.Container {
     })
 
     this.on('pointerup', () => {
-      if (backgroundHoverColor) {
-        const opacity = backgroundHoverOpacity || backgroundOpacity
-        this.background.setFillStyle(backgroundHoverColor, opacity)
+        const opacity = backgroundOverOpacity || backgroundOpacity
+        this.background.setFillStyle(backgroundOverColor, opacity)
       }
     })
 
     this.on('pointerover', () => {
-      if (backgroundHoverColor) {
-        const opacity = backgroundHoverOpacity || backgroundOpacity
-        this.background.setFillStyle(backgroundHoverColor, opacity)
+      if (backgroundOverColor) {
+        const opacity = backgroundOverOpacity || backgroundOpacity
+        this.background.setFillStyle(backgroundOverColor, opacity)
       }
       if (hoverHandler) {
         hoverHandler(true)
@@ -86,7 +85,7 @@ export default class ContainerWithBg extends Phaser.GameObjects.Container {
     })
 
     this.on('pointerout', () => {
-      if (backgroundHoverColor) {
+      if (backgroundOverColor) {
         this.background.setFillStyle(backgroundColor, backgroundOpacity)
       }
       if (hoverHandler) {

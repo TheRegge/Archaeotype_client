@@ -128,7 +128,7 @@ export default class BaseSubScene extends BaseScene {
       height: 0,
       width: 0,
       backgroundColor: config.COLOR_HINT_PRIMARY_STRONG,
-      backgroundHoverColor: config.COLOR_HINT_SECONDARY_STRONG,
+      backgroundOverColor: config.COLOR_HINT_SECONDARY_STRONG,
       clickHandler: () => this.close(),
     }
     const closeButton = new TextLink(

@@ -6,6 +6,7 @@ import * as jose from 'jose'
 import { User } from '../common/Types'
 
 export class Auth {
+  // todo: remove sensitive data from local storage. maybe store in db the api token with sensitive data
   private static instance: Auth
   private _user: User | null
 
@@ -28,6 +29,10 @@ export class Auth {
       if (storedUser) this._user = JSON.parse(storedUser)
     }
     return this._user
+  }
+
+  get token(): string | null {
+    return window.localStorage.getItem(config.LOCAL_STORAGE_API_TOKEN_NAME)
   }
 
   checkLogin(): boolean {

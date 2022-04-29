@@ -1,24 +1,8 @@
 import Utils from '../common/Utils'
 import config from '../common/Config'
-import { QuadScene } from '../scenes'
+import { ArtifactData } from '../common/Types'
 
-export type ArtifactData = {
-  id: string
-  mapId: string
-  name: string
-  coordinatesInMeters: { x: number; y: number }
-  imageSizeInPixels: { width: number; height: number }
-  weightInGrams: number
-  heightInCentimeters: number
-  widthCentimeters: number
-  displayAngle: number
-  isPainting: boolean
-  materials: string[]
-  fileName: string
-  src: string
-  altSrc: string[]
-}
-export default class Artifact extends Phaser.GameObjects.Image {
+export default class Artifact extends Phaser.GameObjects.Sprite {
   public constructor(scene: Phaser.Scene, artifactData: ArtifactData) {
     super(
       scene,

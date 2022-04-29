@@ -69,6 +69,7 @@ export default class ContainerWithBg extends Phaser.GameObjects.Container {
     })
 
     this.on('pointerup', () => {
+      if (backgroundOverColor) {
         const opacity = backgroundOverOpacity || backgroundOpacity
         this.background.setFillStyle(backgroundOverColor, opacity)
       }

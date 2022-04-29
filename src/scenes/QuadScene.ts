@@ -12,14 +12,21 @@ import { Popup } from '../classes/Popup'
 import Artifact from '../classes/Artifact'
 import Measurer from '../classes/Measurer'
 import Data from '../common/Data'
-import { ArtifactData } from '../classes/Artifact'
+import { ArtifactData } from '../common/Types'
 import HelpSubScene from './subScenes/HelpSubScene'
 import CollectionsSubScene from './subScenes/CollectionsSubscene'
+import { AdminTools } from '../classes'
 import Auth from '../common/Auth'
 import { User } from '../common/Types'
+import utils from '../common/Utils'
+import ArtifactsChooser from '../classes/ArtifactsChooser'
+import { IGetBounds } from '../common/Interfaces'
 
 export default class QuadScene extends BaseScene {
+  public artifactsChooser: ArtifactsChooser | null
+  private adminTools: AdminTools | null
   private cursors
+  private editMapLink: any
   private grid
   private popup
   private ignoredByMainCam: Phaser.GameObjects.GameObject[]
@@ -39,6 +46,7 @@ export default class QuadScene extends BaseScene {
   private topLayer
   private topLayerTiles
   private sceneReady: boolean
+  private isEditing: boolean = false
   private user: User | null
   public player
 
@@ -48,6 +56,9 @@ export default class QuadScene extends BaseScene {
     this.ignoredByMinimap = []
     this.sceneReady = false
     this.user = Auth.user
+    this.editMapLink = 'foo'
+    this.adminTools = null
+    this.artifactsChooser = null
   }
 
   // preload() {
@@ -60,6 +71,35 @@ export default class QuadScene extends BaseScene {
   }
 
   setup() {
+    this.scene.scene.input.on('dragstart', (_, gameObject) => {
+      if (gameObject.name === 'ArtifactInChooser') {
+        gameObject.setData('dragStart', {
+          x: gameObject.x,
+          y: gameObject.y,
+        })
+
+        gameObject.showDraggingState()
+      }
+    })
+
+    this.scene.scene.input.on('dragend', (pointer, gameObject) => {
+      if (typeof gameObject.clearTint === 'function') gameObject.clearTint()
+
+      if (gameObject.name === 'ArtifactInChooser') {
+        this.addArtifactToMap(gameObject, pointer)
+
+        gameObject.setPosition(
+          gameObject.getData('dragStart').x,
+          gameObject.getData('dragStart').y
+        )
+        gameObject.showStillState()
+      }
+
+      if (gameObject.name === 'Artifact') {
+        console.log('just dropped an artifact from the quad')
+      }
+    })
+
     this.user = Auth.user
 
     if (this.user && this.user.role_id > 1) {
@@ -157,6 +197,15 @@ export default class QuadScene extends BaseScene {
       this.createMainNav()
       this.ignoredByMinimap.push(this.mainNav)
 
+      this.createArtifactsChooser()
+      if (this.artifactsChooser)
+        this.ignoredByMinimap.push(this.artifactsChooser)
+      this.createAdminTools()
+
+      this.ignoredByMinimap.push(
+        this.adminTools as Phaser.GameObjects.GameObject
+      )
+
       this.createPopup()
       this.ignoredByMinimap.push(this.popup)
 
@@ -176,6 +225,128 @@ export default class QuadScene extends BaseScene {
 
     this.player.body.setVelocity(0)
     this.moveWithKeys()
+  }
+
+  /**
+   * Checks if pointer is above a specified game object
+   *
+   * @memberof QuadScene
+   */
+  checkPointerOverUI = (
+    pointer: Phaser.Input.Pointer,
+    ui: any
+  ): ui is IGetBounds => {
+    const pointerRectangle = new Phaser.Geom.Rectangle(
+      pointer.x,
+      pointer.y,
+      1,
+      1
+    )
+    return Phaser.Geom.Rectangle.Overlaps(pointerRectangle, ui.getBounds())
+  }
+
+  addArtifactToMap = async (gameObject, pointer) => {
+    if (this.checkPointerOverUI(pointer, this.artifactsChooser)) return
+
+    const dropLocation = {
+      x: pointer.worldX,
+      y: pointer.worldY,
+    }
+    const artifactData = gameObject.getData('artifact')
+    console.log('addArtifactToMap', artifactData)
+
+    const dbData = await Data.getUnplacedArtifact(artifactData.id)
+    console.log('dbData', dbData)
+    const enrichedData = {
+      ...artifactData,
+      ...dbData,
+    }
+
+    // altSrc[]
+    // -- coordinatesInMeters{x,y}
+    // -- displayAngle
+    // -- fileName
+    // -- imageSizeInPixels{width, height}
+    // TODO: isPainting
+    // -- mapId (quadId)
+    // -- materials[]
+    // -- src (`images/artifacts/onmap/${fileName}`)
+    // -- weightInGrams ==> weight
+    // ----> not needed: widthInCentimeters
+
+    enrichedData.fileName = enrichedData.name
+    enrichedData.coordinatesInMeters = this.getCoordinatesInMeters(dropLocation)
+    enrichedData.displayAngle = 0
+    enrichedData.isPainting = false
+    enrichedData.quadId = this.data.get('quad').id
+    enrichedData.src = `${config.API_URL}resource/artifacts/onmap/${enrichedData.fileName}.png`
+    enrichedData.imageSizeInPixels = {
+      width: dbData.width_onmap,
+      height: dbData.height_onmap,
+    }
+
+    delete enrichedData.updated_at
+    delete enrichedData.originX
+    delete enrichedData.originY
+    delete enrichedData.height
+    delete enrichedData.width
+    console.log('enrichedData', enrichedData)
+    this.placeArtifacts([enrichedData])
+  }
+
+  getCoordinatesInMeters = (location: {
+    x: number
+    y: number
+  }): { x: number; y: number } => {
+    const { origin } = config.WORLD
+    const tileWidth = config.TILE_SIZE
+    const tileHeight = config.TILE_SIZE
+
+    const xInMeters =
+      (Math.floor(((location.x - origin.x) / tileWidth) * 100) / 100) *
+      config.TILE_SCALE
+    const yInMeters =
+      (Math.floor(((location.y - origin.y) / tileHeight) * 100) / 100) *
+      config.TILE_SCALE
+
+    return {
+      x: xInMeters,
+      y: yInMeters,
+    }
+  }
+
+  createAdminTools() {
+    if (this.adminTools) return
+    this.adminTools = new AdminTools({
+      scene: this,
+      x: utils.metersToPixels(1) + config.WORLD.origin.x - 30,
+      y: utils.metersToPixels(2) + config.WORLD.origin.y,
+      height: 250,
+      width: 60,
+      backgroundColor: config.COLOR_GRAY_900,
+      backgroundOpacity: 0.8,
+      backgroundOverColor: config.COLOR_GRAY_900,
+      // backgroundOverOpacity: 0.9,
+    })
+    this.adminTools.toggle()
+    this.add.existing(this.adminTools)
+    this.adminTools.setInteractive()
+    this.input.setDraggable(this.adminTools)
+  }
+
+  createArtifactsChooser() {
+    this.artifactsChooser = new ArtifactsChooser({
+      scene: this,
+      x: 200,
+      y: 200,
+      width: 500,
+      height: 410,
+      backgroundColor: config.COLOR_GRAY_900,
+      backgroundOpacity: 0.8,
+    })
+    this.artifactsChooser.toggle()
+
+    this.add.existing(this.artifactsChooser)
   }
 
   destroyArtifacts = () => {
@@ -340,6 +511,7 @@ export default class QuadScene extends BaseScene {
         name: 'Switch Quad',
         ...baseLinkOptions,
         maxRoleId: 1,
+        saveRef: 'foo',
         callback: () => {
           this.switchScene('site')
         },
@@ -399,8 +571,38 @@ export default class QuadScene extends BaseScene {
       },
     ]
 
+    if (Auth.isAdmin()) {
+      navLinks.push({
+        name: 'Edit Map',
+        ...baseLinkOptions,
+        saveRef: 'editMapLink',
+        callback: () => {
+          this.isEditing = !this.isEditing
+
+          if (this.isEditing) {
+            this.openEditing()
+          } else {
+            this.closeEditing()
+          }
+        },
+      })
+    }
+
     this.mainNav = new MainNav(navOptions, navLinks)
     this.layer4_UI_2.add([this.mainNav])
+  }
+
+  openEditing = () => {
+    this.editMapLink.text.setText('Close Editing')
+    this.topLayer.setVisible(false)
+    this.adminTools?.toggle()
+  }
+
+  closeEditing = () => {
+    this.editMapLink.text.setText('Edit Map')
+    this.topLayer.setVisible(true)
+    this.adminTools?.toggle()
+    this.artifactsChooser?.setVisible(false)
   }
 
   createTileMap = async (): Promise<Phaser.Tilemaps.Tilemap> => {
@@ -490,7 +692,24 @@ export default class QuadScene extends BaseScene {
    *
    * @memberof QuadScene
    */
-  clickArtifactCallback = (artifact: ArtifactData) => {
+  clickArtifactCallback = (
+    data: ArtifactData,
+    artifact: Phaser.GameObjects.Sprite
+  ) => {
+    if (!this.isEditing) {
+      this.openLab(data)
+    } else {
+      this.setupEditing(artifact)
+    }
+  }
+
+  setupEditing = (artifact: Phaser.GameObjects.Sprite) => {
+    console.log('setup editing')
+    this.scene.scene.input.setDraggable(artifact)
+    artifact.setTint(0xff0000)
+  }
+
+  openLab = (artifact: ArtifactData) => {
     const toScene = this.scene.get('lab')
     const data = {
       fromScene: this,
@@ -538,7 +757,7 @@ export default class QuadScene extends BaseScene {
 
     if (tile) {
       tile.destroy()
-      await Data.saveDestroyedTile(
+      Data.saveDestroyedTile(
         this.data.get('quad').id,
         tile.x,
         tile.y,
@@ -546,7 +765,10 @@ export default class QuadScene extends BaseScene {
         () => {}
       )
     } else if (artifactData) {
-      this.clickArtifactCallback(artifactData)
+      this.clickArtifactCallback(
+        artifactData,
+        gameObjects[0] as Phaser.GameObjects.Sprite
+      )
     }
   }
 
@@ -561,15 +783,11 @@ export default class QuadScene extends BaseScene {
     pointer: Phaser.Input.Pointer,
     gameObjects: Phaser.GameObjects.GameObject[]
   ): boolean => {
-    console.log(gameObjects)
-    if (
-      gameObjects.length > 0 &&
-      gameObjects[0] instanceof Artifact === false &&
-      this.isEditing
+    return (
+      (gameObjects.length > 0 &&
+        gameObjects[0] instanceof Artifact === false) ||
+      (gameObjects.length === 0 && this.isEditing === true) ||
+      pointer.camera.name !== 'MAIN'
     )
-      return true
-    if (pointer.camera.name !== 'MAIN') return true
-
-    return false
   }
 }

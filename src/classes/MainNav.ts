@@ -12,6 +12,7 @@ export type navLink = {
   backgroundColor?: number
   backgroundOverColor?: number
   callback?: (scene?: Phaser.Scene) => void
+  saveRef?: any
 }
 
 export default class MainNav extends ContainerWithBg {
@@ -100,6 +101,9 @@ export default class MainNav extends ContainerWithBg {
         xpos - Math.floor(this.width / 2) + txtLink.fullWidth / 2,
         0
       )
+      if (link.saveRef) {
+        this.scene[link.saveRef] = txtLink
+      }
       this.add(txtLink)
 
       xpos += txtLink.fullWidth + this.padding

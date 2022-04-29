@@ -7,8 +7,10 @@ import Ruler from './Ruler'
 import { RulerOptions, RulerUnitSettings } from './Ruler'
 import ContainerWithBg from './ContainerWithBg'
 import { ContainerWithBgOptions } from './ContainerWithBg'
+import AdminTools from './AdminTools'
 
 export {
+  AdminTools,
   ATGrid,
   ContainerWithBg,
   ContainerWithBgOptions,

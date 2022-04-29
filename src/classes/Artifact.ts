@@ -12,6 +12,8 @@ export default class Artifact extends Phaser.GameObjects.Sprite {
         Utils.metersToPixels(artifactData.coordinatesInMeters.y),
       'artifactPlaceholder'
     )
+    this.name = 'Artifact'
+
     this.setData(artifactData)
     this.setOrigin(0.5, 0.5)
     this.setRotation(Utils.degreesToRandian(artifactData.displayAngle))
@@ -28,6 +30,7 @@ export default class Artifact extends Phaser.GameObjects.Sprite {
         hitArea: new Phaser.Geom.Rectangle(0, 0, this.width, this.height),
         // cursor: 'pointer',
       })
+
       this.on(Phaser.GameObjects.Events.DESTROY, this.handleDestroy)
     })
   }

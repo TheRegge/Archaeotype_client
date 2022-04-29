@@ -73,6 +73,31 @@ export class Data {
     })
   }
 
+  async getAllArtifracts(): Promise<any> {
+    const artifacts = await axios.get(`${config.API_URL}artifact`, {
+      headers: {
+        Authorization: `Bearer ${window.localStorage.getItem(
+          config.LOCAL_STORAGE_API_TOKEN_NAME
+        )}`,
+      },
+    })
+    return artifacts.data
+  }
+
+  async getUnplacedArtifact(artifactId: number): Promise<any> {
+    const artifact = await axios.get(
+      `${config.API_URL}artifact/${artifactId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem(
+            config.LOCAL_STORAGE_API_TOKEN_NAME
+          )}`,
+        },
+      }
+    )
+    return artifact.data
+  }
+
   saveDestroyedTile(
     quad_id: number,
     x: number,

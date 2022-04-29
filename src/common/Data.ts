@@ -63,12 +63,14 @@ export class Data {
     return tiles
   }
 
-  getArtifacts(quadId: number) {
+  getArtifacts(quadId: number | null) {
     return new Promise((resolve, reject) => {
-      const quad = artifactsData.data.filter((item) => item.id === quadId)
+      let quad
+      if (quadId) {
+        quad = artifactsData.data.filter((item) => item.id === quadId)
+      }
       const firstRow = quad[0]
-      if (!firstRow)
-        reject(`Could not find artifacts for quad with id: ${quadId}`)
+      if (!firstRow) reject(`Could not find artifacts`)
       resolve(firstRow.artifacts)
     })
   }

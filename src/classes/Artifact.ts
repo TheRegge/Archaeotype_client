@@ -16,18 +16,23 @@ export default class Artifact extends Phaser.GameObjects.Sprite {
 
     this.setData(artifactData)
     this.setOrigin(0.5, 0.5)
-    this.setRotation(Utils.degreesToRandian(artifactData.displayAngle))
+    this.setRotation(Utils.degreesToRandian(artifactData.angle))
 
     Utils.lazzyLoadImage(
       this.scene,
       this,
-      artifactData.src,
-      artifactData.src,
+      `${artifactData.name}_${artifactData.coordinatesInMeters.x}_${artifactData.coordinatesInMeters.y}`,
+      `${config.API_URL}resource/artifacts/onmap/${artifactData.name}.png`,
       artifactData.imageSizeInPixels.width,
       artifactData.imageSizeInPixels.height
     ).then(() => {
       this.setInteractive({
-        hitArea: new Phaser.Geom.Rectangle(0, 0, this.width, this.height),
+        hitArea: new Phaser.Geom.Rectangle(
+          0,
+          0,
+          artifactData.imageSizeInPixels?.width || 100,
+          artifactData.imageSizeInPixels?.height || 100
+        ),
         // cursor: 'pointer',
       })
 

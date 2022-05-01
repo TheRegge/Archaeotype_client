@@ -35,10 +35,10 @@ export type ArtifactData = {
   name: string
   coordinatesInMeters: { x: number; y: number }
   imageSizeInPixels: { width: number; height: number }
-  weightInGrams: number
-  heightInCentimeters: number
-  widthCentimeters: number
-  displayAngle: number
+  weight: number
+  height: number
+  width: number
+  angle: number
   isPainting: boolean
   materials: string[]
   fileName: string
@@ -49,8 +49,8 @@ export type ArtifactData = {
 export type ArtifactInChoserData = {
   id: string
   name: string
-  widthInMeters: number
-  heightInMeters: number
+  width: number
+  height: number
   mainImageId?: number
   inscriptions?: string[]
   label?: string

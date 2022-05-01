@@ -23,7 +23,6 @@ export default class AdminTools extends ContainerWithBg implements IToggle {
     this.button1.setInteractive(true)
     // this.scene.input.setDraggable(this.button1)
     this.button1.on('pointerdown', () => {
-      console.log('button1')
       const quadScene = this.scene as QuadScene
       quadScene.artifactsChooser?.toggle()
     })

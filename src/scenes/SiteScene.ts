@@ -1,3 +1,6 @@
+import axios from 'axios'
+
+import Auth from '../common/Auth'
 import BaseScene from './BaseScene'
 
 import MainNav from '../classes/MainNav'
@@ -18,6 +21,9 @@ export default class SiteScene extends BaseScene {
   // }
 
   create() {
+    // TODO: Implement this
+    this.data.set('siteId', 1)
+
     this.transitionIn()
 
     const backgroundImage = this.add
@@ -25,6 +31,18 @@ export default class SiteScene extends BaseScene {
       .setOrigin(0.5, 0.5)
 
     this.createMainNav()
+
+    // Get the quads from the API
+    axios
+      .get(`${config.API_URL}site/${this.data.get('siteId')}/quads`, {
+        headers: {
+          Authorization: `Bearer ${Auth.token}`,
+        },
+      })
+      .then((res) => {
+        const quads = res.data.quads
+        // TODO: use this real data to create the quads
+      })
 
     const quads = [
       {
@@ -69,6 +87,7 @@ export default class SiteScene extends BaseScene {
         backgroundColor: config.COLOR_HINT_SECONDARY,
         backgroundOpacity: 0.8,
         backgroundOverColor: config.COLOR_HINT_PRIMARY,
+        backgroundOverOpacity: 0.8,
         data: { quad },
       })
 

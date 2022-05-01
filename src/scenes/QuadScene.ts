@@ -97,6 +97,8 @@ export default class QuadScene extends BaseScene {
 
       if (gameObject.name === 'Artifact') {
         console.log('just dropped an artifact from the quad')
+        // TODO: implement update method
+        // this.updateArtifactOnMap(gameObject, pointer)
       }
     })
 
@@ -116,7 +118,7 @@ export default class QuadScene extends BaseScene {
 
         // Place artifacts on the map
         this.getArtifacts().then((artifacts) => {
-          this.placeArtifacts(artifacts)
+          this.placeArtifactsOnQuad(artifacts)
         })
       })
     }
@@ -157,7 +159,7 @@ export default class QuadScene extends BaseScene {
       this.populateTileMap(tilemap)
       // Place artifacts on the map
       this.getArtifacts().then((artifacts) => {
-        this.placeArtifacts(artifacts)
+        this.placeArtifactsOnQuad(artifacts)
       })
 
       // Add bg image
@@ -247,16 +249,13 @@ export default class QuadScene extends BaseScene {
 
   addArtifactToMap = async (gameObject, pointer) => {
     if (this.checkPointerOverUI(pointer, this.artifactsChooser)) return
-
     const dropLocation = {
       x: pointer.worldX,
-      y: pointer.worldY,
+      y: pointer.worldY - 50,
     }
     const artifactData = gameObject.getData('artifact')
-    console.log('addArtifactToMap', artifactData)
 
     const dbData = await Data.getUnplacedArtifact(artifactData.id)
-    console.log('dbData', dbData)
     const enrichedData = {
       ...artifactData,
       ...dbData,
@@ -264,7 +263,7 @@ export default class QuadScene extends BaseScene {
 
     // altSrc[]
     // -- coordinatesInMeters{x,y}
-    // -- displayAngle
+    // -- angle
     // -- fileName
     // -- imageSizeInPixels{width, height}
     // TODO: isPainting
@@ -276,7 +275,7 @@ export default class QuadScene extends BaseScene {
 
     enrichedData.fileName = enrichedData.name
     enrichedData.coordinatesInMeters = this.getCoordinatesInMeters(dropLocation)
-    enrichedData.displayAngle = 0
+    enrichedData.angle = 0
     enrichedData.isPainting = false
     enrichedData.quadId = this.data.get('quad').id
     enrichedData.src = `${config.API_URL}resource/artifacts/onmap/${enrichedData.fileName}.png`
@@ -290,8 +289,18 @@ export default class QuadScene extends BaseScene {
     delete enrichedData.originY
     delete enrichedData.height
     delete enrichedData.width
-    console.log('enrichedData', enrichedData)
-    this.placeArtifacts([enrichedData])
+
+    const isSaved = await this.saveNewOnmapArtifact(
+      enrichedData.id * 1,
+      enrichedData.quadId,
+      enrichedData.coordinatesInMeters.x,
+      enrichedData.coordinatesInMeters.y,
+      enrichedData.angle
+    )
+
+    if (isSaved) {
+      this.placeArtifactsOnQuad([enrichedData])
+    }
   }
 
   getCoordinatesInMeters = (location: {
@@ -669,15 +678,27 @@ export default class QuadScene extends BaseScene {
   }
 
   getArtifacts = async () => {
-    let artifacts = await Data.getArtifacts(parseInt(this.data.get('quad').id))
+    let artifacts = await Data.getArtifactsOnQuad(
+      parseInt(this.data.get('quad').id)
+    )
     return artifacts
   }
 
-  placeArtifacts = (artifactsData) => {
+  placeArtifactsOnQuad = (artifactsData) => {
     artifactsData.forEach((data) => {
       const artifact = new Artifact(this, data)
       this.layer1_artifacts.add([artifact])
     })
+  }
+
+  saveNewOnmapArtifact = async (
+    artifact_id: number,
+    quad_id: number,
+    x: number,
+    y: number,
+    angle: number
+  ): Promise<Boolean> => {
+    return Data.saveNewOnmapArtifact(artifact_id, quad_id, x, y, angle)
   }
 
   /**
@@ -704,7 +725,6 @@ export default class QuadScene extends BaseScene {
   }
 
   setupEditing = (artifact: Phaser.GameObjects.Sprite) => {
-    console.log('setup editing')
     this.scene.scene.input.setDraggable(artifact)
     artifact.setTint(0xff0000)
   }

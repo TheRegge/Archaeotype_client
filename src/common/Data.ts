@@ -63,18 +63,6 @@ export class Data {
     return tiles
   }
 
-  getArtifacts(quadId: number | null) {
-    return new Promise((resolve, reject) => {
-      let quad
-      if (quadId) {
-        quad = artifactsData.data.filter((item) => item.id === quadId)
-      }
-      const firstRow = quad[0]
-      if (!firstRow) reject(`Could not find artifacts`)
-      resolve(firstRow.artifacts)
-    })
-  }
-
   async getAllArtifracts(): Promise<any> {
     const artifacts = await axios.get(`${config.API_URL}artifact`, {
       headers: {
@@ -98,6 +86,20 @@ export class Data {
       }
     )
     return artifact.data
+  }
+
+  async getArtifactsOnQuad(quadId: number) {
+    const artifacts = await axios.get(
+      `${config.API_URL}quad/artifacts/${quadId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem(
+            config.LOCAL_STORAGE_API_TOKEN_NAME
+          )}`,
+        },
+      }
+    )
+    return artifacts.data
   }
 
   saveDestroyedTile(
@@ -136,6 +138,45 @@ export class Data {
           callback(false, error.message)
         }
       })
+  }
+
+  async saveNewOnmapArtifact(
+    artifact_id: number,
+    quad_id: number,
+    x: number,
+    y: number,
+    angle: number
+  ): Promise<Boolean> {
+    try {
+      await axios.post(
+        `${config.API_URL}quad/artifact`,
+        {
+          artifact_id,
+          quad_id,
+          x,
+          y,
+          angle,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem(
+              config.LOCAL_STORAGE_API_TOKEN_NAME
+            )}`,
+          },
+        }
+      )
+      return true
+    } catch (error) {
+      return false
+    }
+    // .then((response: AxiosResponse) => {
+    //   console.log(response.data)
+    //   return response.data.success as Boolean
+    // })
+    // .catch((error) => {
+    //   console.log(error)
+    //   return false
+    // })
   }
 }
 

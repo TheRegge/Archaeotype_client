@@ -80,8 +80,8 @@ export default class ArtifactsChooser
           const artifactData = {
             id,
             name,
-            widthInMeters: width,
-            heightInMeters: height,
+            width: width,
+            height: height,
             originX: 0 - this.width / 2 + padding,
             originY: offset + padding - this.height / 2,
           }

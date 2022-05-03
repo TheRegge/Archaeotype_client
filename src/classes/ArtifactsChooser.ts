@@ -62,7 +62,6 @@ export default class ArtifactsChooser
     this.add(this.scrollUpButton)
     this.add(this.scrollDownButton)
     this.getArtifacts()
-    // this.panel.layout()
   }
 
   getBounds = () => {
@@ -80,8 +79,8 @@ export default class ArtifactsChooser
           const artifactData = {
             id,
             name,
-            width: width,
-            height: height,
+            width,
+            height,
             originX: 0 - this.width / 2 + padding,
             originY: offset + padding - this.height / 2,
           }
@@ -112,6 +111,7 @@ export default class ArtifactsChooser
         })
       })
       .catch((err) => {
+        // TODO: handle error
         console.log(err)
       })
   }

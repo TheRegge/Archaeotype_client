@@ -252,9 +252,8 @@ button[type='submit'] {
 .subscene_container .preview {
   width: calc(var(--input-width) * 1.45);
   height: calc(var(--input-width) * 1.45);
-  background-color: var(--color-gray-700);
+  background-color: black;
   text-align: center;
-  /* position: relative; */
 }
 
 /* ............ */

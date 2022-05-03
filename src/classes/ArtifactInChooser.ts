@@ -45,7 +45,7 @@ export default class ArtifactInChooser extends ContainerWithBg {
       this.scene,
       this.image,
       imageName,
-      `${Config.API_URL}resource/artifacts/preview/${imageName}.png`,
+      `${Config.API_URL}resource/artifacts/thumb/${imageName}.png`,
       100,
       100
     ).then(() => {})

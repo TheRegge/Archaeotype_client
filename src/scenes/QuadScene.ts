@@ -311,12 +311,8 @@ export default class QuadScene extends BaseScene {
     const tileWidth = config.TILE_SIZE
     const tileHeight = config.TILE_SIZE
 
-    const xInMeters =
-      (Math.floor(((location.x - origin.x) / tileWidth) * 100) / 100) *
-      config.TILE_SCALE
-    const yInMeters =
-      (Math.floor(((location.y - origin.y) / tileHeight) * 100) / 100) *
-      config.TILE_SCALE
+    const xInMeters = ((location.x - origin.x) / tileWidth) * config.TILE_SCALE
+    const yInMeters = ((location.y - origin.y) / tileHeight) * config.TILE_SCALE
 
     return {
       x: xInMeters,

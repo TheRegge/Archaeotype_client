@@ -11,6 +11,14 @@ export default class LabSubScene extends BaseSubScene {
   initHTML() {
     const { artifact, tile } = this.data.get('htmlData')
 
+    let materialsArray = new Array()
+
+    artifact.materials?.map((material) => {
+      materialsArray.push(material.name)
+    })
+
+    const materialsString = materialsArray.join(', ')
+
     this.elements = [
       {
         el: document.getElementById('foundBy') as HTMLInputElement,
@@ -58,7 +66,7 @@ export default class LabSubScene extends BaseSubScene {
         el: document.getElementById('materials') as HTMLSpanElement,
         data: {
           valueType: 'innerText',
-          value: artifact.materials.join(', '),
+          value: materialsString,
         },
       },
     ]

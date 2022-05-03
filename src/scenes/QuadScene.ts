@@ -96,7 +96,6 @@ export default class QuadScene extends BaseScene {
       }
 
       if (gameObject.name === 'Artifact') {
-        console.log('just dropped an artifact from the quad')
         // TODO: implement update method
         // this.updateArtifactOnMap(gameObject, pointer)
       }
@@ -761,7 +760,7 @@ export default class QuadScene extends BaseScene {
    */
   handlePointerdown = async (
     pointer: Phaser.Input.Pointer,
-    gameObjects: Phaser.GameObjects.GameObject[]
+    gameObjects: any
   ) => {
     if (this.clickDoesNotRemoveTileGuard(pointer, gameObjects)) return
 

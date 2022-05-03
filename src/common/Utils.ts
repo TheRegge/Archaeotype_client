@@ -95,6 +95,13 @@ export class Utils {
     height?: number
   ) {
     return new Promise<void>((resolve) => {
+      if (scene.textures.exists(imageName)) {
+        image.setTexture(imageName)
+        if (width && height) {
+          image.setDisplaySize(width, height)
+        }
+        return
+      }
       let loader = new Phaser.Loader.LoaderPlugin(scene)
       loader.image(imageName, src)
 

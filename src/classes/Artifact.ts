@@ -26,16 +26,6 @@ export default class Artifact extends Phaser.GameObjects.Sprite {
       artifactData.imageSizeInPixels.width,
       artifactData.imageSizeInPixels.height
     ).then(() => {
-      this.setInteractive({
-        hitArea: new Phaser.Geom.Rectangle(
-          0,
-          0,
-          artifactData.imageSizeInPixels?.width || 100,
-          artifactData.imageSizeInPixels?.height || 100
-        ),
-        // cursor: 'pointer',
-      })
-
       this.on(Phaser.GameObjects.Events.DESTROY, this.handleDestroy)
     })
   }

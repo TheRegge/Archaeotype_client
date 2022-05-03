@@ -38,14 +38,14 @@ export default class LabSubScene extends BaseSubScene {
         el: document.getElementById('height') as HTMLInputElement,
         data: {
           valueType: 'value',
-          value: artifact.heightInCentimeters / 1000 + '',
+          value: artifact.height,
         },
       },
       {
         el: document.getElementById('width') as HTMLInputElement,
         data: {
           valueType: 'value',
-          value: artifact.widthInCentimeters / 100 + '',
+          value: artifact.width,
         },
       },
       {

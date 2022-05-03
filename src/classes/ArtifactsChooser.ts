@@ -103,8 +103,6 @@ export default class ArtifactsChooser
             artifactData
           )
 
-          // artifact.setPosition(0, offset)
-          artifact.setInteractive()
           this.scene.input.setDraggable(artifact)
           // artifact.setOrigin(0)
           // let container = this as Phaser.GameObjects.Container

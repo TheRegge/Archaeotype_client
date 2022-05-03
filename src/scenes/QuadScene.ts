@@ -683,6 +683,11 @@ export default class QuadScene extends BaseScene {
   placeArtifactsOnQuad = (artifactsData) => {
     artifactsData.forEach((data) => {
       const artifact = new Artifact(this, data)
+      artifact.setInteractive(
+        new Phaser.Geom.Rectangle(0, 0, data.width_onmap, data.height_onmap),
+        Phaser.Geom.Rectangle.Contains
+      )
+      // this.input.enableDebug(artifact)
       this.layer1_artifacts.add([artifact])
     })
   }

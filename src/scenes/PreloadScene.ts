@@ -67,16 +67,11 @@ export default class PreloadScene extends Phaser.Scene {
       './assets/images/tilesets/tileset-map-1312_2px.png'
     )
 
-    this.load.image(
-      'artifactPlaceholder',
-      './assets/images/artifacts/onmap/archaeotype-artifact_placeholder.png'
-    )
-
     this.load.json('fakeTiles', './assets/fakeTilesData.json')
     this.load.json('artifacts', './assets/artifacts.json')
     this.load.image(
       'artifactPlaceholder',
-      './assets/images/artifacts/onmap/archaeotype-artifact_placeholder.png'
+      './assets/images/artifacts/onmap/transparent.png'
     )
 
     // SubScenes

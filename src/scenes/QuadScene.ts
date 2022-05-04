@@ -12,12 +12,11 @@ import { Popup } from '../classes/Popup'
 import Artifact from '../classes/Artifact'
 import Measurer from '../classes/Measurer'
 import Data from '../common/Data'
-import { ArtifactData } from '../common/Types'
 import HelpSubScene from './subScenes/HelpSubScene'
 import CollectionsSubScene from './subScenes/CollectionsSubscene'
 import { AdminTools } from '../classes'
 import Auth from '../common/Auth'
-import { User } from '../common/Types'
+import { ArtifactData, User, QuadPointerState } from '../common/Types'
 import utils from '../common/Utils'
 import ArtifactsChooser from '../classes/ArtifactsChooser'
 import { IGetBounds } from '../common/Interfaces'
@@ -46,9 +45,9 @@ export default class QuadScene extends BaseScene {
   private topLayer
   private topLayerTiles
   private sceneReady: boolean
-  private isEditing: boolean = false
   private user: User | null
   public player
+  public pointerState: QuadPointerState
 
   constructor() {
     super({ key: 'quad' })
@@ -59,6 +58,7 @@ export default class QuadScene extends BaseScene {
     this.editMapLink = 'foo'
     this.adminTools = null
     this.artifactsChooser = null
+    this.pointerState = 'play'
   }
 
   // preload() {
@@ -68,6 +68,7 @@ export default class QuadScene extends BaseScene {
 
   init() {
     super.init()
+    this.pointerState = 'play'
   }
 
   setup() {
@@ -83,21 +84,29 @@ export default class QuadScene extends BaseScene {
     })
 
     this.scene.scene.input.on('dragend', (pointer, gameObject) => {
-      if (typeof gameObject.clearTint === 'function') gameObject.clearTint()
+      switch (this.pointerState) {
+        case 'edit':
+          if (gameObject.name === 'Artifact') {
+            this.updateArtifactOnMap(gameObject, pointer)
+            if (typeof gameObject.clearTint === 'function')
+              gameObject.clearTint()
 
-      if (gameObject.name === 'ArtifactInChooser') {
-        this.addArtifactToMap(gameObject, pointer)
+            this.scene.scene.input.setDraggable(gameObject, false)
+          }
+          break
 
-        gameObject.setPosition(
-          gameObject.getData('dragStart').x,
-          gameObject.getData('dragStart').y
-        )
-        gameObject.showStillState()
-      }
+        case 'add':
+          if (gameObject.name === 'ArtifactInChooser') {
+            this.addArtifactToMap(gameObject, pointer)
+            gameObject.setPosition(
+              gameObject.getData('dragStart').x,
+              gameObject.getData('dragStart').y
+            )
+            gameObject.showStillState()
+          }
 
-      if (gameObject.name === 'Artifact') {
-        // TODO: implement update method
-        // this.updateArtifactOnMap(gameObject, pointer)
+        default:
+          break
       }
     })
 
@@ -224,8 +233,49 @@ export default class QuadScene extends BaseScene {
   update() {
     if (!this.sceneReady) return
 
+    switch (this.pointerState) {
+      case 'delete':
+        this.input.manager.setDefaultCursor('not-allowed')
+        break
+
+      case 'edit':
+        this.input.manager.setDefaultCursor('default')
+        break
+
+      default:
+        this.input.manager.setDefaultCursor('default')
+        break
+    }
+
     this.player.body.setVelocity(0)
     this.moveWithKeys()
+  }
+
+  updateArtifactOnMap = async (
+    artifact: Phaser.GameObjects.GameObject,
+    pointer: any
+  ) => {
+    const newX =
+      Math.floor(utils.pixelsToMeters(pointer.x - config.H_OFFSET) * 100) / 100
+    const newY =
+      Math.floor(utils.pixelsToMeters(pointer.y - config.V_OFFSET) * 100) / 100
+
+    artifact.setData('coordinatesInMeters', {
+      x: newX,
+      y: newY,
+    })
+
+    const data = {
+      artifact_id: parseInt(artifact.getData('id')),
+      quad_id: this.data.get('quad').id,
+      x: newX,
+      y: newY,
+      angle: parseInt(artifact.getData('angle')),
+    }
+
+    const success = await Data.updateArtifactOnMap(data)
+
+    success ? console.log('success') : console.log('failure')
   }
 
   /**
@@ -581,11 +631,11 @@ export default class QuadScene extends BaseScene {
         ...baseLinkOptions,
         saveRef: 'editMapLink',
         callback: () => {
-          this.isEditing = !this.isEditing
-
-          if (this.isEditing) {
+          if (this.pointerState === 'play') {
+            this.pointerState = 'edit'
             this.openEditing()
           } else {
+            this.pointerState = 'play'
             this.closeEditing()
           }
         },
@@ -600,6 +650,7 @@ export default class QuadScene extends BaseScene {
     this.editMapLink.text.setText('Close Editing')
     this.topLayer.setVisible(false)
     this.adminTools?.toggle()
+    this.pointerState = 'edit'
   }
 
   closeEditing = () => {
@@ -607,6 +658,7 @@ export default class QuadScene extends BaseScene {
     this.topLayer.setVisible(true)
     this.adminTools?.toggle()
     this.artifactsChooser?.setVisible(false)
+    this.pointerState = 'play'
   }
 
   createTileMap = async (): Promise<Phaser.Tilemaps.Tilemap> => {
@@ -701,34 +753,6 @@ export default class QuadScene extends BaseScene {
     return Data.saveNewOnmapArtifact(artifact_id, quad_id, x, y, angle)
   }
 
-  /**
-   * Callback function called when clicking on an Artifact.
-   *
-   * The function is called from the artifact.
-   *
-   * **Note:** We use `scene.pause/resume` for the quad scene because
-   * it pauses all the scene's systems but leaves it visible. We
-   * use `scene.sleep/wake` for the LabSubscene because it needs to
-   * be hidden when not active.
-   *
-   * @memberof QuadScene
-   */
-  clickArtifactCallback = (
-    data: ArtifactData,
-    artifact: Phaser.GameObjects.Sprite
-  ) => {
-    if (!this.isEditing) {
-      this.openLab(data)
-    } else {
-      this.setupEditing(artifact)
-    }
-  }
-
-  setupEditing = (artifact: Phaser.GameObjects.Sprite) => {
-    this.scene.scene.input.setDraggable(artifact)
-    artifact.setTint(0xff0000)
-  }
-
   openLab = (artifact: ArtifactData) => {
     const toScene = this.scene.get('lab')
     const data = {
@@ -762,9 +786,34 @@ export default class QuadScene extends BaseScene {
     pointer: Phaser.Input.Pointer,
     gameObjects: any
   ) => {
-    if (this.clickDoesNotRemoveTileGuard(pointer, gameObjects)) return
+    switch (this.pointerState) {
+      case 'play':
+        this.handlePointerDownPlayState(pointer, gameObjects)
+        break
 
-    const artifactData = gameObjects[0]?.data.getAll() as ArtifactData
+      case 'edit':
+        this.handlePointerDownEditState(pointer, gameObjects)
+        break
+
+      case 'delete':
+        this.handlePointerDownDeleteState(pointer, gameObjects)
+        break
+
+      case 'add':
+        this.handlePointerDownAddState(pointer, gameObjects)
+        break
+
+      default:
+        console.error('Unknown pointer state')
+        break
+    }
+  }
+
+  handlePointerDownPlayState = (
+    pointer: Phaser.Input.Pointer,
+    gameObjects: any
+  ) => {
+    if (this.clickDoesNotRemoveTileGuard(pointer, gameObjects)) return
 
     const tile: Phaser.Tilemaps.Tile | null = this.tileMap.removeTileAtWorldXY(
       pointer.worldX,
@@ -774,7 +823,6 @@ export default class QuadScene extends BaseScene {
       this.cameras.main,
       this.topLayer
     ) as Phaser.Tilemaps.Tile
-
     if (tile) {
       tile.destroy()
       Data.saveDestroyedTile(
@@ -784,11 +832,63 @@ export default class QuadScene extends BaseScene {
         Auth.user?.id || 99,
         () => {}
       )
-    } else if (artifactData) {
-      this.clickArtifactCallback(
-        artifactData,
-        gameObjects[0] as Phaser.GameObjects.Sprite
-      )
+    } else if (
+      gameObjects[0] &&
+      gameObjects[0].name.toLowerCase() === 'artifact'
+    ) {
+      const artifactData = gameObjects[0]?.data.getAll() as ArtifactData
+      this.openLab(artifactData)
+    }
+  }
+
+  handlePointerDownAddState = (
+    pointer: Phaser.Input.Pointer,
+    gameObjects: any
+  ) => {
+    console.log('handlePointerDownAddState')
+  }
+
+  handlePointerDownEditState = (
+    pointer: Phaser.Input.Pointer,
+    gameObjects: any
+  ) => {
+    if (this.clickDoesNotRemoveTileGuard(pointer, gameObjects)) return
+
+    if (gameObjects[0] && gameObjects[0].name.toLowerCase() === 'artifact') {
+      // this.setupEditing(gameObjects[0] as Phaser.GameObjects.Sprite)
+      const artifact = gameObjects[0] as Phaser.GameObjects.Sprite
+      this.scene.scene.input.setDraggable(artifact)
+      artifact.setTint(0xff0000)
+    }
+  }
+
+  handlePointerDownDeleteState = async (
+    pointer: Phaser.Input.Pointer,
+    gameObjects: any
+  ) => {
+    if (this.clickDoesNotRemoveTileGuard(pointer, gameObjects)) return
+
+    if (gameObjects[0] && gameObjects[0].name.toLowerCase() === 'artifact') {
+      this.pointerState = 'edit'
+      const artifact = gameObjects[0]
+      if (
+        window.confirm(`Do you want to delete ${artifact.data.get('name')}?`)
+      ) {
+        const x = artifact.data.get('coordinatesInMeters').x * 1
+        const y = artifact.data.get('coordinatesInMeters').y * 1
+        const quad_id = this.data.get('quad').id * 1
+        const artifact_id = artifact.data.get('id') * 1
+
+        const deleted = await Data.deleteOnmapArtifact(
+          artifact_id,
+          quad_id,
+          x,
+          y
+        )
+        if (deleted) {
+          gameObjects[0].destroy()
+        }
+      }
     }
   }
 
@@ -806,7 +906,7 @@ export default class QuadScene extends BaseScene {
     return (
       (gameObjects.length > 0 &&
         gameObjects[0] instanceof Artifact === false) ||
-      (gameObjects.length === 0 && this.isEditing === true) ||
+      (gameObjects.length === 0 && this.pointerState !== 'play') ||
       pointer.camera.name !== 'MAIN'
     )
   }

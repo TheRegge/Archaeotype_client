@@ -9,6 +9,8 @@ export type Quad = {
   y: number
 }
 
+export type QuadPointerState = 'play' | 'edit' | 'delete' | 'add'
+
 export type User = {
   email: string
   firstname: string

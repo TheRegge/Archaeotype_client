@@ -153,6 +153,68 @@ export class Data {
         {
           artifact_id,
           quad_id,
+          x: x * 1,
+          y: y * 1,
+          angle,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem(
+              config.LOCAL_STORAGE_API_TOKEN_NAME
+            )}`,
+          },
+        }
+      )
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
+  async deleteOnmapArtifact(
+    artifact_id: number,
+    quad_id: number,
+    x: number,
+    y: number
+  ): Promise<Boolean> {
+    try {
+      await axios.post(
+        `${config.API_URL}quad/delete_artifact`,
+        {
+          artifact_id,
+          quad_id,
+          x: x * 1,
+          y: y * 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem(
+              config.LOCAL_STORAGE_API_TOKEN_NAME
+            )}`,
+          },
+        }
+      )
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
+  async updateArtifactOnMap(data: {
+    artifact_id: number
+    quad_id: number
+    x: number
+    y: number
+    angle: number
+  }): Promise<Boolean> {
+    const { artifact_id, quad_id, x, y, angle } = data
+
+    try {
+      const result = await axios.patch(
+        `${config.API_URL}quad/artifact`,
+        {
+          artifact_id,
+          quad_id,
           x,
           y,
           angle,

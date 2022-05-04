@@ -231,14 +231,46 @@ export class Data {
     } catch (error) {
       return false
     }
-    // .then((response: AxiosResponse) => {
-    //   console.log(response.data)
-    //   return response.data.success as Boolean
-    // })
-    // .catch((error) => {
-    //   console.log(error)
-    //   return false
-    // })
+  }
+
+  async saveLabData(
+    artifact_id: number,
+    quad_id: number,
+    user_id: number,
+    username: string,
+    fields: {
+      found_colors: string
+      found_column: number | string
+      found_label: string
+      found_row: number | string
+      found_materials: string
+      found_weight?: number
+      found_height?: number
+      found_width?: number
+    }
+  ) {
+    try {
+      await axios.post(
+        `${config.API_URL}quad/lab`,
+        {
+          artifact_id,
+          quad_id,
+          user_id,
+          username,
+          ...fields,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem(
+              config.LOCAL_STORAGE_API_TOKEN_NAME
+            )}`,
+          },
+        }
+      )
+      return true
+    } catch (error) {
+      return false
+    }
   }
 }
 

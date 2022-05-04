@@ -20,14 +20,14 @@
         </div>
         <div class="flex-column">
           <div class="flex-column">
-            <label for="name">Label</label>
-            <input type="text" id="name" placeholder="Enter a name for the artifact">
+            <label for="label">Label</label>
+            <input type="text" id="label" placeholder="Enter a name for the artifact">
           </div>
           <div class="flex-column">
             <div class="flex-row">
               <div class="flex-column">
                 <label for="foundBy">Found by</label>
-                <input class="third" type="text" id="foundBy" value="Regis">
+                <input class="third" type="text" id="foundBy" value="" disabled>
               </div>
               <div class="flex-column">
                 <label for="row">Row</label>
@@ -86,10 +86,10 @@
           </div>
           <div class="flex-row">
             <div class="flex-column">
-              <button class="cancel">Cancel</button>
+              <button id="cancel" class="cancel">Cancel</button>
             </div>
             <div class="flex-column">
-              <button class="submit">Submit</button>
+              <button id="submit" class="submit">Submit</button>
             </div>
           </div>
         </div>

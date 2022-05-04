@@ -1,16 +1,37 @@
 import BaseSubScene from '../subScenes/BaseSubScene'
 import { UpdatableElement } from '../../common/Types'
 import Config from '../../common/Config'
+import Auth from '../../common/Auth'
+import Data from '../../common/Data'
 export default class LabSubScene extends BaseSubScene {
   public elements: UpdatableElement[]
 
   constructor() {
     super('lab')
     this.elements = []
+    // this.game.input.keyboard.enabled = false
+    if (!Auth.user) {
+      this.close()
+    }
   }
 
   initHTML() {
+    this.input.keyboard.clearCaptures()
     const { artifact, tile } = this.data.get('htmlData')
+
+    this.data.set('formData', {
+      artifact_id: artifact.id * 1,
+      quad_id: artifact.quadId * 1,
+      user_id: Auth.user?.id ? Auth.user?.id * 1 : 0,
+      fields: {
+        found_row: tile.row,
+        found_column: tile.column * 1,
+        found_weight: artifact.weightInGrams,
+        found_height: artifact.height,
+        found_width: artifact.width,
+        found_materials: artifact.materials,
+      },
+    })
 
     let materialsArray = new Array()
 
@@ -22,10 +43,25 @@ export default class LabSubScene extends BaseSubScene {
 
     this.elements = [
       {
+        el: document.getElementById('label') as HTMLInputElement,
+        data: {
+          value: artifact.found_label || '',
+          valueType: 'value',
+        },
+        action: {
+          event: 'change',
+          callback: (e: any) => {
+            const data = this.data.get('formData')
+            data.fields.found_label = e.target.value
+            this.data.set('formData', data)
+          },
+        },
+      },
+      {
         el: document.getElementById('foundBy') as HTMLInputElement,
         data: {
           valueType: 'value',
-          value: 'Someone',
+          value: Auth.user?.firstname || '',
         },
       },
       {
@@ -64,10 +100,72 @@ export default class LabSubScene extends BaseSubScene {
         },
       },
       {
+        el: document.getElementById('colors') as HTMLInputElement,
+        data: {
+          valueType: 'value',
+          value: '',
+        },
+        action: {
+          event: 'change',
+          callback: (e: any) => {
+            const data = this.data.get('formData')
+            data.fields.found_colors = e.target.value
+            this.data.set('formData', data)
+          },
+        },
+      },
+      {
         el: document.getElementById('materials') as HTMLSpanElement,
         data: {
           valueType: 'innerText',
           value: materialsString,
+        },
+      },
+      {
+        el: document.getElementById('notes') as HTMLInputElement,
+        data: {
+          valueType: 'value',
+          value: '',
+        },
+        action: {
+          event: 'change',
+          callback: (e: any) => {
+            const data = this.data.get('formData')
+            data.fields.found_notes = e.target.value
+            this.data.set('formData', data)
+          },
+        },
+      },
+      {
+        el: document.querySelector('button.submit') as HTMLButtonElement,
+        data: {
+          valueType: 'innerText',
+          value: 'Submit!',
+        },
+        action: {
+          event: 'click',
+          callback: async () => {
+            const formData = this.data.get('formData')
+            const materials: string[] = []
+            formData.fields.found_materials.map((material) => {
+              materials.push(material.name)
+            })
+            formData.fields.found_materials = materials.join(', ')
+
+            const result = await Data.saveLabData(
+              formData.artifact_id,
+              formData.quad_id,
+              formData.user_id,
+              Auth.user?.username || '',
+              formData.fields
+            )
+            if (result) {
+              this.close()
+            } else {
+              // TODO: handle error
+              console.error('Lab data was not saved')
+            }
+          },
         },
       },
     ]

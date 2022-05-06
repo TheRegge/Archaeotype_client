@@ -6,6 +6,8 @@ import BaseScene from './BaseScene'
 import MainNav from '../classes/MainNav'
 import SiteQuad from '../classes/SiteQuad'
 
+import Data from '../common/Data'
+
 import config from '../common/Config'
 
 // 83.06% is how much I reduced the original image from Paul
@@ -20,7 +22,7 @@ export default class SiteScene extends BaseScene {
   //  Assets preloaded in  PreloadScene
   // }
 
-  create() {
+  async create() {
     // TODO: Implement this
     this.data.set('siteId', 1)
 
@@ -32,56 +34,14 @@ export default class SiteScene extends BaseScene {
 
     this.createMainNav()
 
-    // Get the quads from the API
-    axios
-      .get(`${config.API_URL}site/${this.data.get('siteId')}/quads`, {
-        headers: {
-          Authorization: `Bearer ${Auth.token}`,
-        },
-      })
-      .then((res) => {
-        const quads = res.data.quads
-        // TODO: use this real data to create the quads
-      })
-
-    const quads = [
-      {
-        id: 1,
-        name: 'Quad 1',
-        x: 50,
-        y: 165,
-      },
-      {
-        id: 2,
-        name: 'Quad 2',
-        x: 64,
-        y: -156,
-      },
-      {
-        id: 3,
-        name: 'Quad 3',
-        x: -75,
-        y: -62,
-      },
-      {
-        id: 4,
-        name: 'Quad 4',
-        x: -75,
-        y: 48,
-      },
-      {
-        id: 5,
-        name: 'Quad 5',
-        x: -180,
-        y: 136,
-      },
-    ]
+    const site = await Data.getSiteQuads(this.data.get('siteId'))
+    const quads = site.quads
 
     quads.forEach((quad) => {
       const squad = new SiteQuad({
         scene: this,
-        x: backgroundImage.x + quad.x,
-        y: backgroundImage.y + quad.y,
+        x: backgroundImage.x + quad.x * 1,
+        y: backgroundImage.y + quad.y * 1,
         width: 50 * config.SITE_PIXEL_TO_METER_SCALE,
         height: 50 * config.SITE_PIXEL_TO_METER_SCALE,
         backgroundColor: config.COLOR_HINT_SECONDARY,
@@ -90,7 +50,7 @@ export default class SiteScene extends BaseScene {
         backgroundOverOpacity: 0.8,
         data: { quad },
       })
-
+      console.log('squad', squad)
       this.add.existing(squad)
     })
   }

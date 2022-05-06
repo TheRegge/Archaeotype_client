@@ -1,6 +1,7 @@
 import BaseScene from '../scenes/BaseScene'
 import config from '../common/Config'
 import ContainerWithBg, { ContainerWithBgOptions } from './ContainerWithBg'
+import Auth from '../common/Auth'
 
 export default class SiteQuad extends ContainerWithBg {
   public backgroundColor: number
@@ -28,11 +29,13 @@ export default class SiteQuad extends ContainerWithBg {
   }
 
   setText = () => {
+    let textString = this.getData('quad').name
+    // if (Auth.isAdmin()) textString += ' - ' + this.getData('quad').description
     const text = new Phaser.GameObjects.Text(
       this.scene,
       0,
       Math.round(this.background.height + 5),
-      this.getData('quad').name,
+      textString,
       {
         fontFamily: config.GOOGLE_FONT_FAMILY,
         fontSize: '10px',

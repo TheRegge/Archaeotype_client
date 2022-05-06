@@ -19,6 +19,17 @@ export class Data {
     return Data.instance
   }
 
+  async getSiteQuads(siteId: number): Promise<any> {
+    const result = await axios.get(`${config.API_URL}site/${siteId}`, {
+      headers: {
+        Authorization: `Bearer ${window.localStorage.getItem(
+          config.LOCAL_STORAGE_API_TOKEN_NAME
+        )}`,
+      },
+    })
+    return result.data
+  }
+
   /**
    * Fetch tiles from data layer
    *

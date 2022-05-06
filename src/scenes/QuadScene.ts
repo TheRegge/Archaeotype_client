@@ -24,6 +24,7 @@ import { IGetBounds } from '../common/Interfaces'
 export default class QuadScene extends BaseScene {
   public artifactsChooser: ArtifactsChooser | null
   private adminTools: AdminTools | null
+  private bgImage: Phaser.GameObjects.Image | null = null
   private cursors
   private editMapLink: any
   private grid
@@ -72,43 +73,8 @@ export default class QuadScene extends BaseScene {
   }
 
   setup() {
-    this.scene.scene.input.on('dragstart', (_, gameObject) => {
-      if (gameObject.name === 'ArtifactInChooser') {
-        gameObject.setData('dragStart', {
-          x: gameObject.x,
-          y: gameObject.y,
-        })
-
-        gameObject.showDraggingState()
-      }
-    })
-
-    this.scene.scene.input.on('dragend', (pointer, gameObject) => {
-      switch (this.pointerState) {
-        case 'edit':
-          if (gameObject.name === 'Artifact') {
-            this.updateArtifactOnMap(gameObject, pointer)
-            if (typeof gameObject.clearTint === 'function')
-              gameObject.clearTint()
-
-            this.scene.scene.input.setDraggable(gameObject, false)
-          }
-          break
-
-        case 'add':
-          if (gameObject.name === 'ArtifactInChooser') {
-            this.addArtifactToMap(gameObject, pointer)
-            gameObject.setPosition(
-              gameObject.getData('dragStart').x,
-              gameObject.getData('dragStart').y
-            )
-            gameObject.showStillState()
-          }
-
-        default:
-          break
-      }
-    })
+    const bgImageName = this.data.get('quad').bgFilename.split('.')[0]
+    this.bgImage?.setTexture(bgImageName)
 
     this.user = Auth.user
 
@@ -172,11 +138,16 @@ export default class QuadScene extends BaseScene {
 
       // Add bg image
       // TODO: image y pos should be set at config.WORLD.origin.y (not * 2), but this is a hack to fix a bug I don't understand yet
-      const bgImage = this.add
-        .image(config.WORLD.origin.x * 2, config.WORLD.origin.y * 2, 'terrain')
+      const bgImageName = this.data.get('quad').bgFilename.split('.')[0]
+      this.bgImage = this.add
+        .image(
+          config.WORLD.origin.x * 2,
+          config.WORLD.origin.y * 2,
+          bgImageName
+        )
         .setOrigin(0)
 
-      this.layer0_bgImage.add([bgImage])
+      this.layer0_bgImage.add([this.bgImage])
 
       // Player
       this.player = Player.getInstance(

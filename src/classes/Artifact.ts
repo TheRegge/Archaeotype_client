@@ -21,7 +21,11 @@ export default class Artifact extends Phaser.GameObjects.Sprite {
     Utils.lazzyLoadImage(
       this.scene,
       this,
-      `${artifactData.name}_${artifactData.coordinatesInMeters.x}_${artifactData.coordinatesInMeters.y}`,
+      `${artifactData.name}_${this.scene.scene.key}_${
+        this.scene.data.get('quad').id
+      }_${artifactData.coordinatesInMeters.x}_${
+        artifactData.coordinatesInMeters.y
+      }`,
       `${config.API_URL}resource/artifacts/onmap/${artifactData.name}.png`,
       artifactData.imageSizeInPixels.width,
       artifactData.imageSizeInPixels.height

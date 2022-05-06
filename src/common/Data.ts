@@ -157,9 +157,9 @@ export class Data {
     x: number,
     y: number,
     angle: number
-  ): Promise<Boolean> {
+  ): Promise<number> {
     try {
-      await axios.post(
+      const result = await axios.post(
         `${config.API_URL}quad/artifact`,
         {
           artifact_id,
@@ -176,26 +176,18 @@ export class Data {
           },
         }
       )
-      return true
+      return result.data.insertID
     } catch (error) {
-      return false
+      return 0
     }
   }
 
-  async deleteOnmapArtifact(
-    artifact_id: number,
-    quad_id: number,
-    x: number,
-    y: number
-  ): Promise<Boolean> {
+  async deleteOnmapArtifact(onMapId: number): Promise<Boolean> {
     try {
       await axios.post(
-        `${config.API_URL}quad/delete_artifact`,
+        `${config.API_URL}deleteartifact`,
         {
-          artifact_id,
-          quad_id,
-          x: x * 1,
-          y: y * 1,
+          onMapId,
         },
         {
           headers: {
@@ -212,20 +204,18 @@ export class Data {
   }
 
   async updateArtifactOnMap(data: {
-    artifact_id: number
-    quad_id: number
+    onMapId: number
     x: number
     y: number
     angle: number
   }): Promise<Boolean> {
-    const { artifact_id, quad_id, x, y, angle } = data
-
+    const { onMapId, x, y, angle } = data
+    console.log('in Data updateArtifactOnMap, onMapId: ', onMapId)
     try {
       const result = await axios.patch(
         `${config.API_URL}quad/artifact`,
         {
-          artifact_id,
-          quad_id,
+          onMapId,
           x,
           y,
           angle,

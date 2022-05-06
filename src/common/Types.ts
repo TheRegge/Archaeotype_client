@@ -34,6 +34,7 @@ export type UpdatableElement = {
 export type ArtifactData = {
   id: string
   mapId: string
+  onMapId?: number
   name: string
   coordinatesInMeters: { x: number; y: number }
   imageSizeInPixels: { width: number; height: number }
@@ -46,6 +47,8 @@ export type ArtifactData = {
   fileName: string
   src: string
   altSrc: string[]
+  width_onmap?: number
+  height_onmap?: number
 }
 
 export type ArtifactInChoserData = {

@@ -199,6 +199,44 @@ export default class QuadScene extends BaseScene {
     })
     // handle clicking on map
     this.input.on('pointerdown', this.handlePointerdown)
+    this.scene.scene.input.on('dragstart', (_, gameObject) => {
+      if (gameObject.name === 'ArtifactInChooser') {
+        gameObject.setData('dragStart', {
+          x: gameObject.x,
+          y: gameObject.y,
+        })
+
+        gameObject.showDraggingState()
+      }
+    })
+
+    this.scene.scene.input.on('dragend', (pointer, gameObject) => {
+      switch (this.pointerState) {
+        case 'edit':
+          if (gameObject.name === 'Artifact') {
+            this.updateArtifactOnMap(gameObject, pointer)
+            if (typeof gameObject.clearTint === 'function')
+              gameObject.clearTint()
+
+            this.scene.scene.input.setDraggable(gameObject, false)
+          }
+          break
+
+        case 'add':
+          if (gameObject.name === 'ArtifactInChooser') {
+            this.addArtifactToMap(gameObject, pointer)
+            gameObject.setPosition(
+              gameObject.getData('dragStart').x,
+              gameObject.getData('dragStart').y
+            )
+            gameObject.showStillState()
+          }
+          break
+
+        default:
+          break
+      }
+    })
   }
 
   update() {
@@ -237,8 +275,7 @@ export default class QuadScene extends BaseScene {
     })
 
     const data = {
-      artifact_id: parseInt(artifact.getData('id')),
-      quad_id: this.data.get('quad').id,
+      onMapId: artifact.data.get('onMapId') * 1,
       x: newX,
       y: newY,
       angle: parseInt(artifact.getData('angle')),
@@ -281,17 +318,7 @@ export default class QuadScene extends BaseScene {
       ...dbData,
     }
 
-    // altSrc[]
-    // -- coordinatesInMeters{x,y}
-    // -- angle
-    // -- fileName
-    // -- imageSizeInPixels{width, height}
     // TODO: isPainting
-    // -- mapId (quadId)
-    // -- materials[]
-    // -- src (`images/artifacts/onmap/${fileName}`)
-    // -- weightInGrams ==> weight
-    // ----> not needed: widthInCentimeters
 
     enrichedData.fileName = enrichedData.name
     enrichedData.coordinatesInMeters = this.getCoordinatesInMeters(dropLocation)
@@ -310,7 +337,7 @@ export default class QuadScene extends BaseScene {
     delete enrichedData.height
     delete enrichedData.width
 
-    const isSaved = await this.saveNewOnmapArtifact(
+    const insertID = await this.saveNewOnmapArtifact(
       enrichedData.id * 1,
       enrichedData.quadId,
       enrichedData.coordinatesInMeters.x,
@@ -318,8 +345,12 @@ export default class QuadScene extends BaseScene {
       enrichedData.angle
     )
 
-    if (isSaved) {
+    enrichedData.onMapId = insertID
+
+    if (insertID > 0) {
       this.placeArtifactsOnQuad([enrichedData])
+    } else {
+      console.error('failed to insert artifact')
     }
   }
 
@@ -377,9 +408,14 @@ export default class QuadScene extends BaseScene {
   destroyArtifacts = () => {
     const layer1_artifacts = this.layer1_artifacts as Phaser.GameObjects.Layer
     const artifacts = layer1_artifacts.getChildren()
+    console.log('artifacts before destroy', artifacts)
     artifacts.forEach((artifact) => {
       artifact.destroy()
     })
+
+    layer1_artifacts.removeAll()
+
+    console.log('artifacts after destroy', layer1_artifacts.getChildren())
   }
 
   moveWithKeys = () => {
@@ -441,7 +477,7 @@ export default class QuadScene extends BaseScene {
       config.TILE_SIZE,
       undefined,
       undefined,
-      0xffffff,
+      0xdddddd,
       0.4
     )
     this.grid.setOrigin(0)
@@ -702,7 +738,7 @@ export default class QuadScene extends BaseScene {
     return artifacts
   }
 
-  placeArtifactsOnQuad = (artifactsData) => {
+  placeArtifactsOnQuad = (artifactsData: ArtifactData[]) => {
     artifactsData.forEach((data) => {
       const artifact = new Artifact(this, data)
       artifact.setInteractive(
@@ -720,7 +756,7 @@ export default class QuadScene extends BaseScene {
     x: number,
     y: number,
     angle: number
-  ): Promise<Boolean> => {
+  ): Promise<number> => {
     return Data.saveNewOnmapArtifact(artifact_id, quad_id, x, y, angle)
   }
 
@@ -845,19 +881,13 @@ export default class QuadScene extends BaseScene {
       if (
         window.confirm(`Do you want to delete ${artifact.data.get('name')}?`)
       ) {
-        const x = artifact.data.get('coordinatesInMeters').x * 1
-        const y = artifact.data.get('coordinatesInMeters').y * 1
-        const quad_id = this.data.get('quad').id * 1
-        const artifact_id = artifact.data.get('id') * 1
+        const onMapId = artifact.data.get('onMapId')
 
-        const deleted = await Data.deleteOnmapArtifact(
-          artifact_id,
-          quad_id,
-          x,
-          y
-        )
+        const deleted = await Data.deleteOnmapArtifact(onMapId)
         if (deleted) {
           gameObjects[0].destroy()
+        } else {
+          console.error('Could not delete artifact')
         }
       }
     }

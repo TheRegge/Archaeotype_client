@@ -10,7 +10,73 @@
         </div>
       </div>
       <div class="flex-column grow">
-        <h3 id="title">A title?</h3>
+        <h2 id="title"></h2>
+
+        <dl>
+          <dt>Found date</dt>
+          <dd><span id="found_date"></span></dd>
+        </dl>
+
+
+        <div class="flex-column">
+          <div class="flex-row">
+            <div class="flex-column">
+              <label for="foundBy">Found by</label>
+              <input class="third" type="text" id="found_by" value="" disabled>
+            </div>
+            <div class="flex-column">
+              <label for="row">Row</label>
+              <input class="third" type="text" id="found_row" value="" disabled>
+            </div>
+            <div class="flex-column">
+              <label for="column">Column</label>
+              <input type="text" class="third" id="found_column" value="" disabled>
+            </div>
+          </div>
+
+          <div class="flex-row">
+
+            <div class="flex-column">
+              <label for="weight">Weight</label>
+              <div class="third is_unit is_unit__kg">
+                <input type="text" class="third" id="found_weight" value="" disabled>
+              </div>
+            </div>
+
+            <div class="flex-column">
+              <label for="width">Width</label>
+              <div class="third is_unit is_unit__m">
+                <input id="found_width" class="third" type="text" value="0.27" disabled>
+              </div>
+            </div>
+
+            <div class="flex-column">
+              <label for="height">Height</label>
+              <div class="third is_unit is_unit__m">
+                <input id="found_height" type="text" class="third" value="0.42" disabled>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <dl>
+          <dt>Found materials</dt>
+          <dd><span id="found_materials"></span></dd>
+        </dl>
+
+        <dl>
+          <dt>Found Colors</dt>
+          <dd><span id="found_colors"></span></dd>
+        </dl>
+
+        <dl>
+          <dt>Notes</dt>
+          <dd><span id="found_notes"></span></dd>
+        </dl>
+
+
       </div>
     </div>
   </div>

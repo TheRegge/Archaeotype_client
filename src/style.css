@@ -407,6 +407,7 @@ div.subscene_container h4:hover {
   flex-direction: row;
   gap: var(--flex-gap);
   justify-content: flex-start;
+  /* border: solid gray 1px; */
 }
 
 .flex-row .flex-row {
@@ -415,9 +416,10 @@ div.subscene_container h4:hover {
 
 .flex-row .flex-column {
   display: flex;
-  /* flex-direction: column; */
-  /* justify-content: flex-start; */
+  flex-direction: column;
+  justify-content: flex-start;
   width: 100%;
+  /* border: dashed 1px blue; */
 }
 
 .flex-row .flex-column.grow {
@@ -425,7 +427,6 @@ div.subscene_container h4:hover {
 }
 
 .flex-row .flex-column.shrink {
-  background-color: orange;
   flex-shrink: 2;
 }
 
@@ -555,4 +556,62 @@ kbd {
 kbd:hover {
   color: var(--color-gray-800);
   background-color: var(--color-hint-secondary);
+}
+
+/* Collectionitem subscene */
+#collectionitem dl {
+  display: flex;
+  flex-direction: row;
+  margin: 0.3rem 0;
+  padding: 0;
+}
+
+#collectionitem dt {
+  font-weight: bold;
+  /* line-height: 0.3em; */
+  color: var(--color-hint-secondary);
+  margin: 0;
+  padding: 0;
+  margin-right: 0.5em;
+}
+
+#collectionitem dt::after {
+  content: ':';
+}
+
+#collectionitem dd {
+  /* line-height: 1.1em; */
+  margin: 0;
+  padding: 0;
+}
+
+#collectionitem table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-width: 1px;
+  border-color: var(--color-gray-600);
+  border-style: solid;
+}
+
+#collectionitem table {
+  font-size: 0.8em;
+  margin: 0.5rem 0 2rem 0;
+}
+#collectionitem table th {
+  padding: 0.2rem;
+  border-width: 1px;
+  border-color: var(--color-gray-600);
+  border-style: solid;
+  background-color: var(--color-hint-secondary);
+  color: var(--color-gray-900);
+}
+
+#collectionitem table td {
+  padding: 0.2em;
+  border-width: 1px;
+  border-color: var(--color-gray-600);
+  border-style: solid;
+  text-align: center;
+  width: auto;
 }

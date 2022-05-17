@@ -8,6 +8,13 @@ import {
 } from './scenes'
 import config from './common/Config'
 
+if (process.env.NODE_ENV === 'development') {
+  console.log(
+    '%cARCHAEOTYPE IS IN DEV MODE',
+    'color: #000000; background: orange; font-weight: 900;'
+  )
+}
+
 const GameConfig: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   parent: 'phaser-app',

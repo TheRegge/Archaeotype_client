@@ -8,3 +8,4 @@ public/assets/fakeTilesData.json
 public/assets/artifacts.json
 public/assest/images/artifacts/*
 public/assets/images/terrains/*
+.env

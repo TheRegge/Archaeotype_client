@@ -269,8 +269,11 @@ export default class QuadScene extends BaseScene {
       Math.floor(utils.pixelsToMeters(pointer.worldX - config.H_OFFSET) * 100) /
       100
     const newY =
-      Math.floor(utils.pixelsToMeters(pointer.worldY - config.V_OFFSET) * 100) /
-      100
+      Math.floor(
+        utils.pixelsToMeters(
+          pointer.worldY - config.V_OFFSET - this.mainNav.height
+        ) * 100
+      ) / 100
 
     artifact.setData('coordinatesInMeters', {
       x: newX,
@@ -311,7 +314,7 @@ export default class QuadScene extends BaseScene {
     if (this.checkPointerOverUI(pointer, this.artifactsChooser)) return
     const dropLocation = {
       x: pointer.worldX,
-      y: pointer.worldY - 50,
+      y: pointer.worldY - this.mainNav.height,
     }
     const artifactData = gameObject.getData('artifact')
 

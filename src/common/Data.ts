@@ -20,7 +20,7 @@ export class Data {
   }
 
   async getSiteQuads(siteId: number): Promise<any> {
-    const result = await axios.get(`${config.API_URL}site/${siteId}`, {
+    const result = await axios.get(`${process.env.API_URL}site/${siteId}`, {
       headers: {
         Authorization: `Bearer ${window.localStorage.getItem(
           config.LOCAL_STORAGE_API_TOKEN_NAME
@@ -39,7 +39,7 @@ export class Data {
    */
   async getTiles(quadId: number): Promise<number[][]> {
     const destroyedTiles = await axios.get(
-      `${config.API_URL}quad/destroyed-tiles/${quadId}`,
+      `${process.env.API_URL}quad/destroyed-tiles/${quadId}`,
       {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem(
@@ -75,7 +75,7 @@ export class Data {
   }
 
   async getAllArtifracts(): Promise<any> {
-    const artifacts = await axios.get(`${config.API_URL}artifact`, {
+    const artifacts = await axios.get(`${process.env.API_URL}artifact`, {
       headers: {
         Authorization: `Bearer ${window.localStorage.getItem(
           config.LOCAL_STORAGE_API_TOKEN_NAME
@@ -87,7 +87,7 @@ export class Data {
 
   async getUnplacedArtifact(artifactId: number): Promise<any> {
     const artifact = await axios.get(
-      `${config.API_URL}artifact/${artifactId}`,
+      `${process.env.API_URL}artifact/${artifactId}`,
       {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem(
@@ -101,7 +101,7 @@ export class Data {
 
   async getArtifactsOnQuad(quadId: number) {
     const artifacts = await axios.get(
-      `${config.API_URL}quad/artifacts/${quadId}`,
+      `${process.env.API_URL}quad/artifacts/${quadId}`,
       {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem(
@@ -122,7 +122,7 @@ export class Data {
   ): void {
     axios
       .post(
-        `${config.API_URL}quad/destroyed-tile`,
+        `${process.env.API_URL}quad/destroyed-tile`,
         {
           quad_id,
           x,
@@ -160,7 +160,7 @@ export class Data {
   ): Promise<number> {
     try {
       const result = await axios.post(
-        `${config.API_URL}quad/artifact`,
+        `${process.env.API_URL}quad/artifact`,
         {
           artifact_id,
           quad_id,
@@ -185,7 +185,7 @@ export class Data {
   async deleteOnmapArtifact(onmap_id: number): Promise<Boolean> {
     try {
       await axios.post(
-        `${config.API_URL}deleteartifact`,
+        `${process.env.API_URL}deleteartifact`,
         {
           onmap_id,
         },
@@ -213,7 +213,7 @@ export class Data {
     console.log('in Data updateArtifactOnMap, onmap_id: ', onmap_id)
     try {
       const result = await axios.patch(
-        `${config.API_URL}quad/artifact`,
+        `${process.env.API_URL}quad/artifact`,
         {
           onmap_id,
           x,
@@ -254,7 +254,7 @@ export class Data {
     console.log('onmnap_id in Data: ', onmap_id)
     try {
       await axios.post(
-        `${config.API_URL}quad/lab`,
+        `${process.env.API_URL}quad/lab`,
         {
           onmap_id,
           artifact_id,
@@ -279,7 +279,7 @@ export class Data {
 
   async getFoundArtifact(onMapId: number) {
     const foundArtifact = await axios.get(
-      `${config.API_URL}quad/artifact/found/${onMapId}`,
+      `${process.env.API_URL}quad/artifact/found/${onMapId}`,
       {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem(

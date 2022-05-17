@@ -329,7 +329,7 @@ export default class QuadScene extends BaseScene {
     enrichedData.angle = 0
     enrichedData.isPainting = false
     enrichedData.quadId = this.data.get('quad').id
-    enrichedData.src = `${config.API_URL}resource/artifacts/onmap/${enrichedData.fileName}.png`
+    enrichedData.src = `${process.env.API_URL}resource/artifacts/onmap/${enrichedData.fileName}.png`
     enrichedData.imageSizeInPixels = {
       width: dbData.width_onmap,
       height: dbData.height_onmap,

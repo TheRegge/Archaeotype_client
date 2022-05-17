@@ -27,7 +27,7 @@ export default class Artifact extends Phaser.GameObjects.Sprite {
         }_${artifactData.coordinatesInMeters.x}_${
           artifactData.coordinatesInMeters.y
         }`,
-        `${config.API_URL}resource/artifacts/onmap/${artifactData.name}.png`,
+        `${process.env.API_URL}resource/artifacts/onmap/${artifactData.name}.png`,
         artifactData.imageSizeInPixels.width,
         artifactData.imageSizeInPixels.height
       ).then(() => {

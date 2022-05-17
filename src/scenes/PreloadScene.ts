@@ -60,33 +60,33 @@ export default class PreloadScene extends Phaser.Scene {
     // SiteScene Assets
     this.load.image(
       'site',
-      `${config.API_URL}resource/terrains/site_1px-2m.jpg`
+      `${process.env.API_URL}resource/terrains/site_1px-2m.jpg`
     )
 
     // QuadScene Assets
     this.load.image(
       'administrative',
-      `${config.API_URL}resource/terrains/bg-administrative.jpg`
+      `${process.env.API_URL}resource/terrains/bg-administrative.jpg`
     )
     this.load.image(
       'bg-temple',
-      `${config.API_URL}resource/terrains/bg-temple.jpg`
+      `${process.env.API_URL}resource/terrains/bg-temple.jpg`
     )
     this.load.image(
       'bg-residences',
-      `${config.API_URL}resource/terrains/bg-residences.jpg`
+      `${process.env.API_URL}resource/terrains/bg-residences.jpg`
     )
     this.load.image(
       'bg-palace',
-      `${config.API_URL}resource/terrains/bg-palace.jpg`
+      `${process.env.API_URL}resource/terrains/bg-palace.jpg`
     )
     this.load.image(
       'bg-industry',
-      `${config.API_URL}resource/terrains/bg-industry.jpg`
+      `${process.env.API_URL}resource/terrains/bg-industry.jpg`
     )
     this.load.image(
       'bg-administrative',
-      `${config.API_URL}resource/terrains/bg-administrative.jpg`
+      `${process.env.API_URL}resource/terrains/bg-administrative.jpg`
     )
     this.load.image(
       'toplayer-tiles',

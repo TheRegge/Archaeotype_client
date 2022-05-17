@@ -197,7 +197,7 @@ export default class LabSubScene extends BaseSubScene {
 
     const imageContainer = document.querySelector('.zoom') as HTMLElement
     const img = document.getElementById('zoomImage') as HTMLImageElement
-    img.src = `${Config.API_URL}resource/artifacts/preview/${artifactData.fileName}.png`
+    img.src = `${process.env.API_URL}resource/artifacts/preview/${artifactData.fileName}.png`
 
     imageContainer.onmousemove = (event) => zoom(event)
     imageContainer.onmouseout = () => stopZoom()
@@ -207,7 +207,7 @@ export default class LabSubScene extends BaseSubScene {
     }
 
     const zoom = (e: MouseEvent | TouchEvent) => {
-      imageContainer.style.backgroundImage = `url("${Config.API_URL}resource/artifacts/full/${artifactData.fileName}.png")`
+      imageContainer.style.backgroundImage = `url("${process.env.API_URL}resource/artifacts/full/${artifactData.fileName}.png")`
 
       let imageZoom = e.currentTarget as HTMLDivElement
       let offsetX

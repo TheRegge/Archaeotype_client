@@ -19,7 +19,7 @@ export default class ProjectsScene extends BaseScene {
 
     this.add.text(100, 100, 'Projects')
     axios
-      .get(`${config.API_URL}/project`, {
+      .get(`${process.env.API_URL}/project`, {
         headers: {
           Authorization: `Bearer ${Auth.token}`,
         },

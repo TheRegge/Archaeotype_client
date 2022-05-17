@@ -266,9 +266,11 @@ export default class QuadScene extends BaseScene {
     pointer: any
   ) => {
     const newX =
-      Math.floor(utils.pixelsToMeters(pointer.x - config.H_OFFSET) * 100) / 100
+      Math.floor(utils.pixelsToMeters(pointer.worldX - config.H_OFFSET) * 100) /
+      100
     const newY =
-      Math.floor(utils.pixelsToMeters(pointer.y - config.V_OFFSET) * 100) / 100
+      Math.floor(utils.pixelsToMeters(pointer.worldY - config.V_OFFSET) * 100) /
+      100
 
     artifact.setData('coordinatesInMeters', {
       x: newX,

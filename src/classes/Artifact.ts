@@ -38,9 +38,7 @@ export default class Artifact extends Phaser.GameObjects.Sprite {
     }
   }
 
-  init = () => {
-    console.log('init')
-  }
+  init = () => {}
 
   showFlag = () => {
     this.data.set('flag', true)

@@ -155,16 +155,11 @@ export default class BaseSubScene extends BaseScene {
   }
 
   close() {
-    console.log('1')
     this.cleanup()
-    console.log('2')
     // Switch scene
     const fromScene = this.data.get('fromScene')
-    console.log('3')
     fromScene.scene.resume()
-    console.log('4')
     this.scene.sleep()
-    console.log('5')
   }
 
   initHTML() {}

@@ -75,7 +75,6 @@ export default class SiteScene extends BaseScene {
         backgroundOverOpacity: 0.8,
         data: { quad },
       })
-      console.log('squad', squad)
       this.add.existing(squad)
     })
   }

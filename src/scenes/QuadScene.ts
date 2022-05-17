@@ -277,7 +277,6 @@ export default class QuadScene extends BaseScene {
       y: newY,
     })
 
-    console.log('all the artifact data', artifact.data.getAll())
     const data = {
       onmap_id: artifact.data.get('onmap_id') * 1,
       x: newX,
@@ -412,14 +411,12 @@ export default class QuadScene extends BaseScene {
   destroyArtifacts = () => {
     const layer1_artifacts = this.layer1_artifacts as Phaser.GameObjects.Layer
     const artifacts = layer1_artifacts.getChildren()
-    console.log('artifacts before destroy', artifacts)
+
     artifacts.forEach((artifact) => {
       artifact.destroy()
     })
 
     layer1_artifacts.removeAll()
-
-    console.log('artifacts after destroy', layer1_artifacts.getChildren())
   }
 
   moveWithKeys = () => {

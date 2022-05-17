@@ -210,7 +210,6 @@ export class Data {
     angle: number
   }): Promise<Boolean> {
     const { onmap_id, x, y, angle } = data
-    console.log('in Data updateArtifactOnMap, onmap_id: ', onmap_id)
     try {
       const result = await axios.patch(
         `${process.env.API_URL}quad/artifact`,
@@ -251,7 +250,6 @@ export class Data {
       found_width?: number
     }
   ) {
-    console.log('onmnap_id in Data: ', onmap_id)
     try {
       await axios.post(
         `${process.env.API_URL}quad/lab`,

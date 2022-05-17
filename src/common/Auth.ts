@@ -68,7 +68,7 @@ export class Auth {
   ): void {
     email = email.toLowerCase()
     axios
-      .post(`${config.API_URL}/user/login`, {
+      .post(`${config.API_URL}user/login`, {
         email,
         password,
       })

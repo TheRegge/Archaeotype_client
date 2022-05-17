@@ -1,4 +1,4 @@
-import BaseSubScene from '../subScenes/BaseSubScene'
+import BaseSubScene from './BaseSubScene'
 
 export default class CollectionsSubScene extends BaseSubScene {
   constructor() {

@@ -29,14 +29,39 @@ export default class SiteScene extends BaseScene {
     this.transitionIn()
 
     const backgroundImage = this.add
-      .image(config.VIEWPORT.width / 2, config.VIEWPORT.height / 2, 'site')
+      .image(
+        config.VIEWPORT.width / 2 + 200,
+        config.VIEWPORT.height / 2 + config.WORLD.innerPadding / 2,
+        'site'
+      )
       .setOrigin(0.5, 0.5)
 
     this.createMainNav()
 
     const site = await Data.getSiteQuads(this.data.get('siteId'))
-    const quads = site.quads
 
+    // Title
+    this.add.text(config.H_OFFSET + config.WORLD.innerPadding, 130, site.name, {
+      fontFamily: config.GOOGLE_FONT_FAMILY,
+      fontSize: '24px',
+      color: '#fff',
+    })
+
+    // Description
+    const description = this.add.text(
+      config.H_OFFSET + config.WORLD.innerPadding,
+      200,
+      site.description,
+      {
+        fontFamily: config.GOOGLE_FONT_FAMILY,
+        fontSize: '16px',
+        color: '#fff',
+      }
+    )
+    description.setWordWrapWidth(400, true)
+    description.setLineSpacing(18)
+
+    const quads = site.quads
     quads.forEach((quad) => {
       const squad = new SiteQuad({
         scene: this,

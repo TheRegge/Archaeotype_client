@@ -3,8 +3,10 @@ import { UpdatableElement } from '../../common/Types'
 import Config from '../../common/Config'
 import Auth from '../../common/Auth'
 import Data from '../../common/Data'
+import Artifact from '../../classes/Artifact'
 export default class LabSubScene extends BaseSubScene {
   public elements: UpdatableElement[]
+  public artifactOnMap: Artifact | null = null
 
   constructor() {
     super('lab')
@@ -17,25 +19,27 @@ export default class LabSubScene extends BaseSubScene {
 
   initHTML() {
     this.input.keyboard.clearCaptures()
-    const { artifact, tile } = this.data.get('htmlData')
+    const { artifact, artifactData, tile } = this.data.get('htmlData')
+    this.artifactOnMap = artifact
 
     this.data.set('formData', {
-      artifact_id: artifact.id * 1,
-      quad_id: artifact.quadId * 1,
+      onmap_id: artifactData.onmap_id,
+      artifact_id: artifactData.id * 1,
+      quad_id: artifactData.quadId * 1,
       user_id: Auth.user?.id ? Auth.user?.id * 1 : 0,
       fields: {
         found_row: tile.row,
         found_column: tile.column * 1,
-        found_weight: artifact.weightInGrams,
-        found_height: artifact.height,
-        found_width: artifact.width,
-        found_materials: artifact.materials,
+        found_weight: artifactData.weightInGrams,
+        found_height: artifactData.height,
+        found_width: artifactData.width,
+        found_materials: artifactData.materials,
       },
     })
 
     let materialsArray = new Array()
 
-    artifact.materials?.map((material) => {
+    artifactData.materials?.map((material) => {
       materialsArray.push(material.name)
     })
 
@@ -45,7 +49,7 @@ export default class LabSubScene extends BaseSubScene {
       {
         el: document.getElementById('label') as HTMLInputElement,
         data: {
-          value: artifact.found_label || '',
+          value: artifactData.found_label || '',
           valueType: 'value',
         },
         action: {
@@ -68,21 +72,21 @@ export default class LabSubScene extends BaseSubScene {
         el: document.getElementById('weight') as HTMLInputElement,
         data: {
           valueType: 'value',
-          value: artifact.weightInGrams / 1000 + '',
+          value: artifactData.weightInGrams / 1000 + '',
         },
       },
       {
         el: document.getElementById('height') as HTMLInputElement,
         data: {
           valueType: 'value',
-          value: artifact.height,
+          value: artifactData.height,
         },
       },
       {
         el: document.getElementById('width') as HTMLInputElement,
         data: {
           valueType: 'value',
-          value: artifact.width,
+          value: artifactData.width,
         },
       },
       {
@@ -153,6 +157,7 @@ export default class LabSubScene extends BaseSubScene {
             formData.fields.found_materials = materials.join(', ')
 
             const result = await Data.saveLabData(
+              formData.onmap_id * 1,
               formData.artifact_id,
               formData.quad_id,
               formData.user_id,
@@ -160,6 +165,7 @@ export default class LabSubScene extends BaseSubScene {
               formData.fields
             )
             if (result) {
+              this.artifactOnMap?.showFlag()
               this.close()
             } else {
               // TODO: handle error
@@ -191,7 +197,7 @@ export default class LabSubScene extends BaseSubScene {
 
     const imageContainer = document.querySelector('.zoom') as HTMLElement
     const img = document.getElementById('zoomImage') as HTMLImageElement
-    img.src = `${Config.API_URL}resource/artifacts/preview/${artifact.fileName}.png`
+    img.src = `${Config.API_URL}resource/artifacts/preview/${artifactData.fileName}.png`
 
     imageContainer.onmousemove = (event) => zoom(event)
     imageContainer.onmouseout = () => stopZoom()
@@ -201,7 +207,7 @@ export default class LabSubScene extends BaseSubScene {
     }
 
     const zoom = (e: MouseEvent | TouchEvent) => {
-      imageContainer.style.backgroundImage = `url("${Config.API_URL}resource/artifacts/full/${artifact.fileName}.png")`
+      imageContainer.style.backgroundImage = `url("${Config.API_URL}resource/artifacts/full/${artifactData.fileName}.png")`
 
       let imageZoom = e.currentTarget as HTMLDivElement
       let offsetX

@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import BaseScene from './BaseScene'
 import LabSubScene from './subScenes/LabSubScene'
+import CollectionItemSubScene from './subScenes/CollectionItemSubScene'
 import Player from '../classes/Player'
 import Minimap from '../classes/Minimap'
 import ATGrid from '../classes/ATGrid'
@@ -13,7 +14,7 @@ import Artifact from '../classes/Artifact'
 import Measurer from '../classes/Measurer'
 import Data from '../common/Data'
 import HelpSubScene from './subScenes/HelpSubScene'
-import CollectionsSubScene from './subScenes/CollectionsSubscene'
+import CollectionsSubScene from './subScenes/CollectionsSubScene'
 import { AdminTools } from '../classes'
 import Auth from '../common/Auth'
 import { ArtifactData, User, QuadPointerState } from '../common/Types'
@@ -274,8 +275,9 @@ export default class QuadScene extends BaseScene {
       y: newY,
     })
 
+    console.log('all the artifact data', artifact.data.getAll())
     const data = {
-      onMapId: artifact.data.get('onMapId') * 1,
+      onmap_id: artifact.data.get('onmap_id') * 1,
       x: newX,
       y: newY,
       angle: parseInt(artifact.getData('angle')),
@@ -345,7 +347,7 @@ export default class QuadScene extends BaseScene {
       enrichedData.angle
     )
 
-    enrichedData.onMapId = insertID
+    enrichedData.onmap_id = insertID
 
     if (insertID > 0) {
       this.placeArtifactsOnQuad([enrichedData])
@@ -760,16 +762,21 @@ export default class QuadScene extends BaseScene {
     return Data.saveNewOnmapArtifact(artifact_id, quad_id, x, y, angle)
   }
 
-  openLab = (artifact: ArtifactData) => {
+  openLab = (
+    artifactData: ArtifactData,
+    artifact: Phaser.GameObjects.GameObject
+  ) => {
     const toScene = this.scene.get('lab')
+
     const data = {
       fromScene: this,
       htmlTagName: 'labForm',
       htmlData: {
         artifact,
+        artifactData,
         tile: this.getTileCoordsFromWorldCoords(
-          artifact.coordinatesInMeters.x,
-          artifact.coordinatesInMeters.y,
+          artifactData.coordinatesInMeters.x,
+          artifactData.coordinatesInMeters.y,
           false,
           true
         ),
@@ -780,6 +787,25 @@ export default class QuadScene extends BaseScene {
       this.scene.wake('lab', data)
     } else {
       this.scene.add('lab', LabSubScene, true, data)
+    }
+    this.scene.pause('quad')
+  }
+
+  openCollectionItem = (artifactData: ArtifactData) => {
+    const toScene = this.scene.get('collectionitem')
+
+    const data = {
+      fromScene: this,
+      htmlTagName: 'collectionitem',
+      htmlData: {
+        artifactData,
+      },
+    }
+
+    if (toScene) {
+      this.scene.wake('collectionitem', data)
+    } else {
+      this.scene.add('collectionitem', CollectionItemSubScene, true, data)
     }
     this.scene.pause('quad')
   }
@@ -844,7 +870,11 @@ export default class QuadScene extends BaseScene {
       gameObjects[0].name.toLowerCase() === 'artifact'
     ) {
       const artifactData = gameObjects[0]?.data.getAll() as ArtifactData
-      this.openLab(artifactData)
+      if (gameObjects[0].data.get('flag') !== true) {
+        this.openLab(artifactData, gameObjects[0])
+      } else {
+        this.openCollectionItem(artifactData)
+      }
     }
   }
 
@@ -881,9 +911,9 @@ export default class QuadScene extends BaseScene {
       if (
         window.confirm(`Do you want to delete ${artifact.data.get('name')}?`)
       ) {
-        const onMapId = artifact.data.get('onMapId')
+        const onmap_id = artifact.data.get('onmap_id')
 
-        const deleted = await Data.deleteOnmapArtifact(onMapId)
+        const deleted = await Data.deleteOnmapArtifact(onmap_id)
         if (deleted) {
           gameObjects[0].destroy()
         } else {

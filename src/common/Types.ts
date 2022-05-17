@@ -34,7 +34,7 @@ export type UpdatableElement = {
 export type ArtifactData = {
   id: string
   mapId: string
-  onMapId?: number
+  onmap_id?: number
   name: string
   coordinatesInMeters: { x: number; y: number }
   imageSizeInPixels: { width: number; height: number }
@@ -42,6 +42,7 @@ export type ArtifactData = {
   height: number
   width: number
   angle: number
+  isFound?: boolean
   isPainting: boolean
   materials: string[]
   fileName: string

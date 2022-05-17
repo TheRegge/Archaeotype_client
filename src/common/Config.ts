@@ -320,7 +320,13 @@ export class Config {
     height: this.WORLD.height * this.MINIMAP_SCALE,
   }
 
-  readonly API_URL = 'http://dev-regis.dalton.org:8080/'
+  // readonly API_URL = 'http://dev-regis.dalton.org:8080/'
+  // readonly API_URL = 'https://archaeotype.dalton.org/api/public/'
+
+  readonly API_URL =
+    process.env.NODE_ENV === 'production'
+      ? 'https://archaeotype.dalton.org/api/public/'
+      : 'http://dev-regis.dalton.org:8080/'
 
   readonly LOCAL_STORAGE_API_TOKEN_NAME = 'archaeotype_api_token'
 

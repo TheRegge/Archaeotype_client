@@ -182,12 +182,12 @@ export class Data {
     }
   }
 
-  async deleteOnmapArtifact(onMapId: number): Promise<Boolean> {
+  async deleteOnmapArtifact(onmap_id: number): Promise<Boolean> {
     try {
       await axios.post(
         `${config.API_URL}deleteartifact`,
         {
-          onMapId,
+          onmap_id,
         },
         {
           headers: {
@@ -204,18 +204,18 @@ export class Data {
   }
 
   async updateArtifactOnMap(data: {
-    onMapId: number
+    onmap_id: number
     x: number
     y: number
     angle: number
   }): Promise<Boolean> {
-    const { onMapId, x, y, angle } = data
-    console.log('in Data updateArtifactOnMap, onMapId: ', onMapId)
+    const { onmap_id, x, y, angle } = data
+    console.log('in Data updateArtifactOnMap, onmap_id: ', onmap_id)
     try {
       const result = await axios.patch(
         `${config.API_URL}quad/artifact`,
         {
-          onMapId,
+          onmap_id,
           x,
           y,
           angle,
@@ -235,6 +235,7 @@ export class Data {
   }
 
   async saveLabData(
+    onmap_id: number,
     artifact_id: number,
     quad_id: number,
     user_id: number,
@@ -250,10 +251,12 @@ export class Data {
       found_width?: number
     }
   ) {
+    console.log('onmnap_id in Data: ', onmap_id)
     try {
       await axios.post(
         `${config.API_URL}quad/lab`,
         {
+          onmap_id,
           artifact_id,
           quad_id,
           user_id,
@@ -272,6 +275,20 @@ export class Data {
     } catch (error) {
       return false
     }
+  }
+
+  async getFoundArtifact(onMapId: number) {
+    const foundArtifact = await axios.get(
+      `${config.API_URL}quad/artifact/found/${onMapId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem(
+            config.LOCAL_STORAGE_API_TOKEN_NAME
+          )}`,
+        },
+      }
+    )
+    return foundArtifact.data
   }
 }
 

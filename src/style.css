@@ -415,9 +415,18 @@ div.subscene_container h4:hover {
 
 .flex-row .flex-column {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  /* flex-direction: column; */
+  /* justify-content: flex-start; */
   width: 100%;
+}
+
+.flex-row .flex-column.grow {
+  flex-grow: 1;
+}
+
+.flex-row .flex-column.shrink {
+  background-color: orange;
+  flex-shrink: 2;
 }
 
 .flex-row .space-between,

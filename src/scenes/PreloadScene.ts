@@ -58,23 +58,35 @@ export default class PreloadScene extends Phaser.Scene {
     )
 
     // SiteScene Assets
-    this.load.image('site', './assets/images/terrains/site_1px-2m.jpg')
+    this.load.image(
+      'site',
+      `${config.API_URL}resource/terrains/site_1px-2m.jpg`
+    )
 
     // QuadScene Assets
     this.load.image(
       'administrative',
-      './assets/images/terrains/bg-administrative.jpg'
+      `${config.API_URL}resource/terrains/bg-administrative.jpg`
     )
-    this.load.image('bg-temple', './assets/images/terrains/bg-temple.jpg')
+    this.load.image(
+      'bg-temple',
+      `${config.API_URL}resource/terrains/bg-temple.jpg`
+    )
     this.load.image(
       'bg-residences',
-      './assets/images/terrains/bg-residences.jpg'
+      `${config.API_URL}resource/terrains/bg-residences.jpg`
     )
-    this.load.image('bg-palace', './assets/images/terrains/bg-palace.jpg')
-    this.load.image('bg-industry', './assets/images/terrains/bg-industry.jpg')
+    this.load.image(
+      'bg-palace',
+      `${config.API_URL}resource/terrains/bg-palace.jpg`
+    )
+    this.load.image(
+      'bg-industry',
+      `${config.API_URL}resource/terrains/bg-industry.jpg`
+    )
     this.load.image(
       'bg-administrative',
-      './assets/images/terrains/bg-administrative.jpg'
+      `${config.API_URL}resource/terrains/bg-administrative.jpg`
     )
     this.load.image(
       'toplayer-tiles',
@@ -87,10 +99,12 @@ export default class PreloadScene extends Phaser.Scene {
       'artifactPlaceholder',
       './assets/images/artifacts/onmap/transparent.png'
     )
+    this.load.image('artifactFlag', './assets/images/reddot.png')
 
     // SubScenes
     this.load.html('labForm', './assets/html/labForm.html')
     this.load.html('help', './assets/html/help.html')
     this.load.html('collections', './assets/html/collections.html')
+    this.load.html('collectionitem', './assets/html/collectionitem.html')
   }
 }

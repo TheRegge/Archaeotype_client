@@ -41,7 +41,7 @@ export default class ProjectsScene extends BaseScene {
   }
 
   makeSiteLink = (site: any, offset: number): void => {
-    const text = this.add.text(120, offset, `* ${site.name} - ${site.id}`, {
+    const text = this.add.text(120, offset, `* ${site.name}`, {
       color: Utils.hexToString(config.COLOR_HINT_PRIMARY),
     })
 

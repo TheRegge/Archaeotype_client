@@ -63,15 +63,23 @@ export default class SiteScene extends BaseScene {
 
     const quads = site.quads
     quads.forEach((quad) => {
+      let backgroundColor = config.COLOR_HINT_SECONDARY
+      let backgroundOverColor = config.COLOR_HINT_PRIMARY
+
+      if (Auth.user?.quad_id && Auth.user.quad_id !== quad.id) {
+        backgroundColor = config.COLOR_HINT_PRIMARY
+        backgroundOverColor = config.COLOR_HINT_PRIMARY
+      }
+
       const squad = new SiteQuad({
         scene: this,
         x: backgroundImage.x + quad.x * 1,
         y: backgroundImage.y + quad.y * 1,
         width: 50 * config.SITE_PIXEL_TO_METER_SCALE,
         height: 50 * config.SITE_PIXEL_TO_METER_SCALE,
-        backgroundColor: config.COLOR_HINT_SECONDARY,
+        backgroundColor,
         backgroundOpacity: 0.8,
-        backgroundOverColor: config.COLOR_HINT_PRIMARY,
+        backgroundOverColor,
         backgroundOverOpacity: 0.8,
         data: { quad },
       })

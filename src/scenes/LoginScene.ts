@@ -57,7 +57,9 @@ export default class LoadingScene extends BaseScene {
                     if (Auth.isAdmin()) {
                       this.scene.start('projects')
                     } else {
-                      this.scene.start('quad')
+                      this.scene.start('site', {
+                        siteId: Auth.user?.site_id ?? 0,
+                      })
                     }
                   })
                 } else {

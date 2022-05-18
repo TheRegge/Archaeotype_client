@@ -49,6 +49,9 @@ export default class SiteQuad extends ContainerWithBg {
   }
 
   handleClick() {
+    if (!Auth.isAdmin() && Auth.user?.quad_id !== this.getData('quad').id)
+      return
+
     const toScene = this.scene.scene.manager.getScene('quad')
     toScene.data.set('quad', this.getData('quad'))
 

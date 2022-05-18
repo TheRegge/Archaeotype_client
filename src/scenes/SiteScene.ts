@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 import Auth from '../common/Auth'
 import BaseScene from './BaseScene'
 
@@ -7,7 +5,6 @@ import MainNav from '../classes/MainNav'
 import SiteQuad from '../classes/SiteQuad'
 
 import Data from '../common/Data'
-
 import config from '../common/Config'
 
 // 83.06% is how much I reduced the original image from Paul
@@ -22,9 +19,12 @@ export default class SiteScene extends BaseScene {
   //  Assets preloaded in  PreloadScene
   // }
 
-  async create() {
-    // TODO: Implement this
-    this.data.set('siteId', 1)
+  async create(data: object) {
+    this.data.set(data, {})
+
+    if (!this.data.get('siteId')) {
+      this.data.set('siteId', Auth.user?.site_id || 0)
+    }
 
     this.transitionIn()
 

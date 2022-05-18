@@ -19,6 +19,7 @@ export type User = {
   quad_id?: number
   quad?: Quad
   role_id: number
+  site_id?: number
   username: string
 }
 

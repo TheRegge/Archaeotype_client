@@ -1,26 +1,34 @@
 import Phaser from 'phaser'
+
+// Scenes
 import BaseScene from './BaseScene'
-import LabSubScene from './subScenes/LabSubScene'
+
+// SubScenes
 import CollectionItemSubScene from './subScenes/CollectionItemSubScene'
-import Player from '../classes/Player'
-import Minimap from '../classes/Minimap'
-import ATGrid from '../classes/ATGrid'
-import Ruler from '../classes/Ruler'
-import OriginButton from '../classes/OriginButton'
-import MainNav from '../classes/MainNav'
-import config from '../common/Config'
+import CollectionsSubScene from './subScenes/CollectionsSubScene'
+import HelpSubScene from './subScenes/HelpSubScene'
+import LabSubScene from './subScenes/LabSubScene'
+
+// Classes
 import { Popup } from '../classes/Popup'
 import Artifact from '../classes/Artifact'
-import Measurer from '../classes/Measurer'
-import Data from '../common/Data'
-import HelpSubScene from './subScenes/HelpSubScene'
-import CollectionsSubScene from './subScenes/CollectionsSubScene'
-import { AdminTools } from '../classes'
-import Auth from '../common/Auth'
-import { ArtifactData, User, QuadPointerState } from '../common/Types'
-import utils from '../common/Utils'
 import ArtifactsChooser from '../classes/ArtifactsChooser'
+import ATGrid from '../classes/ATGrid'
+import MainNav from '../classes/MainNav'
+import Measurer from '../classes/Measurer'
+import Minimap from '../classes/Minimap'
+import OriginButton from '../classes/OriginButton'
+import Player from '../classes/Player'
+import Ruler from '../classes/Ruler'
+
+//Common
+import { AdminTools } from '../classes'
+import { ArtifactData, User, QuadPointerState } from '../common/Types'
 import { IGetBounds } from '../common/Interfaces'
+import Auth from '../common/Auth'
+import config from '../common/Config'
+import Data from '../common/Data'
+import utils from '../common/Utils'
 
 export default class QuadScene extends BaseScene {
   public artifactsChooser: ArtifactsChooser | null
@@ -73,11 +81,16 @@ export default class QuadScene extends BaseScene {
     this.pointerState = 'play'
   }
 
-  setup() {
+  async setup() {
+    this.user = Auth.user
+
+    if (!this.user) {
+      this.scene.start('login')
+      return
+    }
+
     const bgImageName = this.data.get('quad').bgFilename.split('.')[0]
     this.bgImage?.setTexture(bgImageName)
-
-    this.user = Auth.user
 
     if (this.user && this.user.role_id > 1) {
       this.data.set('quad', this.user.quad)

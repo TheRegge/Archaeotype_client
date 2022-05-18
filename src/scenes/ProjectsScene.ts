@@ -28,29 +28,39 @@ export default class ProjectsScene extends BaseScene {
         let y = 100 + this.lineSpacing
         res.data.projects.map((project) => {
           const content = project.title + ' - ' + project.description
-          const text = this.add.text(100, y, content, {
+          this.add.text(100, y, content, {
             color: Utils.hexToString(config.COLOR_HINT_PRIMARY),
           })
 
-          text.setInteractive({
-            useHandCursor: true,
+          project.sites.map((site) => {
+            y += this.lineSpacing
+            this.makeSiteLink(site, y)
           })
-
-          text.on('pointerover', () => {
-            const color = Utils.hexToString(config.COLOR_HINT_SECONDARY)
-            if (color) text.setColor(color)
-          })
-
-          text.on('pointerout', () => {
-            const color = Utils.hexToString(config.COLOR_HINT_PRIMARY)
-            if (color) text.setColor(color)
-          })
-
-          text.addListener('pointerdown', () => {
-            this.scene.start('site', { siteId: project.id })
-          })
-          y += this.lineSpacing
         })
       })
+  }
+
+  makeSiteLink = (site: any, offset: number): void => {
+    const text = this.add.text(120, offset, `* ${site.name} - ${site.id}`, {
+      color: Utils.hexToString(config.COLOR_HINT_PRIMARY),
+    })
+
+    text.setInteractive({
+      useHandCursor: true,
+    })
+
+    text.on('pointerover', () => {
+      const color = Utils.hexToString(config.COLOR_HINT_SECONDARY)
+      if (color) text.setColor(color)
+    })
+
+    text.on('pointerout', () => {
+      const color = Utils.hexToString(config.COLOR_HINT_PRIMARY)
+      if (color) text.setColor(color)
+    })
+
+    text.addListener('pointerdown', () => {
+      this.scene.start('site', { siteId: site.id })
+    })
   }
 }

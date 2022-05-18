@@ -30,6 +30,17 @@ export class Data {
     return result.data
   }
 
+  async getQuad(quadId: number): Promise<any> {
+    const quad = await axios.get(`${process.env.API_URL}quad/${quadId}`, {
+      headers: {
+        Authorization: `Bearer ${window.localStorage.getItem(
+          config.LOCAL_STORAGE_API_TOKEN_NAME
+        )}`,
+      },
+    })
+    return quad.data
+  }
+
   /**
    * Fetch tiles from data layer
    *

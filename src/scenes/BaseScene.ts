@@ -32,6 +32,12 @@ export default class BaseScene extends Phaser.Scene {
   }
 
   init() {
+    if (process.env.NODE_ENV === 'development') {
+      console.log(
+        `%c${this.scene.key} Scene`,
+        'color: #000000; background: orange; font-weight: 900;'
+      )
+    }
     this.setup()
     this.events.on('wake', () => {
       this.setup()

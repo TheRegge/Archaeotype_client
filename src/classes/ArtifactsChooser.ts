@@ -69,7 +69,7 @@ export default class ArtifactsChooser
   }
 
   getArtifacts = async () => {
-    Data.getAllArtifracts()
+    Data.getAllArtifacts()
       .then(({ artifacts }) => {
         let offset = 0
         const padding = 20

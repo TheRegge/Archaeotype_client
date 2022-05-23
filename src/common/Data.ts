@@ -85,7 +85,7 @@ export class Data {
     return tiles
   }
 
-  async getAllArtifracts(): Promise<any> {
+  async getAllArtifacts(): Promise<any> {
     const artifacts = await axios.get(`${process.env.API_URL}artifact`, {
       headers: {
         Authorization: `Bearer ${window.localStorage.getItem(

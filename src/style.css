@@ -349,6 +349,10 @@ button[type='submit'] {
 }
 
 /* subscene image zoom */
+.subscene_container .preview {
+  --handle-bg-size: 18px;
+  position: relative;
+}
 .subscene_container .preview .zoom {
   background-position: 50% 50%;
   background-repeat: no-repeat;
@@ -372,6 +376,35 @@ button[type='submit'] {
 .subscene_container .preview:hover {
   cursor: all-scroll;
 }
+
+.subscene_container .preview .next {
+  width: var(--handle-bg-size);
+  height: var(--handle-bg-size);
+  border: solid 2px var(--color-gray-500);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 200ms;
+  z-index: 10;
+}
+
+.subscene_container .preview .next:hover {
+  background-color: var(--color-hint-primary);
+  border-color: var(--color-hint-primary);
+}
+
+.subscene_container .preview .next-left {
+  position: absolute;
+  top: calc(50% - var(--handle-bg-size) / 2);
+  left: 0.4em;
+}
+
+.subscene_container .preview .next-right {
+  position: absolute;
+  top: calc(50% - var(--handle-bg-size) / 2);
+  right: 0.4em;
+}
+
+/* End subscene image zoom */
 
 div.subscene_container::-webkit-scrollbar {
   width: 2px;

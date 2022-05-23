@@ -69,7 +69,7 @@ export default class LabSubScene extends BaseSubScene {
         },
       },
       {
-        el: document.querySelector('data-el="weight"]') as HTMLInputElement,
+        el: document.querySelector('[data-el="weight"]') as HTMLInputElement,
         data: {
           valueType: 'value',
           value: artifactData.weightInGrams / 1000 + '',

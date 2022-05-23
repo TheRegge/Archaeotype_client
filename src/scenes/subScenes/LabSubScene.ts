@@ -39,7 +39,7 @@ export default class LabSubScene extends BaseSubScene {
 
     let materialsArray = new Array()
 
-    artifactData.materials?.map((material) => {
+    artifactData.materials?.map((material: any) => {
       materialsArray.push(material.name)
     })
 
@@ -47,7 +47,7 @@ export default class LabSubScene extends BaseSubScene {
 
     this.elements = [
       {
-        el: document.getElementById('label') as HTMLInputElement,
+        el: document.querySelector('[data-el="label"]') as HTMLInputElement,
         data: {
           value: artifactData.found_label || '',
           valueType: 'value',
@@ -62,49 +62,49 @@ export default class LabSubScene extends BaseSubScene {
         },
       },
       {
-        el: document.getElementById('foundBy') as HTMLInputElement,
+        el: document.querySelector('[data-el="foundBy"]') as HTMLInputElement,
         data: {
           valueType: 'value',
           value: Auth.user?.firstname || '',
         },
       },
       {
-        el: document.getElementById('weight') as HTMLInputElement,
+        el: document.querySelector('data-el="weight"]') as HTMLInputElement,
         data: {
           valueType: 'value',
           value: artifactData.weightInGrams / 1000 + '',
         },
       },
       {
-        el: document.getElementById('height') as HTMLInputElement,
+        el: document.querySelector('[data-el="height"]') as HTMLInputElement,
         data: {
           valueType: 'value',
           value: artifactData.height,
         },
       },
       {
-        el: document.getElementById('width') as HTMLInputElement,
+        el: document.querySelector('[data-el="width"]') as HTMLInputElement,
         data: {
           valueType: 'value',
           value: artifactData.width,
         },
       },
       {
-        el: document.getElementById('row') as HTMLInputElement,
+        el: document.querySelector('[data-el="row"]') as HTMLInputElement,
         data: {
           valueType: 'value',
           value: tile.row,
         },
       },
       {
-        el: document.getElementById('column') as HTMLInputElement,
+        el: document.querySelector('[data-el="column"]') as HTMLInputElement,
         data: {
           valueType: 'value',
           value: tile.column,
         },
       },
       {
-        el: document.getElementById('colors') as HTMLInputElement,
+        el: document.querySelector('[data-el="colors"]') as HTMLInputElement,
         data: {
           valueType: 'value',
           value: '',
@@ -119,14 +119,14 @@ export default class LabSubScene extends BaseSubScene {
         },
       },
       {
-        el: document.getElementById('materials') as HTMLSpanElement,
+        el: document.querySelector('[data-el="materials"]') as HTMLSpanElement,
         data: {
           valueType: 'innerText',
           value: materialsString,
         },
       },
       {
-        el: document.getElementById('notes') as HTMLInputElement,
+        el: document.querySelector('[data-el="notes"]') as HTMLInputElement,
         data: {
           valueType: 'value',
           value: '',
@@ -141,7 +141,7 @@ export default class LabSubScene extends BaseSubScene {
         },
       },
       {
-        el: document.querySelector('button.submit') as HTMLButtonElement,
+        el: document.querySelector('[data-el="submit"]') as HTMLButtonElement,
         data: {
           valueType: 'innerText',
           value: 'Submit!',
@@ -190,7 +190,9 @@ export default class LabSubScene extends BaseSubScene {
       }
     })
 
-    const submit = document.querySelector('button.cancel') as HTMLButtonElement
+    const submit = document.querySelector(
+      '[data-el="cancel"]'
+    ) as HTMLButtonElement
     submit.onclick = () => {
       this.close()
     }

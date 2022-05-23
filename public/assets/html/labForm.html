@@ -21,21 +21,21 @@
         <div class="flex-column">
           <div class="flex-column">
             <label for="label">Label</label>
-            <input type="text" id="label" placeholder="Enter a name for the artifact">
+            <input type="text" data-el="label" placeholder="Enter a name for the artifact">
           </div>
           <div class="flex-column">
             <div class="flex-row">
               <div class="flex-column">
                 <label for="foundBy">Found by</label>
-                <input class="third" type="text" id="foundBy" value="" disabled>
+                <input class="third" type="text" data-el="foundBy" value="" disabled>
               </div>
               <div class="flex-column">
                 <label for="row">Row</label>
-                <input class="third" type="text" id="row" value="" disabled>
+                <input class="third" type="text" data-el="row" value="" disabled>
               </div>
               <div class="flex-column">
                 <label for="column">Column</label>
-                <input type="text" class="third" id="column" value="" disabled>
+                <input type="text" class="third" data-el="column" value="" disabled>
               </div>
             </div>
 
@@ -44,21 +44,21 @@
               <div class="flex-column">
                 <label for="weight">Weight</label>
                 <div class="third is_unit is_unit__kg">
-                  <input id="weight" type="text" class="third" value="32" disabled>
+                  <input data-el="weight" type="text" class="third" value="32" disabled>
                 </div>
               </div>
 
               <div class="flex-column">
                 <label for="width">Width</label>
                 <div class="third is_unit is_unit__m">
-                  <input id="width" class="third" type="text" value="0.27" disabled>
+                  <input data-el="width" class="third" type="text" value="0.27" disabled>
                 </div>
               </div>
 
               <div class="flex-column">
                 <label for="height">Height</label>
                 <div class="third is_unit is_unit__m">
-                  <input id="height" type="text" class="third" value="0.42" disabled>
+                  <input data-el="height" type="text" class="third" value="0.42" disabled>
                 </div>
               </div>
 
@@ -68,12 +68,12 @@
           <div class="flex-row">
             <div class="flex-column">
               <label for="colors">Colors</label>
-              <input type="text" id="colors" name="colors" placeholder="Type color separated by a comma.">
+              <input type="text" data-el="colors" name="colors" placeholder="Type color separated by a comma.">
             </div>
           </div>
 
           <div class="flex-row">
-            <p><strong>Materials:</strong> <span id="materials"></span></p>
+            <p><strong>Materials:</strong> <span data-el="materials"></span></p>
           </div>
         </div>
 
@@ -81,15 +81,15 @@
           <div class="flex-row">
             <div class="flex-column">
               <label for="notes">Notes</label>
-              <textarea id="notes" placeholder="Enter any additional observations here." rows="10"></textarea>
+              <textarea data-el="notes" placeholder="Enter any additional observations here." rows="10"></textarea>
             </div>
           </div>
           <div class="flex-row">
             <div class="flex-column">
-              <button id="cancel" class="cancel">Cancel</button>
+              <button data-el="cancel" class="cancel">Cancel</button>
             </div>
             <div class="flex-column">
-              <button id="submit" class="submit">Submit</button>
+              <button data-el="submit" class="submit">Submit</button>
             </div>
           </div>
         </div>

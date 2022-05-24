@@ -15,6 +15,14 @@ export default class extends BaseSubScene {
     const imageContainer = document.querySelector('.zoom') as HTMLElement
     const img = document.getElementById('zoomImage') as HTMLImageElement
 
+    // preload the full image
+    // ------------------
+    // This is not using PhaserJS's preload, just loading the image
+    // in the browser memory because it is for use in html, not as a
+    // Phaser image object
+    const fullImage = new Image()
+    fullImage.src = `${process.env.API_URL}resource/artifacts/full/${artifactData.name}.png`
+
     Data.getFoundArtifact(artifactData.onmap_id).then((result) => {
       this.data.set('foundArtifact', result[0])
 

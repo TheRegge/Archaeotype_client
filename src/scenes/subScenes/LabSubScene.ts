@@ -22,6 +22,14 @@ export default class LabSubScene extends BaseSubScene {
     const { artifact, artifactData, tile } = this.data.get('htmlData')
     this.artifactOnMap = artifact
 
+    // preload the full image
+    // ------------------
+    // This is not using PhaserJS's preload, just loading the image
+    // in the browser memory because it is for use in html, not as a
+    // Phaser image object
+    const fullImage = new Image()
+    fullImage.src = `${process.env.API_URL}resource/artifacts/full/${artifactData.name}.png`
+
     this.data.set('formData', {
       onmap_id: artifactData.onmap_id,
       artifact_id: artifactData.id * 1,
@@ -201,7 +209,7 @@ export default class LabSubScene extends BaseSubScene {
     const img = document.querySelector(
       '[data-el="zoomImage"]'
     ) as HTMLImageElement
-    console.log(artifactData)
+
     let currentFilename = artifactData.name + '.png'
     console.log('currentFilename', currentFilename)
     let imageIndex = 0

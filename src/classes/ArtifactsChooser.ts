@@ -23,6 +23,7 @@ export default class ArtifactsChooser
     const scrollButtonWidth = 20
     const scrollButtonHeight = 20
     const borderPadding = 10
+    const scrollSpeed = 195
 
     this.scrollUpButton = new ScrollButton({
       scene: this.scene,
@@ -35,7 +36,7 @@ export default class ArtifactsChooser
       clickHandler: () => {
         this.artifactsContainer?.setPosition(
           this.artifactsContainer.x,
-          this.artifactsContainer.y + 130 / 2
+          this.artifactsContainer.y + scrollSpeed
         )
       },
     })
@@ -51,7 +52,7 @@ export default class ArtifactsChooser
       clickHandler: () => {
         this.artifactsContainer?.setPosition(
           this.artifactsContainer.x,
-          this.artifactsContainer.y - 130 / 2
+          this.artifactsContainer.y - scrollSpeed
         )
       },
     })

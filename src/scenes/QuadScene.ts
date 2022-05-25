@@ -58,6 +58,7 @@ export default class QuadScene extends BaseScene {
   private user: User | null
   public player
   public pointerState: QuadPointerState
+  public pointerStateCache: QuadPointerState = 'play'
 
   constructor() {
     super({ key: 'quad' })
@@ -68,7 +69,7 @@ export default class QuadScene extends BaseScene {
     this.editMapLink = 'foo'
     this.adminTools = null
     this.artifactsChooser = null
-    this.pointerState = 'play'
+    this.setPointerState('play')
   }
 
   // preload() {
@@ -78,7 +79,7 @@ export default class QuadScene extends BaseScene {
 
   init() {
     super.init()
-    this.pointerState = 'play'
+    this.setPointerState('play')
   }
 
   async setup() {
@@ -271,7 +272,12 @@ export default class QuadScene extends BaseScene {
     }
 
     this.player.body.setVelocity(0)
-    this.moveWithKeys()
+    this.listenToKeyInputs()
+  }
+
+  setPointerState(newState: QuadPointerState) {
+    this.pointerStateCache = this.pointerState
+    this.pointerState = newState
   }
 
   updateArtifactOnMap = async (
@@ -435,7 +441,7 @@ export default class QuadScene extends BaseScene {
     layer1_artifacts.removeAll()
   }
 
-  moveWithKeys = () => {
+  listenToKeyInputs = () => {
     let speed = config.PLAYER_SPEED
 
     if (this.cursors.shift.isDown) {
@@ -453,6 +459,19 @@ export default class QuadScene extends BaseScene {
     } else if (this.cursors.down.isDown) {
       this.player.moveDown(speed)
     }
+
+    if (this.cursors.space.isDown) {
+      // NOT using setPointerState on purpose:
+      // We DO NOT want to cache the 'reveal' state
+      // Otherwise, we won't be able to leave it.
+      this.pointerState = 'reveal'
+    } else {
+      this.pointerState = this.pointerStateCache
+    }
+  }
+
+  setCursor = () => {
+    // if (this.cursors.opt)
   }
 
   createMinimap = () => {
@@ -656,10 +675,10 @@ export default class QuadScene extends BaseScene {
         saveRef: 'editMapLink',
         callback: () => {
           if (this.pointerState === 'play') {
-            this.pointerState = 'edit'
+            this.setPointerState('edit')
             this.openEditing()
           } else {
-            this.pointerState = 'play'
+            this.setPointerState('play')
             this.closeEditing()
           }
         },
@@ -674,7 +693,7 @@ export default class QuadScene extends BaseScene {
     this.editMapLink.text.setText('Close Editing')
     this.topLayer.setVisible(false)
     this.adminTools?.toggle()
-    this.pointerState = 'edit'
+    this.setPointerState('edit')
   }
 
   closeEditing = () => {
@@ -682,7 +701,7 @@ export default class QuadScene extends BaseScene {
     this.topLayer.setVisible(true)
     this.adminTools?.toggle()
     this.artifactsChooser?.setVisible(false)
-    this.pointerState = 'play'
+    this.setPointerState('play')
   }
 
   createTileMap = async (): Promise<Phaser.Tilemaps.Tilemap> => {
@@ -762,6 +781,16 @@ export default class QuadScene extends BaseScene {
         new Phaser.Geom.Rectangle(0, 0, data.width_onmap, data.height_onmap),
         Phaser.Geom.Rectangle.Contains
       )
+
+      artifact.on('pointerover', () => {
+        if (this.pointerState === 'reveal') {
+          this.input.enableDebug(artifact)
+        }
+      })
+
+      artifact.on('pointerout', () => {
+        this.input.removeDebug(artifact)
+      })
       // this.input.enableDebug(artifact)
       this.layer1_artifacts.add([artifact])
     })
@@ -836,6 +865,7 @@ export default class QuadScene extends BaseScene {
   ) => {
     switch (this.pointerState) {
       case 'play':
+      case 'reveal':
         this.handlePointerDownPlayState(pointer, gameObjects)
         break
 
@@ -921,7 +951,7 @@ export default class QuadScene extends BaseScene {
     if (this.clickDoesNotRemoveTileGuard(pointer, gameObjects)) return
 
     if (gameObjects[0] && gameObjects[0].name.toLowerCase() === 'artifact') {
-      this.pointerState = 'edit'
+      this.setPointerState('edit')
       const artifact = gameObjects[0]
       if (
         window.confirm(`Do you want to delete ${artifact.data.get('name')}?`)

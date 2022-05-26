@@ -57,8 +57,10 @@ export default class QuadScene extends BaseScene {
   private sceneReady: boolean
   private user: User | null
   public player
-  public pointerState: QuadPointerState
+  public pointerState: QuadPointerState = 'play'
   public pointerStateCache: QuadPointerState = 'play'
+  // public debugPointerStateText
+  // public debugPointerStateTextCache
 
   constructor() {
     super({ key: 'quad' })
@@ -226,6 +228,7 @@ export default class QuadScene extends BaseScene {
     })
 
     this.scene.scene.input.on('dragend', (pointer, gameObject) => {
+      console.log('pointerstate', this.pointerState)
       switch (this.pointerState) {
         case 'edit':
           if (gameObject.name === 'Artifact') {
@@ -252,10 +255,23 @@ export default class QuadScene extends BaseScene {
           break
       }
     })
+    // this.debugPointerStateText = this.add.text(
+    //   200,
+    //   200,
+    //   'pointerState: ' + this.pointerState
+    // )
+    // this.debugPointerStateTextCache = this.add.text(
+    //   200,
+    //   250,
+    //   'cache: ' + this.pointerState
+    // )
   }
 
   update() {
     if (!this.sceneReady) return
+
+    // this.debugPointerStateText.text = 'pointerState: ' + this.pointerState
+    // this.debugPointerStateTextCache.text = 'cache: ' + this.pointerStateCache
 
     switch (this.pointerState) {
       case 'delete':
@@ -330,6 +346,7 @@ export default class QuadScene extends BaseScene {
   }
 
   addArtifactToMap = async (gameObject, pointer) => {
+    console.log('add artifact to map')
     if (this.checkPointerOverUI(pointer, this.artifactsChooser)) return
     const dropLocation = {
       x: pointer.worldX,

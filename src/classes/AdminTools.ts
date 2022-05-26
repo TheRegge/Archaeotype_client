@@ -3,6 +3,7 @@ import ContainerWithBg, { ContainerWithBgOptions } from './ContainerWithBg'
 import Config from '../common/Config'
 import ArtifactsChooser from './ArtifactsChooser'
 import { QuadScene } from '../scenes'
+import { QuadPointerState } from '../common/Types'
 
 export default class AdminTools extends ContainerWithBg implements IToggle {
   public button1: ContainerWithBg
@@ -34,9 +35,9 @@ export default class AdminTools extends ContainerWithBg implements IToggle {
     this.button1.on('pointerdown', () => {
       const quadScene = this.scene as QuadScene
       quadScene.artifactsChooser?.toggle()
-      quadScene.setPointerState(
+      const newPointerState: QuadPointerState =
         quadScene.pointerState === 'add' ? 'edit' : 'add'
-      )
+      quadScene.pointerState = quadScene.pointerStateCache = newPointerState
     })
     this.add(this.button1)
 
@@ -53,9 +54,8 @@ export default class AdminTools extends ContainerWithBg implements IToggle {
     this.button2.setInteractive(true)
     this.button2.on('pointerdown', () => {
       const quadScene = this.scene as QuadScene
-      quadScene.setPointerState(
+      quadScene.pointerState = quadScene.pointerStateCache =
         quadScene.pointerState === 'delete' ? 'edit' : 'delete'
-      )
     })
     this.add(this.button2)
   }

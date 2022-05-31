@@ -11,7 +11,7 @@ export default class BaseSubScene extends BaseScene {
   public padding: number
   public margin: number
   public html: any
-  public eventsCancellables: Element[]
+  protected eventsCancellables: Element[]
 
   public local: {
     x: (val: number) => number

@@ -12,8 +12,12 @@ export default class extends BaseSubScene {
 
   initHTML() {
     const { artifactData } = this.data.get('htmlData')
-    const imageContainer = document.querySelector('.zoom') as HTMLElement
-    const img = document.getElementById('zoomImage') as HTMLImageElement
+    const imageContainer = document.querySelector(
+      '[data-el="zoomCollectionItem"]'
+    ) as HTMLElement
+    const img = document.querySelector(
+      '[data-el="zoomImageCollectionItem"]'
+    ) as HTMLImageElement
 
     // preload the full image
     // ------------------

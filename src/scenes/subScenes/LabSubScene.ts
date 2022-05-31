@@ -205,9 +205,11 @@ export default class LabSubScene extends BaseSubScene {
       this.close()
     }
 
-    const imageContainer = document.querySelector('.zoom') as HTMLElement
+    const imageContainer = document.querySelector(
+      '[data-el="zoomLab"]'
+    ) as HTMLElement
     const img = document.querySelector(
-      '[data-el="zoomImage"]'
+      '[data-el="zoomImageLab"]'
     ) as HTMLImageElement
 
     let currentFilename = artifactData.name + '.png'

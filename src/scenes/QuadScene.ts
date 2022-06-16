@@ -274,12 +274,20 @@ export default class QuadScene extends BaseScene {
     // this.debugPointerStateTextCache.text = 'cache: ' + this.pointerStateCache
 
     switch (this.pointerState) {
+      case 'add':
+        this.input.manager.setDefaultCursor('copy')
+        break
+
       case 'delete':
         this.input.manager.setDefaultCursor('not-allowed')
         break
 
       case 'edit':
-        this.input.manager.setDefaultCursor('default')
+        this.input.manager.setDefaultCursor('move')
+        break
+
+      case 'rotate':
+        this.input.manager.setDefaultCursor('grab')
         break
 
       default:
@@ -294,6 +302,14 @@ export default class QuadScene extends BaseScene {
   setPointerState(newState: QuadPointerState) {
     this.pointerStateCache = this.pointerState
     this.pointerState = newState
+  }
+
+  togglePointerState(newState: QuadPointerState) {
+    if (this.pointerState === newState) {
+      this.pointerState = this.pointerStateCache
+    } else {
+      this.pointerState = this.pointerStateCache = newState
+    }
   }
 
   updateArtifactOnMap = async (

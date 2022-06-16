@@ -38,7 +38,7 @@ export default class LabSubScene extends BaseSubScene {
       fields: {
         found_row: tile.row,
         found_column: tile.column * 1,
-        found_weight: artifactData.weightInGrams,
+        found_weight: artifactData.weight,
         found_height: artifactData.height,
         found_width: artifactData.width,
         found_materials: artifactData.materials,
@@ -80,21 +80,21 @@ export default class LabSubScene extends BaseSubScene {
         el: document.querySelector('[data-el="weight"]') as HTMLInputElement,
         data: {
           valueType: 'value',
-          value: artifactData.weightInGrams / 1000 + '',
+          value: artifactData.weight ? artifactData.weight + '' : '',
         },
       },
       {
         el: document.querySelector('[data-el="height"]') as HTMLInputElement,
         data: {
           valueType: 'value',
-          value: artifactData.height,
+          value: artifactData.height ? artifactData.height : '',
         },
       },
       {
         el: document.querySelector('[data-el="width"]') as HTMLInputElement,
         data: {
           valueType: 'value',
-          value: artifactData.width,
+          value: artifactData.width ? artifactData.width : '',
         },
       },
       {
@@ -152,7 +152,7 @@ export default class LabSubScene extends BaseSubScene {
         el: document.querySelector('[data-el="submit"]') as HTMLButtonElement,
         data: {
           valueType: 'innerText',
-          value: 'Submit!',
+          value: 'Submit',
         },
         action: {
           event: 'click',
@@ -213,7 +213,6 @@ export default class LabSubScene extends BaseSubScene {
     ) as HTMLImageElement
 
     let currentFilename = artifactData.name + '.png'
-    console.log('currentFilename', currentFilename)
     let imageIndex = 0
 
     img.src = `${process.env.API_URL}resource/artifacts/preview/${currentFilename}`

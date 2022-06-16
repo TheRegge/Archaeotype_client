@@ -59,8 +59,10 @@ export default class QuadScene extends BaseScene {
   public player
   public pointerState: QuadPointerState = 'play'
   public pointerStateCache: QuadPointerState = 'play'
-  // public debugPointerStateText
-  // public debugPointerStateTextCache
+  // Debug:
+  public debug = false
+  public debugPointerStateText
+  public debugPointerStateTextCache
 
   constructor() {
     super({ key: 'quad' })
@@ -228,7 +230,6 @@ export default class QuadScene extends BaseScene {
     })
 
     this.scene.scene.input.on('dragend', (pointer, gameObject) => {
-      console.log('pointerstate', this.pointerState)
       switch (this.pointerState) {
         case 'edit':
           if (gameObject.name === 'Artifact') {
@@ -255,23 +256,25 @@ export default class QuadScene extends BaseScene {
           break
       }
     })
-    // this.debugPointerStateText = this.add.text(
-    //   200,
-    //   200,
-    //   'pointerState: ' + this.pointerState
-    // )
-    // this.debugPointerStateTextCache = this.add.text(
-    //   200,
-    //   250,
-    //   'cache: ' + this.pointerState
-    // )
+
+    if (this.debug) {
+      this.debugPointerStateText = this.add
+        .text(200, 200, 'pointerState: ' + this.pointerState)
+        .setScrollFactor(0)
+
+      this.debugPointerStateTextCache = this.add
+        .text(200, 250, 'cache: ' + this.pointerState)
+        .setScrollFactor(0)
+    }
   }
 
   update() {
     if (!this.sceneReady) return
 
-    // this.debugPointerStateText.text = 'pointerState: ' + this.pointerState
-    // this.debugPointerStateTextCache.text = 'cache: ' + this.pointerStateCache
+    if (this.debug) {
+      this.debugPointerStateText.text = 'pointerState: ' + this.pointerState
+      this.debugPointerStateTextCache.text = 'cache: ' + this.pointerStateCache
+    }
 
     switch (this.pointerState) {
       case 'add':
@@ -438,7 +441,7 @@ export default class QuadScene extends BaseScene {
       height: 250,
       width: 60,
       backgroundColor: config.COLOR_GRAY_900,
-      backgroundOpacity: 0.8,
+      backgroundOpacity: 1,
       backgroundOverColor: config.COLOR_GRAY_900,
       // backgroundOverOpacity: 0.9,
     })

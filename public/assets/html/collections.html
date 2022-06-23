@@ -1,36 +1,55 @@
 <div id="collections" class="subscene_container">
+
   <div class="pad-r pad-l">
     <h1>Collections</h1>
-    <div class="flex-row">
-      <div class="flex-column">
-        <h4>A Title</h4>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam est numquam aperiam magni pariatur, soluta
-          ex
-          nesciunt accusamus alias nobis qui maxime magnam rem, quod veritatis cumque? Exercitationem, sapiente quia.
-        </p>
-        <p>Sunt, obcaecati quae! Officia tenetur explicabo in hic consectetur! Beatae asperiores ipsam deleniti
-          doloremque,
-          repellat delectus tenetur impedit expedita, eveniet corporis quia quam ea perspiciatis eos molestias illum
-          fugiat
-          autem.</p>
+    <div data-el="items-container"></div>
+    <template id="collections_item_template">
+      <div class="flex-row item">
+        <div class="flex-column shrink">
+          <div class="preview">
+            <div class="zoom" data-el="zoomCollectionsItem">
+              <img data-el="zoomImageCollectionsItem" src="">
+            </div>
+            <div data-el="next-left" class="next next-left"></div>
+            <div data-el="next-right" class="next next-right"></div>
+          </div>
+        </div>
+        <div class="flex-column flex-gap-small grow">
+          <h2 data-title></h2>
+          <p>Found on <span data-quadname></span> by <span data-foundby></span></span></p>
+          <table>
+            <thead>
+              <tr>
+                <td>Found Date</td>
+                <td>Row</td>
+                <td>Column</td>
+                <td>Width</td>
+                <td>Height</td>
+                <td>Weight</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-date>
+                <td data-row></td>
+                <td data-column></td>
+                <td data-width class="is_unit__m"></td>
+                <td data-height class="is_unit__m"></td>
+                <td data-weight class="is_unit_kg"></td>
+              </tr>
+            </tbody>
+          </table>
+          <dl>
+            <dt>Material(s)</dt>
+            <dd data-materials></dd>
+            <dt>Color(s)</dt>
+            <dd data-colors></dd>
+            <dt>Notes</dt>
+            <dd data-notes></dd>
+          </dl>
+        </div>
       </div>
-      <div class="flex-column">
-        <h4>Anothe title</h4>
-        <p>Assumenda maiores ipsam error velit tenetur perspiciatis quam laboriosam. Incidunt, tenetur? Accusamus
-          delectus,
-          repellat tenetur adipisci ea blanditiis nesciunt quae iste repudiandae eos soluta, minus praesentium facere
-          architecto nostrum quisquam.</p>
-        <p>Quam architecto repellat fuga enim soluta obcaecati nostrum facilis error, aliquam laboriosam esse, eaque
-          quas
-          incidunt molestias qui cupiditate? Ea, aliquam nobis culpa nostrum nulla ipsam autem repellat quod amet!</p>
-        <p>Exercitationem eligendi sapiente quo quibusdam ducimus quidem, harum quas consectetur quae sit quaerat
-          dignissimos
-          labore quam neque provident aut dolores minus esse excepturi! Expedita iusto ullam eius at, fuga praesentium?
-        </p>
-      </div>
-    </div>
-    <h4>A final title</h4>
-    <p>Impedit distinctio unde facilis corporis nostrum quam cum ad sint ipsa? Enim iure facere sed quam aspernatur
-      laudantium quas deleniti similique reiciendis, quia rem dolorem quibusdam, animi nisi officiis libero!</p>
   </div>
+</div>
+</template>
 </div>

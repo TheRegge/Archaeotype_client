@@ -657,7 +657,9 @@ export default class QuadScene extends BaseScene {
           const data = {
             fromScene: this,
             htmlTagName: 'collections',
-            htmlData: {},
+            htmlData: {
+              quad: this.data.get('quad'),
+            },
           }
 
           if (toScene) {

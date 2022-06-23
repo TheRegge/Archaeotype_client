@@ -299,6 +299,20 @@ export class Data {
     )
     return foundArtifact.data
   }
+
+  async getProjectCollection(projectId: number) {
+    const collection = await axios.get(
+      `${process.env.API_URL}project/collection/${projectId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem(
+            config.LOCAL_STORAGE_API_TOKEN_NAME
+          )}`,
+        },
+      }
+    )
+    return collection.data
+  }
 }
 
 export default Data.getInstance()

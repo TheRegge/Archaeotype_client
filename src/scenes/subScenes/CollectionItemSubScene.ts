@@ -12,10 +12,12 @@ export default class extends BaseSubScene {
 
   initHTML() {
     const { artifactData } = this.data.get('htmlData')
-    const imageContainer = document.querySelector(
+    const rootEl = document.getElementById('collectionitem')
+
+    const imageContainer = rootEl?.querySelector(
       '[data-el="zoomCollectionItem"]'
     ) as HTMLElement
-    const img = document.querySelector(
+    const img = rootEl?.querySelector(
       '[data-el="zoomImageCollectionItem"]'
     ) as HTMLImageElement
 
@@ -34,7 +36,7 @@ export default class extends BaseSubScene {
         {
           el: document.getElementById('title') as HTMLInputElement,
           data: {
-            value: result[0].found_label || '',
+            value: result[0]?.found_label || '',
             valueType: 'innerText',
           },
         },

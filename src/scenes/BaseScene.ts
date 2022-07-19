@@ -7,6 +7,7 @@ export default class BaseScene extends Phaser.Scene {
   public red: number
   public green: number
   public blue: number
+  public debug: boolean
 
   constructor(sceneInit: string | Phaser.Types.Scenes.SettingsConfig) {
     let keyString: string | undefined
@@ -21,6 +22,11 @@ export default class BaseScene extends Phaser.Scene {
     }
 
     super({ key: keyString })
+
+    // check debug state
+    const queryString = window.location.search
+    const urlParams = new URLSearchParams(queryString)
+    this.debug = !!urlParams.get('debug') || false
 
     this.fadeColor = config.COLOR_GRAY_800
     const { r, g, b } = Phaser.Display.Color.ColorToRGBA(this.fadeColor)

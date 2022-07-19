@@ -59,8 +59,6 @@ export default class QuadScene extends BaseScene {
   public player
   public pointerState: QuadPointerState = 'play'
   public pointerStateCache: QuadPointerState = 'play'
-  // Debug:
-  public debug = false
   public debugPointerStateText
   public debugPointerStateTextCache
 

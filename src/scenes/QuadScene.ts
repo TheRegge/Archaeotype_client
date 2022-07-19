@@ -216,16 +216,31 @@ export default class QuadScene extends BaseScene {
     })
     // handle clicking on map
     this.input.on('pointerdown', this.handlePointerdown)
-    this.scene.scene.input.on('dragstart', (_, gameObject) => {
-      if (gameObject.name === 'ArtifactInChooser') {
-        gameObject.setData('dragStart', {
-          x: gameObject.x,
-          y: gameObject.y,
-        })
+    this.scene.scene.input.on(
+      'dragstart',
+      (pointer: Phaser.Input.Pointer, gameObject: any) => {
+        if (
+          gameObject.name === 'ArtifactInChooser' ||
+          gameObject.name === 'Artifact'
+        ) {
+          gameObject.setData('dragStart', {
+            x: gameObject.x,
+            y: gameObject.y,
+          })
 
-        gameObject.showDraggingState()
+          gameObject.setData('pointerOffset', {
+            x:
+              Math.floor((pointer.x - gameObject.x + config.H_OFFSET) * 100) /
+              100,
+            y:
+              Math.floor((pointer.y - gameObject.y + config.V_OFFSET) * 100) /
+              100,
+          })
+
+          gameObject.showDraggingState && gameObject.showDraggingState()
+        }
       }
-    })
+    )
 
     this.scene.scene.input.on('dragend', (pointer, gameObject) => {
       switch (this.pointerState) {
@@ -317,15 +332,17 @@ export default class QuadScene extends BaseScene {
     artifact: Phaser.GameObjects.GameObject,
     pointer: Phaser.Input.Pointer
   ) => {
-    const newX =
-      Math.floor(utils.pixelsToMeters(pointer.worldX - config.H_OFFSET) * 100) /
-      100
-    const newY =
-      Math.floor(
-        utils.pixelsToMeters(
-          pointer.worldY - config.V_OFFSET - this.mainNav.height
-        ) * 100
-      ) / 100
+    // Find the coordinates of the pointer in meters
+    const pointerX = pointer.worldX - config.H_OFFSET
+    const pointerY = pointer.worldY - config.V_OFFSET - this.mainNav.height
+
+    const pointerOffset = artifact.getData('pointerOffset')
+
+    const correctedX = pointerX - pointerOffset.x
+    const correctedY = pointerY - pointerOffset.y
+
+    const newX = Math.floor(utils.pixelsToMeters(correctedX) * 100) / 100
+    const newY = Math.floor(utils.pixelsToMeters(correctedY) * 100) / 100
 
     artifact.setData('coordinatesInMeters', {
       x: newX,

@@ -315,7 +315,7 @@ export default class QuadScene extends BaseScene {
 
   updateArtifactOnMap = async (
     artifact: Phaser.GameObjects.GameObject,
-    pointer: any
+    pointer: Phaser.Input.Pointer
   ) => {
     const newX =
       Math.floor(utils.pixelsToMeters(pointer.worldX - config.H_OFFSET) * 100) /

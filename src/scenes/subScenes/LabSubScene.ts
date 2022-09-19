@@ -164,14 +164,27 @@ export default class LabSubScene extends BaseSubScene {
             })
             formData.fields.found_materials = materials.join(', ')
 
-            const result = await Data.saveLabData(
+            Data.saveLabData(
               formData.onmap_id * 1,
               formData.artifact_id,
               formData.quad_id,
               formData.user_id,
               Auth.user?.username || '',
               formData.fields
-            )
+            ).then((data) => {
+              if (data?.data?.id > 0) {
+                this.artifactOnMap?.showFlag()
+                this.close()
+              } else if (data?.error) {
+                alert(data.error)
+                this.close()
+              } else {
+                alert('Error saving found artifact')
+                this.close()
+              }
+            })
+
+            ///----
             if (result) {
               this.artifactOnMap?.showFlag()
               this.close()

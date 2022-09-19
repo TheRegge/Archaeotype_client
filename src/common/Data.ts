@@ -124,14 +124,14 @@ export class Data {
     return artifacts.data
   }
 
-  saveDestroyedTile(
+  async saveDestroyedTile(
     quad_id: number,
     x: number,
     y: number,
-    user_id: number,
-    callback: (success: boolean, answer: any) => void
-  ): void {
-    axios
+    user_id: number
+    // callback: (success: boolean, answer: any) => void
+  ): Promise<any> {
+    return await axios
       .post(
         `${process.env.API_URL}quad/destroyed-tile`,
         {
@@ -148,16 +148,13 @@ export class Data {
           },
         }
       )
-      .then((response: AxiosResponse) => {
-        callback(true, response.data)
-      })
       .catch((error) => {
         if (error.response) {
-          callback(false, error.response)
+          return error.response
         } else if (error.request) {
-          callback(false, error.request)
+          return error.request
         } else {
-          callback(false, error.message)
+          return error.message
         }
       })
   }
@@ -256,19 +253,19 @@ export class Data {
       found_label: string
       found_row: number | string
       found_materials: string
-      found_weight?: number
-      found_height?: number
-      found_width?: number
+      found_weight?: string
+      found_height?: string
+      found_width?: string
     }
-  ) {
-    try {
-      await axios.post(
+  ): Promise<any> {
+    return await axios
+      .post(
         `${process.env.API_URL}quad/lab`,
         {
           onmap_id,
           artifact_id,
-          quad_id,
-          user_id,
+          quad_id: quad_id.toString(),
+          user_id: user_id.toString(),
           username,
           ...fields,
         },
@@ -280,10 +277,15 @@ export class Data {
           },
         }
       )
-      return true
-    } catch (error) {
-      return false
-    }
+      .catch((error) => {
+        if (error.response?.data) {
+          return error.response.data
+        } else if (error.request) {
+          return error.request
+        } else {
+          return error.message
+        }
+      })
   }
 
   async getFoundArtifact(onMapId: number) {

@@ -122,6 +122,10 @@ export default class QuadScene extends BaseScene {
     this.destroyArtifacts()
   }
 
+  transitionIn() {
+    super.transitionIn()
+  }
+
   create() {
     this.layer0_bgImage = this.add.layer()
     this.layer1_artifacts = this.add.layer()
@@ -302,9 +306,9 @@ export default class QuadScene extends BaseScene {
         this.input.manager.setDefaultCursor('move')
         break
 
-      case 'rotate':
-        this.input.manager.setDefaultCursor('grab')
-        break
+      // case 'rotate':
+      //   this.input.manager.setDefaultCursor('grab')
+      //   break
 
       default:
         this.input.manager.setDefaultCursor('default')
@@ -946,29 +950,38 @@ export default class QuadScene extends BaseScene {
   ) => {
     if (this.clickDoesNotRemoveTileGuard(pointer, gameObjects)) return
 
-    const tile: Phaser.Tilemaps.Tile | null = this.tileMap.removeTileAtWorldXY(
+    const tile: Phaser.Tilemaps.Tile | null = this.tileMap.getTileAtWorldXY(
       pointer.worldX,
       pointer.worldY,
-      true,
       false,
+      // false,
       this.cameras.main,
       this.topLayer
     ) as Phaser.Tilemaps.Tile
+
     if (tile) {
-      tile.destroy()
       Data.saveDestroyedTile(
         this.data.get('quad').id,
         tile.x,
         tile.y,
-        Auth.user?.id || 99,
-        () => {}
-      )
+        Auth.user?.id || 99
+      ).then((data) => {
+        if (data?.data?.id > 0) {
+          this.topLayer.removeTileAt(tile.x, tile.y)
+        } else {
+          if (data?.data?.error) {
+            alert(data.data.error)
+          } else {
+            alert('Error saving destroyed tile')
+          }
+        }
+      })
     } else if (
       gameObjects[0] &&
       gameObjects[0].name.toLowerCase() === 'artifact'
     ) {
       const artifactData = gameObjects[0]?.data.getAll() as ArtifactData
-      if (gameObjects[0].data.get('flag') !== true) {
+      if (!gameObjects[0].data.get('flag')) {
         this.openLab(artifactData, gameObjects[0])
       } else {
         this.openCollectionItem(artifactData)

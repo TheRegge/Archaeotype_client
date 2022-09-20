@@ -689,21 +689,21 @@ export default class QuadScene extends BaseScene {
           this.scene.pause(this.scene.key)
         },
       },
-      {
-        name: 'Library',
-        ...baseLinkOptions,
-        callback: () => {
-          this.popup.showWithContent({
-            title: 'Library',
-            body: [
-              'WELCOME TO THE LIBRARY',
-              '----------------------',
-              'Hello, this is the content for the library.',
-              'I need to abstract the popup more.',
-            ],
-          })
-        },
-      },
+      // {
+      //   name: 'Library',
+      //   ...baseLinkOptions,
+      //   callback: () => {
+      //     this.popup.showWithContent({
+      //       title: 'Library',
+      //       body: [
+      //         'WELCOME TO THE LIBRARY',
+      //         '----------------------',
+      //         'Hello, this is the content for the library.',
+      //         'I need to abstract the popup more.',
+      //       ],
+      //     })
+      //   },
+      // },
       {
         name: 'Help',
         ...baseLinkOptions,

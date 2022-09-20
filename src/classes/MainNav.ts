@@ -98,7 +98,7 @@ export default class MainNav extends ContainerWithBg {
         15
       )
       txtLink.setPosition(
-        xpos - Math.floor(this.width / 2) + txtLink.fullWidth / 2,
+        Math.floor(xpos - Math.floor(this.width / 2) + txtLink.fullWidth / 2),
         0
       )
       if (link.saveRef) {

@@ -726,9 +726,43 @@ export default class QuadScene extends BaseScene {
     ]
 
     if (Auth.isAdmin()) {
+      const unlockMapLinkOptions = { ...baseLinkOptions }
+      unlockMapLinkOptions.linkColor = config.COLOR_GRAY_900
+      unlockMapLinkOptions.backgroundColor = config.COLOR_HINT_SECONDARY
+
+      navLinks.push({
+        name: 'Unlock Map',
+        ...unlockMapLinkOptions,
+        saveRef: 'unlockMapLink',
+        callback: async () => {
+          if (
+            window.confirm(
+              'Are you sure you want to unlock the map? The next user editing it will lock it again for others.'
+            )
+          ) {
+            const quadId = this.data.get('quad').id
+            const result = await Data.unlockQuad(quadId)
+            console.log('result', result)
+            if (result) {
+              if (result.quad_id === quadId) {
+                alert('Quad unlocked!')
+              } else {
+                alert('Quad already unlocked!')
+              }
+            } else {
+              alert('Something went wrong. Maybe try again?')
+            }
+          }
+        },
+      })
+
+      const editMapLinkOptions = { ...baseLinkOptions }
+      editMapLinkOptions.linkColor = 0x000000
+      editMapLinkOptions.backgroundColor = config.COLOR_HINT_SECONDARY_STRONG
+
       navLinks.push({
         name: 'Edit Map',
-        ...baseLinkOptions,
+        ...editMapLinkOptions,
         saveRef: 'editMapLink',
         callback: () => {
           if (this.pointerState === 'play') {

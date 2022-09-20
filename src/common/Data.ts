@@ -315,6 +315,27 @@ export class Data {
     )
     return collection.data
   }
+
+  async unlockQuad(quadId: number) {
+    try {
+      const result = await axios.post(
+        `${process.env.API_URL}quad/unlock`,
+        {
+          quad_id: quadId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem(
+              config.LOCAL_STORAGE_API_TOKEN_NAME
+            )}`,
+          },
+        }
+      )
+      return result.data
+    } catch (error) {
+      return error
+    }
+  }
 }
 
 export default Data.getInstance()

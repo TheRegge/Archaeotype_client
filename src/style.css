@@ -144,16 +144,16 @@ summary {
   --color-hint-secondary: #fbbf24;
   --color-hint-secondary-strong: #e55f2a;
 
-  --color-gray-50: #fafafa;
-  --color-gray-100: #f4f4f5;
-  --color-gray-200: #e4e4e7;
-  --color-gray-300: #d4d4d8;
-  --color-gray-400: #a1a1aa;
-  --color-gray-500: #71717a;
-  --color-gray-600: #52525b;
-  --color-gray-700: #3f3f46;
-  --color-gray-800: #27272a;
-  --color-gray-900: #18181b;
+  --color-gray-50: hsl(240, 5%, 95%);
+  --color-gray-100: hsl(240, 5%, 90%);
+  --color-gray-200: hsl(240, 5%, 80%);
+  --color-gray-300: hsl(240, 5%, 70%);
+  --color-gray-400: hsl(240, 5%, 60%);
+  --color-gray-500: hsl(240, 5%, 50%);
+  --color-gray-600: hsl(240, 5%, 40%);
+  --color-gray-700: hsl(240, 5%, 30%);
+  --color-gray-800: hsl(240, 5%, 20%);
+  --color-gray-900: hsl(240, 5%, 10%);
 
   --input-width: 280px;
   --input-unit-width: 30px;
@@ -180,6 +180,11 @@ h5 {
 h1 {
   padding: 0.5em 0 0.75em 0;
   margin: 0;
+}
+
+h5 {
+  padding: 0;
+  margin: 1em 0 0;
 }
 
 body {
@@ -286,6 +291,7 @@ button[type='submit'] {
 
 .subscene_container a,
 .subscene_container a:visited {
+  cursor: pointer;
   text-decoration: none;
   color: var(--color-hint-primary);
   transition: color 400ms;
@@ -324,6 +330,60 @@ button[type='submit'] {
   padding: 0;
 }
 
+/* Subscene container .ui variations */
+
+.subscene_container .flex-row .flex-row.icon {
+  gap: 0.3em;
+}
+
+.subscene_container .ui__item {
+  height: 100px;
+  overflow: auto;
+  cursor: pointer;
+  margin-bottom: 1em;
+  padding: 0.5em 1em;
+  border-left: solid 4px var(--color-gray-800);
+  transition: border-color 300ms;
+}
+
+.subscene_container .ui__item:hover {
+  border-left: solid 4px var(--color-hint-secondary);
+}
+
+.subscene_container p.ui {
+  font-size: 0.875em;
+  line-height: 1.4em;
+  margin: 0 0 0.6em 0;
+  color: var(--color-gray-300);
+}
+
+.subscene_container p.ui em {
+  color: var(--color-gray-50);
+}
+
+.subscene_container h5.ui {
+  color: var(--color-hint-primary);
+  border-color: var(--color-hint-secondary);
+}
+
+.subscene_container h5.ui:not(:first-of-type) {
+  margin-top: 2em;
+}
+
+svg.ui {
+  width: 20px;
+  height: 20px;
+}
+
+svg.ui path.art {
+  fill: var(--color-hint-primary);
+}
+
+svg.ui path.art.danger {
+  fill: var(--color-hint-secondary-strong);
+}
+
+/* Subscene container layout */
 .subscene_container input {
   width: 100%;
 }

@@ -159,6 +159,33 @@ export class Data {
       })
   }
 
+  async saveHiddenTiles(quad_id: number, user_id: number): Promise<any> {
+    return await axios
+      .post(
+        `${process.env.API_URL}quad/hidden-tiles`,
+        {
+          quad_id,
+          user_id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem(
+              config.LOCAL_STORAGE_API_TOKEN_NAME
+            )}`,
+          },
+        }
+      )
+      .catch((error) => {
+        if (error.response) {
+          return error.response
+        } else if (error.request) {
+          return error.request
+        } else {
+          return error.message
+        }
+      })
+  }
+
   async saveNewOnmapArtifact(
     artifact_id: number,
     quad_id: number,

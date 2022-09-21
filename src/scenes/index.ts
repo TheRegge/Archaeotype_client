@@ -6,6 +6,7 @@ import PreloadScene from './PreloadScene'
 import ProjectsScene from './ProjectsScene'
 import QuadScene from './QuadScene'
 import SiteScene from './SiteScene'
+import ActionsSubScene from './subScenes/ActionsSubScene'
 
 export {
   CollectionItemSubScene,
@@ -16,4 +17,5 @@ export {
   ProjectsScene,
   QuadScene,
   SiteScene,
+  ActionsSubScene,
 }

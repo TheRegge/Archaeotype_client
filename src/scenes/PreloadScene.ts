@@ -103,5 +103,6 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.html('help', './assets/html/help.html')
     this.load.html('collections', './assets/html/collections.html')
     this.load.html('collectionitem', './assets/html/collectionitem.html')
+    this.load.html('actions', './assets/html/actions.html')
   }
 }

@@ -4,6 +4,7 @@ import Phaser from 'phaser'
 import BaseScene from './BaseScene'
 
 // SubScenes
+import ActionsSubScene from './subScenes/ActionsSubScene'
 import CollectionItemSubScene from './subScenes/CollectionItemSubScene'
 import CollectionsSubScene from './subScenes/CollectionsSubScene'
 import HelpSubScene from './subScenes/HelpSubScene'
@@ -42,7 +43,7 @@ export default class QuadScene extends BaseScene {
   private ignoredByMinimap: Phaser.GameObjects.GameObject[]
   private layer0_bgImage
   private layer1_artifacts
-  private layer2_toptiles
+  public layer2_toptiles
   private layer3_UI_1
   private layer4_UI_2
   private mainNav
@@ -726,39 +727,11 @@ export default class QuadScene extends BaseScene {
     ]
 
     if (Auth.isAdmin()) {
-      const unlockMapLinkOptions = { ...baseLinkOptions }
-      unlockMapLinkOptions.linkColor = config.COLOR_GRAY_900
-      unlockMapLinkOptions.backgroundColor = config.COLOR_HINT_SECONDARY
-
-      navLinks.push({
-        name: 'Unlock Map',
-        ...unlockMapLinkOptions,
-        saveRef: 'unlockMapLink',
-        callback: async () => {
-          if (
-            window.confirm(
-              'Are you sure you want to unlock the map? The next user editing it will lock it again for others.'
-            )
-          ) {
-            const quadId = this.data.get('quad').id
-            const result = await Data.unlockQuad(quadId)
-            console.log('result', result)
-            if (result) {
-              if (result.quad_id === quadId) {
-                alert('Quad unlocked!')
-              } else {
-                alert('Quad already unlocked!')
-              }
-            } else {
-              alert('Something went wrong. Maybe try again?')
-            }
-          }
-        },
-      })
-
       const editMapLinkOptions = { ...baseLinkOptions }
-      editMapLinkOptions.linkColor = 0x000000
-      editMapLinkOptions.backgroundColor = config.COLOR_HINT_SECONDARY_STRONG
+      editMapLinkOptions.linkColor = config.COLOR_HINT_SECONDARY_STRONG
+      editMapLinkOptions.backgroundOverColor =
+        config.COLOR_HINT_SECONDARY_STRONG
+      editMapLinkOptions.linkHoverColor = 0xffffff
 
       navLinks.push({
         name: 'Edit Map',
@@ -774,6 +747,22 @@ export default class QuadScene extends BaseScene {
           }
         },
       })
+
+      const actionsLinkOptions = { ...baseLinkOptions }
+      actionsLinkOptions.linkColor = config.COLOR_HINT_SECONDARY_STRONG
+      actionsLinkOptions.backgroundOverColor =
+        config.COLOR_HINT_SECONDARY_STRONG
+      actionsLinkOptions.linkHoverColor = 0xffffff
+      navLinks.push({
+        name: 'Actions',
+        ...actionsLinkOptions,
+        saveRef: 'actionsLink',
+
+        callback: () => {
+          const openActions = this.openActionsSubScene.bind(this)
+          openActions()
+        },
+      })
     }
 
     this.mainNav = new MainNav(navOptions, navLinks)
@@ -781,7 +770,7 @@ export default class QuadScene extends BaseScene {
   }
 
   openEditing = () => {
-    this.editMapLink.text.setText('Close Editing')
+    this.editMapLink.text.setText('Close')
     this.topLayer.setVisible(false)
     this.adminTools?.toggle()
     this.setPointerState('edit')
@@ -897,6 +886,15 @@ export default class QuadScene extends BaseScene {
     return Data.saveNewOnmapArtifact(artifact_id, quad_id, x, y, angle)
   }
 
+  saveHiddenTiles = async () => {
+    console.log('the user id is: ', Auth.user?.id)
+    if (!Auth.user?.id) {
+      return
+    }
+
+    return await Data.saveHiddenTiles(this.data.get('quad').id, Auth.user.id)
+  }
+
   openLab = (
     artifactData: ArtifactData,
     artifact: Phaser.GameObjects.GameObject
@@ -941,6 +939,27 @@ export default class QuadScene extends BaseScene {
       this.scene.wake('collectionitem', data)
     } else {
       this.scene.add('collectionitem', CollectionItemSubScene, true, data)
+    }
+    this.scene.pause('quad')
+  }
+
+  openActionsSubScene = () => {
+    console.log('this.scene', this.scene)
+    const toScene = this.scene.get('actions')
+    console.log('toScene', toScene)
+    const data = {
+      fromScene: this,
+      htmlTagName: 'actions',
+      htmlData: {
+        quad: this.data.get('quad'),
+        action: this.saveHiddenTiles.bind(this),
+      },
+    }
+
+    if (toScene) {
+      this.scene.wake('actions', data)
+    } else {
+      this.scene.add('actions', ActionsSubScene, true, data)
     }
     this.scene.pause('quad')
   }

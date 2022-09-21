@@ -2,7 +2,7 @@ import BaseSubScene from './BaseSubScene'
 import { UpdatableElement } from '../../common/Types'
 import Data from '../../common/Data'
 
-export default class extends BaseSubScene {
+export default class CollectionItemSubScene extends BaseSubScene {
   public elements: UpdatableElement[]
 
   constructor() {

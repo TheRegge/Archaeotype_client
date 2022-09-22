@@ -887,7 +887,6 @@ export default class QuadScene extends BaseScene {
   }
 
   saveHiddenTiles = async () => {
-    console.log('the user id is: ', Auth.user?.id)
     if (!Auth.user?.id) {
       return
     }

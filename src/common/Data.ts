@@ -85,6 +85,50 @@ export class Data {
     return tiles
   }
 
+  /**
+   * Reset tiles for a quad
+   *
+   * @param {number} quadId
+   * @param {string} resetMode defaults to '' which means soft reset
+   * @returns {Promise<any>}
+   * @memberof Data
+   */
+  async resetTiles(quadId: number, resetMode: string = ''): Promise<any> {
+    return await axios
+      .post(
+        `${process.env.API_URL}quad/reset-tiles`,
+        { quadId, resetMode },
+        {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem(
+              config.LOCAL_STORAGE_API_TOKEN_NAME
+            )}`,
+          },
+        }
+      )
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  async rotateArtifacts(quadId: number, rotateMode: string = ''): Promise<any> {
+    return await axios
+      .post(
+        `${process.env.API_URL}quad/rotate-artifacts`,
+        { quadId, rotateMode },
+        {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem(
+              config.LOCAL_STORAGE_API_TOKEN_NAME
+            )}`,
+          },
+        }
+      )
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
   async getAllArtifacts(): Promise<any> {
     const artifacts = await axios.get(`${process.env.API_URL}artifact`, {
       headers: {

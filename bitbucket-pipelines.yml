@@ -3,23 +3,19 @@ pipelines:
   branches:
     master:
       - step:
-          name: Output node version
+          name: Install npm modules and build production site with parcel
           script:
-            - node -v
-      # - step:
-      #     name: Install npm modules and build production site with parcel
-      #     script:
-      #       - npm install
-      #       - npm run build
-      #     artifacts:
-      #       - dist/**
-      # - step:
-      #     name: Deploy dist artifacts using script
-      #     deployment: production
-      #     script:
-      #       - pipe: atlassian/scp-deploy:0.3.3
-      #         variables:
-      #           USER: $USER
-      #           SERVER: $SERVER
-      #           REMOTE_PATH: '/home/administrator/WEBROOT/archaeotype_v3/client'
-      #           LOCAL_PATH: 'dist/*'
+            - npm install
+            - npm run build
+          artifacts:
+            - dist/**
+      - step:
+          name: Deploy dist artifacts using script
+          deployment: production
+          script:
+            - pipe: atlassian/scp-deploy:0.3.3
+              variables:
+                USER: $USER
+                SERVER: $SERVER
+                REMOTE_PATH: '/home/administrator/WEBROOT/archaeotype_v3/client'
+                LOCAL_PATH: 'dist/*'

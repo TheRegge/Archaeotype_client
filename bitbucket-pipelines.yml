@@ -3,10 +3,6 @@ pipelines:
   branches:
     master:
       - step:
-          name: Test the name environment variable
-          script:
-            - echo $USER
-      - step:
           name: Install npm modules and build production site with parcel
           script:
             - npm install

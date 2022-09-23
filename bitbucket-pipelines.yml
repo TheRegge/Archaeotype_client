@@ -4,13 +4,15 @@ pipelines:
     master:
       - step:
           name: Install npm modules and build production site with parcel
+          caches:
+            - node
           script:
             - npm install
             - npm run build
           artifacts:
             - dist/**
       - step:
-          name: Deploy dist artifacts using script
+          name: Deploy dist artifacts using scp
           deployment: production
           script:
             - pipe: atlassian/scp-deploy:0.3.3

@@ -28,6 +28,7 @@ export type UpdatableElement = {
   data: { valueType: string; value: string | number }
   action?: {
     event: string
+    once?: boolean
     callback: (e) => void
   }
 }

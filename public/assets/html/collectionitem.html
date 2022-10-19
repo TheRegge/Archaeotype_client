@@ -1,6 +1,6 @@
 <div id="collectionitem" class="subscene_container">
   <div class="pad-r pad-l">
-    <h1>Collection</h1>
+    <h1 id="title"></h1>
     <div class="flex-row">
       <div class="flex-column shrink">
         <div class="preview">
@@ -9,8 +9,7 @@
           </div>
         </div>
       </div>
-      <div class="flex-column grow">
-        <h2 id="title"></h2>
+      <div class="flex-column">
 
         <dl>
           <dt>Found date</dt>
@@ -71,12 +70,25 @@
           <dd><span id="found_colors"></span></dd>
         </dl>
 
-        <dl>
-          <dt>Notes</dt>
-          <dd><span id="found_notes"></span></dd>
-        </dl>
 
+      </div>
 
+      <div class="flex-column">
+        <div class="flex-row">
+          <div class="flex-column">
+
+            <label for="found_notes">Notes</label>
+
+            <textarea autocorrect="off" autocomplete="off" name="found_notes" id="found_notes"
+              data-el="found_notes_input" placeholder="Enter any additional observations here." rows="10"></textarea>
+          </div>
+        </div>
+
+        <div class="flex-row">
+          <div class="flex-column">
+            <button data-el="save_notes_button" class="submit" disabled>Save Notes</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

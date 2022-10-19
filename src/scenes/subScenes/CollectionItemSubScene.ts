@@ -1,5 +1,6 @@
 import BaseSubScene from './BaseSubScene'
-import { UpdatableElement } from '../../common/Types'
+import { ArtifactData, UpdatableElement } from '../../common/Types'
+import Auth from '../../common/Auth'
 import Data from '../../common/Data'
 
 export default class CollectionItemSubScene extends BaseSubScene {
@@ -8,9 +9,17 @@ export default class CollectionItemSubScene extends BaseSubScene {
   constructor() {
     super('collectionitem')
     this.elements = []
+    if (!Auth.user) {
+      this.close()
+    }
   }
 
   initHTML() {
+    // @note:
+    // Clear keyboard captures so we can enter data into inputs fields,
+    // for example, the 'space' is captured by the scene to show outline
+    // around artifacts, but we want to be able to type spaces in the notes.
+    this.input.keyboard.clearCaptures()
     const { artifactData } = this.data.get('htmlData')
     const rootEl = document.getElementById('collectionitem')
 
@@ -20,6 +29,14 @@ export default class CollectionItemSubScene extends BaseSubScene {
     const img = rootEl?.querySelector(
       '[data-el="zoomImageCollectionItem"]'
     ) as HTMLImageElement
+
+    // reset the save notes button to be disabled
+    // (needed when reopening the scene)
+    const saveNotesButton = rootEl?.querySelector(
+      '[data-el="save_notes_button"]'
+    ) as HTMLButtonElement
+
+    saveNotesButton.disabled = true
 
     // preload the full image
     // ------------------
@@ -51,7 +68,7 @@ export default class CollectionItemSubScene extends BaseSubScene {
           el: document.getElementById('found_date') as HTMLInputElement,
           data: {
             value:
-              new Date(result[0].date).toLocaleDateString('en-us', {
+              new Date(result[0].created_at).toLocaleDateString('en-us', {
                 weekday: 'long',
                 year: 'numeric',
                 month: 'short',
@@ -68,10 +85,22 @@ export default class CollectionItemSubScene extends BaseSubScene {
           },
         },
         {
-          el: document.getElementById('found_notes') as HTMLInputElement,
+          el: document.querySelector(
+            '[data-el="found_notes_input"]'
+          ) as HTMLInputElement,
           data: {
             value: result[0].found_notes || '',
-            valueType: 'innerText',
+            valueType: 'value',
+          },
+          action: {
+            event: 'keyup',
+            once: true,
+            callback: (e: any) => {
+              const button = document.querySelector(
+                '[data-el="save_notes_button"]'
+              ) as HTMLButtonElement
+              button.disabled = false
+            },
           },
         },
         {
@@ -116,6 +145,46 @@ export default class CollectionItemSubScene extends BaseSubScene {
             valueType: 'value',
           },
         },
+        {
+          el: document.querySelector(
+            '[data-el="save_notes_button"]'
+          ) as HTMLButtonElement,
+          data: {
+            value: 'Save Notes',
+            valueType: 'innerText',
+          },
+          action: {
+            event: 'click',
+            callback: (e) => {
+              e.preventDefault()
+
+              const artifactData = this.data.get('htmlData')?.artifactData
+              // const { onmap_id, quadId } = artifactData
+              const onmap_id: number = artifactData.onmap_id as number
+              const quad_id: number = artifactData.quadId as number
+              const artifact_id = artifactData.id as number
+              const user_id = Auth.user?.id || 0
+              const notesEl = document.querySelector(
+                '[data-el="found_notes_input"]'
+              ) as HTMLTextAreaElement
+              const found_notes = notesEl.value
+
+              Data.updateCollectionItemNotes(
+                user_id,
+                onmap_id,
+                artifact_id,
+                quad_id,
+                found_notes
+              ).then((result) => {
+                if (result?.statusText === 'OK') {
+                  this.notifier.success('Notes saved')
+                } else {
+                  this.notifier.error('Error saving notes')
+                }
+              })
+            },
+          },
+        },
       ]
 
       this.elements.forEach((element) => {
@@ -127,7 +196,8 @@ export default class CollectionItemSubScene extends BaseSubScene {
           this.eventsCancellables.push(element.el)
           element.el.addEventListener(
             element.action.event,
-            element.action.callback
+            element.action.callback,
+            { once: element.action.once }
           )
         }
       })

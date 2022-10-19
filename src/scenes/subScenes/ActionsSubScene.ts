@@ -29,23 +29,27 @@ export default class ActionsSubScene extends BaseSubScene {
         action: {
           event: 'click',
           callback: async (e) => {
-            if (
-              window.confirm(
-                'Are you sure you want to unlock the map? The next user editing it will lock it again for others.'
-              )
-            ) {
+            const onOk = async () => {
               const result = await Data.unlockQuad(quad.id)
-              console.log('result', result)
+
               if (result) {
                 if (result.quad_id === quad.id) {
-                  alert('Quad unlocked!')
+                  // alert('Quad unlocked!')
+                  this.notifier.success('Quad unlocked!')
                 } else {
-                  alert('Quad already unlocked!')
+                  // alert('Quad already unlocked!')
+                  this.notifier.info('Quad already unlocked!')
                 }
               } else {
                 alert('Something went wrong. Maybe try again?')
+                this.notifier.alert('Something went wrong. Maybe try again?')
               }
             }
+
+            this.notifier.confirm(
+              'Are you sure you want to unlock the map? The next user editing it will lock it again for others.',
+              onOk
+            )
           },
         },
       },
@@ -61,24 +65,27 @@ export default class ActionsSubScene extends BaseSubScene {
         action: {
           event: 'click',
           callback: async () => {
-            if (
-              window.confirm(
-                'Are you sure you want to save the cleared tiles? This will overwrite the currently cleared tiles.'
-              )
-            ) {
+            const onOk = async () => {
               const result = await action()
               if (result.data?.success) {
                 if (result.data?.numtiles === 0) {
-                  alert(
+                  this.notifier.info(
                     'No hidden tiles to save! Clear some tiles and the map and try again.'
                   )
                 } else {
-                  alert(`Saved ${result.data?.numtiles} hidden tiles!`)
+                  this.notifier.success(
+                    `Saved ${result.data?.numtiles} hidden tiles!`
+                  )
                 }
               } else {
-                alert('Something went wrong. Maybe try again?')
+                this.notifier.alert('Something went wrong. Maybe try again?')
               }
             }
+
+            this.notifier.confirm(
+              'Are you sure you want to save the cleared tiles? This will overwrite the currently cleared tiles.',
+              onOk
+            )
           },
         },
       },
@@ -94,22 +101,23 @@ export default class ActionsSubScene extends BaseSubScene {
         action: {
           event: 'click',
           callback: async () => {
-            if (
-              window.confirm(
-                'Are you sure you want to SOFT reset the map? This will clear all destroyed tiles and keep the hidden tiles.'
-              )
-            ) {
+            const onOk = async () => {
               const result = await Data.resetTiles(quad.id)
               if (result.data?.success) {
                 if (result.data?.numtiles === 0) {
-                  alert('There were no tiles to reset!')
+                  this.notifier.info('There were no tiles to reset!')
                 } else {
-                  alert(`Reset ${result.data?.numtiles} tiles!`)
+                  this.notifier.success(`Reset ${result.data?.numtiles} tiles!`)
                 }
               } else {
-                alert('Something went wrong. Maybe try again?')
+                this.notifier.alert('Something went wrong. Maybe try again?')
               }
             }
+
+            this.notifier.confirm(
+              'Are you sure you want to SOFT reset the map? This will clear all destroyed tiles and keep the hidden tiles.',
+              onOk
+            )
           },
         },
       },
@@ -125,22 +133,23 @@ export default class ActionsSubScene extends BaseSubScene {
         action: {
           event: 'click',
           callback: async () => {
-            if (
-              window.confirm(
-                'Are you sure you want to HARD reset the map? This will ALL the tiles on this map.'
-              )
-            ) {
+            const onOk = async () => {
               const result = await Data.resetTiles(quad.id, 'hard')
               if (result.data?.success) {
                 if (result.data?.numtiles === 0) {
-                  alert('There were no tiles to reset!')
+                  this.notifier.info('There were no tiles to reset!')
                 } else {
-                  alert(`Reset ${result.data?.numtiles} tiles!`)
+                  this.notifier.success(`Reset ${result.data?.numtiles} tiles!`)
                 }
               } else {
-                alert('Something went wrong. Maybe try again?')
+                this.notifier.alert('Something went wrong. Maybe try again?')
               }
             }
+
+            this.notifier.confirm(
+              'Are you sure you want to HARD reset the map? This will ALL the tiles on this map.',
+              onOk
+            )
           },
         },
       },
@@ -156,24 +165,27 @@ export default class ActionsSubScene extends BaseSubScene {
         action: {
           event: 'click',
           callback: async () => {
-            if (
-              window.confirm(
-                'Are you sure you want to randomly rotate all artifacts?'
-              )
-            ) {
+            const onOk = async () => {
               const result = await Data.rotateArtifacts(quad.id)
               if (result.data?.success) {
                 if (result.data?.numRotated === 0) {
-                  alert(
+                  this.notifier.info(
                     'There were no artifacts to rotate! (all existing artifacts already have a rotation)'
                   )
                 } else {
-                  alert(`Rotated ${result.data?.numRotated} artifacts!`)
+                  this.notifier.success(
+                    `Rotated ${result.data?.numRotated} artifacts!`
+                  )
                 }
               } else {
-                alert('Something went wrong. Maybe try again?')
+                this.notifier.alert('Something went wrong. Maybe try again?')
               }
             }
+
+            this.notifier.confirm(
+              'Are you sure you want to randomly rotate all artifacts?',
+              onOk
+            )
           },
         },
       },

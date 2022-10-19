@@ -1,5 +1,6 @@
 import Phaser, { Scene } from 'phaser'
 import config from '../common/Config'
+import AWN from 'awesome-notifications'
 
 export default class BaseScene extends Phaser.Scene {
   public fadeColor: number
@@ -8,6 +9,7 @@ export default class BaseScene extends Phaser.Scene {
   public green: number
   public blue: number
   public debug: boolean
+  public notifier: AWN
 
   constructor(sceneInit: string | Phaser.Types.Scenes.SettingsConfig) {
     let keyString: string | undefined
@@ -35,6 +37,12 @@ export default class BaseScene extends Phaser.Scene {
     this.blue = b
 
     this.transitionTime = config.SCENE_TRANSITION_TIME
+
+    this.notifier = new AWN({
+      position: 'top-right',
+      durations: { global: 3000 },
+      icons: { enabled: false },
+    })
   }
 
   init() {

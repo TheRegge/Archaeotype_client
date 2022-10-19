@@ -359,6 +359,42 @@ export class Data {
       })
   }
 
+  async updateCollectionItemNotes(
+    user_id: number,
+    onmap_id: number,
+    artifact_id: number,
+    quad_id: number,
+    found_notes: string
+  ): Promise<any> {
+    return await axios
+      .post(
+        `${process.env.API_URL}quad/lab/notes`,
+        {
+          user_id,
+          onmap_id,
+          artifact_id,
+          quad_id: quad_id.toString(),
+          found_notes,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem(
+              config.LOCAL_STORAGE_API_TOKEN_NAME
+            )}`,
+          },
+        }
+      )
+      .catch((error) => {
+        if (error.response?.data) {
+          return error.response.data
+        } else if (error.request) {
+          return error.request
+        } else {
+          return error.message
+        }
+      })
+  }
+
   async getFoundArtifact(onMapId: number) {
     const foundArtifact = await axios.get(
       `${process.env.API_URL}quad/artifact/found/${onMapId}`,

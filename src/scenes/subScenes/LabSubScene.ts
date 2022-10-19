@@ -18,6 +18,10 @@ export default class LabSubScene extends BaseSubScene {
   }
 
   initHTML() {
+    // @note:
+    // Clear keyboard captures so we can enter data into inputs fields,
+    // for example, the 'space' is captured by the scene to show outline
+    // around artifacts, but we want to be able to type spaces in the notes.
     this.input.keyboard.clearCaptures()
     const { artifact, artifactData, tile } = this.data.get('htmlData')
     this.artifactOnMap = artifact
@@ -183,15 +187,6 @@ export default class LabSubScene extends BaseSubScene {
                 this.close()
               }
             })
-
-            ///----
-            if (result) {
-              this.artifactOnMap?.showFlag()
-              this.close()
-            } else {
-              // TODO: handle error
-              console.error('Lab data was not saved')
-            }
           },
         },
       },

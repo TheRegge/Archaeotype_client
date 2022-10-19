@@ -99,6 +99,7 @@ select {
 [type='reset'],
 [type='submit'],
 button {
+  appearance: button;
   -webkit-appearance: button;
 }
 ::-moz-focus-inner {
@@ -122,13 +123,16 @@ progress {
   height: auto;
 }
 [type='search'] {
+  appearance: textfield;
   -webkit-appearance: textfield;
   outline-offset: -2px;
 }
 ::-webkit-search-decoration {
+  appearance: none;
   -webkit-appearance: none;
 }
 ::-webkit-file-upload-button {
+  appearance: button;
   -webkit-appearance: button;
   font: inherit;
 }
@@ -143,6 +147,7 @@ summary {
   --color-hint-primary-strong: #2563eb;
   --color-hint-secondary: #fbbf24;
   --color-hint-secondary-strong: #e55f2a;
+  --color-hint-tertiary: #0fa801;
 
   --color-gray-50: hsl(240, 5%, 95%);
   --color-gray-100: hsl(240, 5%, 90%);
@@ -166,7 +171,7 @@ summary {
 html {
   font-size: var(--font-size);
   font-family: 'Cousine';
-  color: var(--color-gray-100);
+  color: var(--color-gray-200);
 }
 
 h1,
@@ -216,6 +221,19 @@ textarea {
   border: none;
 }
 
+textarea {
+  background: hsla(0, 0%, 94%, 0.302);
+  color: white;
+  padding: 1em;
+  width: 100%;
+  font-size: 0.8em;
+  line-height: 1.5em;
+}
+
+textarea::placeholder {
+  color: var(--color-gray-50);
+}
+
 input:disabled {
   color: var(--color-gray-200);
 }
@@ -226,12 +244,15 @@ button {
   border-radius: 0.2em;
   padding: 0.5em 2em;
   cursor: pointer;
-  background-color: var(--color-gray-700);
+  background-color: var(--color-hint-primary-strong);
   color: var(--color-gray-200);
   letter-spacing: 0.03em;
   transition: background-color 100ms ease-out;
 }
 
+button.cancel {
+  background-color: var(--color-hint-secondary-strong);
+}
 button.cancel:hover {
   background-color: var(--color-hint-secondary);
 }
@@ -243,6 +264,12 @@ button:active {
 button:hover {
   background-color: var(--color-hint-primary);
   color: #ffffff;
+}
+
+button:disabled {
+  background-color: var(--color-gray-800);
+  color: var(--color-gray-500);
+  cursor: not-allowed;
 }
 
 button.large {
@@ -784,4 +811,9 @@ kbd:hover {
 
 dd .tag:first-of-type {
   margin-left: 0;
+}
+
+/* UTILITIES */
+.hidden {
+  display: none;
 }

@@ -71,6 +71,9 @@ export default class SiteScene extends BaseScene {
         backgroundOverColor = config.COLOR_HINT_PRIMARY
       }
 
+      quad.siteId = this.data.get('siteId')
+      quad.projectId = this.data.get('projectId')
+
       const squad = new SiteQuad({
         scene: this,
         x: backgroundImage.x + quad.x * 1,

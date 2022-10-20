@@ -171,6 +171,8 @@ export default class LabSubScene extends BaseSubScene {
             Data.saveLabData(
               formData.onmap_id * 1,
               formData.artifact_id,
+              this.data.get('htmlData').artifactData.siteId,
+              this.data.get('htmlData').artifactData.projectId,
               formData.quad_id,
               formData.user_id,
               Auth.user?.username || '',
@@ -178,6 +180,7 @@ export default class LabSubScene extends BaseSubScene {
             ).then((data) => {
               if (data?.data?.id > 0) {
                 this.artifactOnMap?.showFlag()
+                this.notifier.success('The Artifact was saved successfully')
                 this.close()
               } else if (data?.error) {
                 alert(data.error)

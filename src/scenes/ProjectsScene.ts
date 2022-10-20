@@ -34,13 +34,13 @@ export default class ProjectsScene extends BaseScene {
 
           project.sites.map((site) => {
             y += this.lineSpacing
-            this.makeSiteLink(site, y)
+            this.makeSiteLink(project.id, site, y)
           })
         })
       })
   }
 
-  makeSiteLink = (site: any, offset: number): void => {
+  makeSiteLink = (projectId: string, site: any, offset: number): void => {
     const text = this.add.text(120, offset, `* ${site.name}`, {
       color: Utils.hexToString(config.COLOR_HINT_PRIMARY),
     })
@@ -60,7 +60,7 @@ export default class ProjectsScene extends BaseScene {
     })
 
     text.addListener('pointerdown', () => {
-      this.scene.start('site', { siteId: site.id })
+      this.scene.start('site', { siteId: site.id, projectId: projectId })
     })
   }
 }

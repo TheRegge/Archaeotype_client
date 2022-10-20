@@ -315,6 +315,8 @@ export class Data {
   async saveLabData(
     onmap_id: number,
     artifact_id: number,
+    site_id: string,
+    project_id: string,
     quad_id: number,
     user_id: number,
     username: string,
@@ -335,6 +337,8 @@ export class Data {
         {
           onmap_id,
           artifact_id,
+          site_id,
+          project_id,
           quad_id: quad_id.toString(),
           user_id: user_id.toString(),
           username,

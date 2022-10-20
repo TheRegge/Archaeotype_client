@@ -1034,6 +1034,8 @@ export default class QuadScene extends BaseScene {
     ) {
       const artifactData = gameObjects[0]?.data.getAll() as ArtifactData
       if (!gameObjects[0].data.get('flag')) {
+        artifactData.siteId = this.data.get('quad').siteId
+        artifactData.projectId = this.data.get('quad').projectId
         this.openLab(artifactData, gameObjects[0])
       } else {
         this.openCollectionItem(artifactData)

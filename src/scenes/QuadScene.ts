@@ -659,7 +659,10 @@ export default class QuadScene extends BaseScene {
 
     const navLinks = [
       { name: 'Archaeotype', textColor: config.COLOR_HINT_SECONDARY },
-      { name: this.data.get('quad').name },
+      {
+        name: `${this.data.get('quad').siteName} ${this.data.get('quad').name}`,
+        textColor: config.COLOR_GRAY_300,
+      },
       {
         name: 'Switch Quad',
         ...baseLinkOptions,

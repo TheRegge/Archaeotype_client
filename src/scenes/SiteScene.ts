@@ -73,6 +73,7 @@ export default class SiteScene extends BaseScene {
 
       quad.siteId = this.data.get('siteId')
       quad.projectId = this.data.get('projectId')
+      quad.siteName = this.data.get('siteName')
 
       const squad = new SiteQuad({
         scene: this,
@@ -102,6 +103,10 @@ export default class SiteScene extends BaseScene {
 
     const navLinks = [
       { name: 'Archaeotype', textColor: config.COLOR_HINT_SECONDARY },
+      {
+        name: this.data.get('siteName'),
+        textColor: config.COLOR_GRAY_300,
+      },
       { name: 'Choose Your Quad' },
     ]
 

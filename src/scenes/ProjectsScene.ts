@@ -70,7 +70,11 @@ export default class ProjectsScene extends BaseScene {
     })
 
     text.addListener('pointerdown', () => {
-      this.scene.start('site', { siteId: site.id, projectId: projectId })
+      this.scene.start('site', {
+        siteId: site.id,
+        siteName: site.name,
+        projectId: projectId,
+      })
     })
   }
 }

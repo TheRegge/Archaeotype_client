@@ -1,7 +1,7 @@
 {
-	"name": "phaser3-parcel-template",
+	"name": "archaeotype-client",
 	"version": "2.1.0",
-	"description": "A typescript template project for Phaser 3 using Parceljs",
+	"description": "A virtual archaeological dig. Created with phaser3-parcel-template, a typescript template project for Phaser 3 using Parceljs",
 	"scripts": {
 		"start": "NODE_ENV=development parcel src/index.html -p 3001",
 		"build": "NODE_ENV=production parcel build src/index.html --public-url ./ --no-source-maps",

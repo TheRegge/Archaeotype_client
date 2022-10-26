@@ -1,6 +1,6 @@
 {
 	"name": "phaser3-parcel-template",
-	"version": "2.0.1",
+	"version": "2.1.0",
 	"description": "A typescript template project for Phaser 3 using Parceljs",
 	"scripts": {
 		"start": "NODE_ENV=development parcel src/index.html -p 3001",

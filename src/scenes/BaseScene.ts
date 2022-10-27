@@ -90,11 +90,16 @@ export default class BaseScene extends Phaser.Scene {
     )
   }
 
-  switchScene(key: string | Scene) {
+  /**
+   * Wrapper for Phaser.Scene.scene.switch() that adds a fade transitionIn
+   *
+   * @param {Phaser.Scene | string} toScene - The scene to switch to
+   */
+  switchScene(toScene: string | Phaser.Scene) {
     this.transitionOut(
       (camera: Phaser.Cameras.Scene2D.Camera, progress: number) => {
         if (progress === 1) {
-          this.scene.switch(key)
+          this.scene.switch(toScene)
         }
       }
     )

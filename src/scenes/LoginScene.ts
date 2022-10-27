@@ -53,12 +53,14 @@ export default class LoadingScene extends BaseScene {
                 if (isLoggedin) {
                   this.transitionOut(() => {
                     form.removeListener('click')
-                    const user = Auth.user
+
                     if (Auth.isAdmin()) {
                       this.scene.start('projects')
                     } else {
                       this.scene.start('site', {
                         siteId: Auth.user?.site_id ?? 0,
+                        siteName: Auth.user?.site_name ?? '',
+                        projectId: Auth.user?.project_id ?? 0,
                       })
                     }
                   })

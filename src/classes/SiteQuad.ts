@@ -56,6 +56,6 @@ export default class SiteQuad extends ContainerWithBg {
     toScene.data.set('quad', this.getData('quad'))
 
     const scene = <BaseScene>this.scene
-    scene.switchScene('quad')
+    scene.switchScene(toScene)
   }
 }

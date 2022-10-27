@@ -96,10 +96,6 @@ export default class QuadScene extends BaseScene {
     const bgImageName = this.data.get('quad').bgFilename.split('.')[0]
     this.bgImage?.setTexture(bgImageName)
 
-    if (this.user && this.user.role_id > 1) {
-      this.data.set('quad', this.user.quad)
-    }
-
     if (this.mainNav) this.createMainNav()
 
     if (this.tileMap) {
@@ -385,7 +381,6 @@ export default class QuadScene extends BaseScene {
   }
 
   addArtifactToMap = async (gameObject, pointer) => {
-    console.log('add artifact to map')
     if (this.checkPointerOverUI(pointer, this.artifactsChooser)) return
     const dropLocation = {
       x: pointer.worldX,
@@ -946,9 +941,7 @@ export default class QuadScene extends BaseScene {
   }
 
   openActionsSubScene = () => {
-    console.log('this.scene', this.scene)
     const toScene = this.scene.get('actions')
-    console.log('toScene', toScene)
     const data = {
       fromScene: this,
       htmlTagName: 'actions',

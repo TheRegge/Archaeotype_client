@@ -41,7 +41,11 @@ export default class PreloadScene extends Phaser.Scene {
             if (Auth.isAdmin()) {
               this.scene.start('projects')
             } else {
-              this.scene.start('site', { siteId: Auth.user?.site_id ?? 0 })
+              this.scene.start('site', {
+                siteId: Auth.user?.site_id ?? 0,
+                siteName: Auth.user?.site_name ?? '',
+                projectId: Auth.user?.project_id ?? 0,
+              })
             }
           }
         },

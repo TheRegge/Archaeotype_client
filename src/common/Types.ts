@@ -4,6 +4,8 @@ export type Quad = {
   description: string
   bgFilename: string
   project_id: number
+  siteId?: number
+  siteName?: string
   tilesetfilename: string
   x: number
   y: number
@@ -20,6 +22,8 @@ export type User = {
   quad?: Quad
   role_id: number
   site_id?: number
+  site_name?: string
+  project_id?: number
   username: string
 }
 

@@ -1,6 +1,6 @@
 {
 	"name": "archaeotype-client",
-	"version": "2.1.1",
+	"version": "2.1.2",
 	"description": "A virtual archaeological dig. Created with phaser3-parcel-template, a typescript template project for Phaser 3 using Parceljs",
 	"scripts": {
 		"start": "NODE_ENV=development parcel src/index.html -p 3001",
@@ -16,6 +16,8 @@
 	},
 	"homepage": "https://github.com/ourcade/phaser3-parcel-template",
 	"devDependencies": {
+		"@parcel/packager-raw-url": "^2.7.0",
+		"@parcel/transformer-webmanifest": "^2.7.0",
 		"@types/node": "^17.0.33",
 		"@typescript-eslint/eslint-plugin": "^2.29.0",
 		"@typescript-eslint/parser": "^2.29.0",

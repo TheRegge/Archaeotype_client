@@ -122,20 +122,88 @@ export class Config {
    */
   readonly GAME_HEIGHT = 640
 
+  /**
+   * color gray 50
+   * <div style="background-color: #fafafa; width: 80px; height: 80px; border: 3px solid white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin: 1em;"></div>
+   */
   readonly COLOR_GRAY_50 = 0xfafafa
+
+  /**
+   * color gray 100
+   * <div style="background-color: #f4f4f5; width: 80px; height: 80px; border: 3px solid white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin: 1em;"></div>
+   */
   readonly COLOR_GRAY_100 = 0xf4f4f5
+
+  /**
+   * color gray 200
+   * <div style="background-color: #e4e4e7; width: 80px; height: 80px; border: 3px solid white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin: 1em;"></div>
+   */
   readonly COLOR_GRAY_200 = 0xe4e4e7
+
+  /**
+   * color gray 300
+   * <div style="background-color: #d4d4d8; width: 80px; height: 80px; border: 3px solid white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin: 1em;"></div>
+   */
   readonly COLOR_GRAY_300 = 0xd4d4d8
+
+  /**
+   * color gray 400
+   * <div style="background-color: #a1a1aa; width: 80px; height: 80px; border: 3px solid white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin: 1em;"></div>
+   */
   readonly COLOR_GRAY_400 = 0xa1a1aa
-  readonly COLOR_GRAY_500 = 0x71717a
+
+  /**
+   * color gray 500
+   * <div style="background-color: #a1a1aa; width: 80px; height: 80px; border: 3px solid white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin: 1em;"></div>
+   */
+  readonly COLOR_GRAY_500 = 0xa1a1aa
+
+  /**
+   * color gray 600
+   * <div style="background-color: #52525b; width: 80px; height: 80px; border: 3px solid white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin: 1em;"></div>
+   */
   readonly COLOR_GRAY_600 = 0x52525b
+
+  /**
+   * color gray 700
+   * <div style="background-color: #3f3f46; width: 80px; height: 80px; border: 3px solid white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin: 1em;"></div>
+   */
   readonly COLOR_GRAY_700 = 0x3f3f46
+
+  /**
+   * color gray 800
+   * <div style="background-color: #27272a; width: 80px; height: 80px; border: 3px solid white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin: 1em;"></div>
+   */
   readonly COLOR_GRAY_800 = 0x27272a
+
+  /**
+   * color gray 900
+   * <div style="background-color: #18181b; width: 80px; height: 80px; border: 3px solid white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin: 1em;"></div>
+   */
   readonly COLOR_GRAY_900 = 0x18181b
 
+  /**
+   * Primary Hint Color
+   * <div style="background-color: #60a5fa; width: 80px; height: 80px; border: 3px solid white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin: 1em;"></div>
+   */
   readonly COLOR_HINT_PRIMARY = 0x60a5fa
+
+  /**
+   * Primary Hint Color <em>Strong</em>
+   * <div style="background-color: #2563eb; width: 80px; height: 80px; border: 3px solid white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin: 1em;"></div>
+   */
   readonly COLOR_HINT_PRIMARY_STRONG = 0x2563eb
+
+  /**
+   * Seconday Hint Color
+   * <div style="background-color: #fbbf24; width: 80px; height: 80px; border: 3px solid white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin: 1em;"></div>
+   */
   readonly COLOR_HINT_SECONDARY = 0xfbbf24
+
+  /**
+   * Seconday Hint Color <em>Strong</em>
+   * <div style="background-color: #e55f2a; width: 80px; height: 80px; border: 3px solid white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin: 1em;"></div>
+   */
   readonly COLOR_HINT_SECONDARY_STRONG = 0xe55f2a
 
   readonly SCENE_TRANSITION_TIME = 500
@@ -211,6 +279,9 @@ export class Config {
     padding: { x: 0, y: 0 },
   }
 
+  /**
+   * An object containing the base typography styles
+   */
   readonly text = {
     h1: {
       ...this.baseText,

@@ -112,7 +112,7 @@ export class Config {
    *
    * @memberof Config
    */
-  readonly GAME_WIDTH = 1400
+  readonly GAME_WIDTH = 1280
 
   /**
    * The height of the main viewport (HTML canvas)
@@ -120,7 +120,7 @@ export class Config {
    *
    * @memberof Config
    */
-  readonly GAME_HEIGHT = 700
+  readonly GAME_HEIGHT = 640
 
   readonly COLOR_GRAY_50 = 0xfafafa
   readonly COLOR_GRAY_100 = 0xf4f4f5

@@ -1,8 +1,6 @@
-import fakeTilesData from '../../public/assets/fakeTilesData.json'
-import artifactsData from '../../public/assets/artifacts.json'
 import config from './Config'
 
-import axios, { AxiosResponse } from 'axios'
+import axios from 'axios'
 
 export class Data {
   private static instance: Data

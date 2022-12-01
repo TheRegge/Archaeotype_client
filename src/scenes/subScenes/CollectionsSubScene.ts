@@ -11,6 +11,10 @@ export default class CollectionsSubScene extends BaseSubScene {
     const itemsContainer = rootEl?.querySelector(
       '[data-el="items-container"]'
     ) as HTMLElement
+
+    // empty the container so we don't have duplicates
+    itemsContainer.innerHTML = ''
+
     const { quad } = this.data.get('htmlData')
 
     const template = document.getElementById(

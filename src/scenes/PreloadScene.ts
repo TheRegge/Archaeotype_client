@@ -97,8 +97,6 @@ export default class PreloadScene extends Phaser.Scene {
       './assets/images/tilesets/tileset-map-1312_2px.png'
     )
 
-    this.load.json('fakeTiles', './assets/fakeTilesData.json')
-    this.load.json('artifacts', './assets/artifacts.json')
     this.load.image('artifactPlaceholder', './assets/images/transparent.png')
     this.load.image('artifactFlag', './assets/images/reddot.png')
 

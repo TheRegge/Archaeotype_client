@@ -1,6 +1,6 @@
 # Archaeotype
 
-![badge](https://img.shields.io/badge/version-2.0.0-brightgreen)
+![badge](https://img.shields.io/badge/version-2.1.4-brightgreen)
 
 ![logo](https://dev-regis.dalton.org/webapps/archaeotype/public/assets/images/Archaeotype-Logo.png)
 

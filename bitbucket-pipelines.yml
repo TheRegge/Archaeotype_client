@@ -1,7 +1,7 @@
 image: node:16.14.2
 pipelines:
   branches:
-    master:
+    main:
       - step:
           name: Install npm modules and build production site with parcel
           caches:

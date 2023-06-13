@@ -21,7 +21,6 @@ pipelines:
                 SERVER: $SERVER
                 PASSWORD: $PASSWORD # Optional.
                 REMOTE_PATH: '/home/administrator/WEBROOT/archaeotype_v3/client'
-                LOCAL_PATH: 'dist/' # Optional.
-                # SSH_KEY: '<string>' # Optional.
-                # EXTRA_ARGS: '<string>' # Optional.
-                # DEBUG: '<boolean>' # Optional.
+                LOCAL_PATH: 'dist/*' # Optional.
+                # THIS WILL NOT WORK UNTIL WE SET THE PROD SERVER TO ACCEPT
+                # CONNECTIONS, MAYBE WITH BITBUCKET STATIC IP...

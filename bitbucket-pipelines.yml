@@ -1,7 +1,7 @@
 image: node:16.14.2
 pipelines:
   branches:
-    main:
+    foobar: # change back to 'main' when we want this pipeline to trigger on update to main.
       - step:
           name: Install npm modules and build production site with parcel
           caches:

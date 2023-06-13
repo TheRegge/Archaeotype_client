@@ -1,7 +1,7 @@
 image: node:16.14.2
 pipelines:
   branches:
-    master:
+    main:
       - step:
           name: Install npm modules and build production site with parcel
           caches:
@@ -15,9 +15,19 @@ pipelines:
           name: Deploy dist artifacts using scp
           deployment: production
           script:
-            - pipe: atlassian/scp-deploy:0.3.3
+            - pipe: atlassian/sftp-deploy:0.5.12
               variables:
                 USER: $USER
                 SERVER: $SERVER
                 REMOTE_PATH: '/home/administrator/WEBROOT/archaeotype_v3/client'
-                LOCAL_PATH: 'dist/*'
+                LOCAL_PATH: 'dist/' # Optional.
+                # SSH_KEY: '<string>' # Optional.
+                # PASSWORD: '<string>' # Optional.
+                # EXTRA_ARGS: '<string>' # Optional.
+                # DEBUG: '<boolean>' # Optional.
+            # - pipe: atlassian/scp-deploy:0.3.3
+            #   variables:
+            #     USER: $USER
+            #     SERVER: $SERVER
+            #     REMOTE_PATH: '/home/administrator/WEBROOT/archaeotype_v3/client'
+            #     LOCAL_PATH: 'dist/*'

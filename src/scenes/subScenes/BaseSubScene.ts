@@ -105,7 +105,7 @@ export default class BaseSubScene extends BaseScene {
       height: this.height,
       width: this.width,
       backgroundColor: config.COLOR_GRAY_900,
-      backgroundOpacity: 0.95,
+      backgroundOpacity: 1,
       scrollFactorX: 0,
       scrollFactorY: 0,
     })

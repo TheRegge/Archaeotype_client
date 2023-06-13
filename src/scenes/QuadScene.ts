@@ -180,6 +180,7 @@ export default class QuadScene extends BaseScene {
       this.ignoredByMinimap.push(this.grid)
 
       this.createMinimap()
+      
       this.ignoredByMainCam.push(this.minimap)
       this.ignoredByMainCam.push(this.minimapFrame)
 
@@ -527,29 +528,24 @@ export default class QuadScene extends BaseScene {
 
   createMinimap = () => {
     this.minimap = new Minimap(
-      config.WORLD.origin.x +
-        config.VIEWPORT.width -
-        config.WORLD.innerPadding -
-        config.WORLD.origin.x -
-        config.MINIMAP.width,
-      config.WORLD.origin.y + config.WORLD.innerPadding + config.WORLD.origin.y,
+      config.VIEWPORT.width - config.MINIMAP.width,
+      config.WORLD.origin.y + config.WORLD.innerPadding,
       config.MINIMAP.width,
       config.MINIMAP.height,
       this
     )
+    const strokeWidth = 30
     this.minimap.setName('MINIMAP')
     this.cameras.addExisting(this.minimap)
-    const strokeWidth = 60
     this.minimapFrame = new Phaser.GameObjects.Rectangle(
       this,
-      config.WORLD.origin.x + strokeWidth / 2,
-      config.WORLD.origin.y + strokeWidth / 2,
-      config.WORLD.width - strokeWidth,
+      config.WORLD.origin.x + (strokeWidth / 2),
+      config.WORLD.origin.y + (strokeWidth / 2) + config.WORLD.innerPadding,
+      config.WORLD.width - (strokeWidth + config.WORLD.innerPadding) * 0.5,
       config.WORLD.height - strokeWidth
     )
-    this.minimapFrame.setStrokeStyle(strokeWidth, 0xffffff, 0.5)
+    this.minimapFrame.setStrokeStyle(strokeWidth, config.COLOR_HINT_SECONDARY, 1)
     this.minimapFrame.setOrigin(0, 0)
-    // this.add.existing(this.minimapFrame)
     this.layer3_UI_1.add([this.minimapFrame])
   }
 
@@ -996,6 +992,7 @@ export default class QuadScene extends BaseScene {
     pointer: Phaser.Input.Pointer,
     gameObjects: any
   ) => {
+    console.log(gameObjects[0]?.name)
     if (this.clickDoesNotRemoveTileGuard(pointer, gameObjects)) return
 
     const tile: Phaser.Tilemaps.Tile | null = this.tileMap.getTileAtWorldXY(

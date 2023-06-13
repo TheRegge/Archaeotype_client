@@ -11,7 +11,7 @@ export class Config {
   private site_bg_height_pixels = 972
   /**
    * The width of the quad image in pixels.
-   *
+   *x
    * @memberof Config
    */
   private quad_bg_width_pixels = 4100
@@ -62,7 +62,7 @@ export class Config {
    *
    * @memberof Config
    */
-  readonly MINIMAP_SCALE = 1 / 20
+  readonly MINIMAP_SCALE = 1 / 5.235
 
   readonly SITE_PIXEL_TO_METER_SCALE = 1 / 2
 
@@ -112,7 +112,7 @@ export class Config {
    *
    * @memberof Config
    */
-  readonly GAME_WIDTH = 1280
+  readonly GAME_WIDTH = 1414
 
   /**
    * The height of the main viewport (HTML canvas)
@@ -120,7 +120,7 @@ export class Config {
    *
    * @memberof Config
    */
-  readonly GAME_HEIGHT = 640
+  readonly GAME_HEIGHT = 872
 
   /**
    * color gray 50

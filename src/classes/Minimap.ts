@@ -17,13 +17,15 @@ export default class Minimap
     this.setRoundPixels(true)
       .setBounds(
         config.WORLD.origin.x,
-        config.WORLD.origin.y,
+        config.WORLD.origin.y + config.WORLD.innerPadding,
         config.WORLD.width,
-        config.WORLD.height
+        config.WORLD.height - config.WORLD.innerPadding
       )
       .setZoom(config.MINIMAP.scale)
       .centerToBounds()
-      .setBackgroundColor(config.COLOR_GRAY_50)
+      .setBackgroundColor(config.COLOR_HINT_SECONDARY)
+
+      this.visible = false
 
     scene.input.keyboard.on('keydown-M', this.toggle)
   }

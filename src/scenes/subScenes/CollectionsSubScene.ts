@@ -20,7 +20,7 @@ export default class CollectionsSubScene extends BaseSubScene {
     const template = document.getElementById(
       'collections_item_template'
     ) as HTMLTemplateElement
-    Data.getProjectCollection(quad.project_id).then((results) => {
+    Data.getProjectCollection(quad.project_id, quad.id).then((results) => {
       results.map((result) => {
         const item = this.makeCollectionItem(result, template) as Node
         itemsContainer?.append(item)

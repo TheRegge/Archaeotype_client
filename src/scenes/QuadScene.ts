@@ -664,7 +664,7 @@ export default class QuadScene extends BaseScene {
         },
       },
       {
-        name: 'Collections',
+        name: 'Quad Collection',
         ...baseLinkOptions,
         callback: () => {
           const toScene = this.scene.get('collections')

@@ -992,7 +992,6 @@ export default class QuadScene extends BaseScene {
     pointer: Phaser.Input.Pointer,
     gameObjects: any
   ) => {
-    console.log(gameObjects[0]?.name)
     if (this.clickDoesNotRemoveTileGuard(pointer, gameObjects)) return
 
     const tile: Phaser.Tilemaps.Tile | null = this.tileMap.getTileAtWorldXY(

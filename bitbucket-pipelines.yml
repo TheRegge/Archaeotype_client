@@ -12,14 +12,23 @@ pipelines:
           artifacts:
             - dist/**
       - step:
-          name: Deploy dist artifacts using sftp
+          name: Deploy dist artifacts using scp
           deployment: production
           script:
-            - pipe: atlassian/sftp-deploy:0.5.12
-              variables:
-                USER: $USER
-                SERVER: $SERVER
-                REMOTE_PATH: '/home/administrator/WEBROOT/archaeotype_v3/client'
-                LOCAL_PATH: 'dist/*' # Optional.
+          - pipe: atlassian/scp-deploy:1.2.1
+            variables:
+              USER: $USER
+              SERVER: $SERVER
+              REMOTE_PATH: '/home/administrator/WEBROOT/archaeotype_v3/client'
+              LOCAL_PATH: 'dist/*'
+              # SSH_KEY: '<string>' # Optional.
+              # EXTRA_ARGS: '<string>' # Optional.
+              # DEBUG: '<boolean>' # Optional.
+            #- pipe: atlassian/sftp-deploy:0.5.12
+              #variables:
+              #  USER: $USER
+              # SERVER: $SERVER
+               # REMOTE_PATH: '/home/administrator/WEBROOT/archaeotype_v3/client'
+               # LOCAL_PATH: 'dist/*' # Optional.
                 # THIS WILL NOT WORK UNTIL WE SET THE PROD SERVER TO ACCEPT
                 # CONNECTIONS, MAYBE WITH BITBUCKET STATIC IP...

@@ -19,7 +19,6 @@ pipelines:
               variables:
                 USER: $USER
                 SERVER: $SERVER
-                SSH_KEY: $SSH_KEY
                 REMOTE_PATH: '/home/administrator/WEBROOT/archaeotype_v3/client'
                 LOCAL_PATH: 'dist/*' # Optional.
                 # THIS WILL NOT WORK UNTIL WE SET THE PROD SERVER TO ACCEPT

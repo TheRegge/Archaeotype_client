@@ -1,7 +1,7 @@
 image: node:16.14.2
 pipelines:
   branches:
-    foobar: # change back to 'main' when we want this pipeline to trigger on update to main.
+    main: # change back to 'main' when we want this pipeline to trigger on update to main.
       - step:
           name: Install npm modules and build production site with parcel
           caches:
@@ -19,7 +19,6 @@ pipelines:
               variables:
                 USER: $USER
                 SERVER: $SERVER
-                PASSWORD: $PASSWORD # Optional.
                 REMOTE_PATH: '/home/administrator/WEBROOT/archaeotype_v3/client'
                 LOCAL_PATH: 'dist/*' # Optional.
                 # THIS WILL NOT WORK UNTIL WE SET THE PROD SERVER TO ACCEPT

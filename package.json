@@ -6,7 +6,8 @@
 		"start": "NODE_ENV=development parcel src/index.html -p 3001",
 		"build": "NODE_ENV=production parcel build src/index.html --public-url ./ --no-source-maps",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"lint": "eslint ./src --ext .js,.jsx,.ts,.tsx"
+		"lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
+		"kill:3001": "lsof -t -i :3001 | xargs kill -9"
 	},
 	"author": "supertommy",
 	"license": "MIT",

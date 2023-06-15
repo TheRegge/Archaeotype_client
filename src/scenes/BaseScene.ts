@@ -1,6 +1,7 @@
 import Phaser, { Scene } from 'phaser'
 import config from '../common/Config'
 import AWN from 'awesome-notifications'
+import { QuadPointerState } from '~/common/Types'
 
 export default class BaseScene extends Phaser.Scene {
   public fadeColor: number
@@ -45,7 +46,7 @@ export default class BaseScene extends Phaser.Scene {
     })
   }
 
-  init() {
+  init(pointerState: QuadPointerState | null) {
     if (process.env.NODE_ENV === 'development') {
       console.log(
         `%c${this.scene.key} Scene`,

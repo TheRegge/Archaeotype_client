@@ -15,12 +15,15 @@ export default class CollectionsSubScene extends BaseSubScene {
     // empty the container so we don't have duplicates
     itemsContainer.innerHTML = ''
 
-    const { quad } = this.data.get('htmlData')
+    const { quad, allCollections } = this.data.get('htmlData')
+
+    // if quadId is zero, we want all collections
+    const quadId = allCollections ? 0 : quad.id 
 
     const template = document.getElementById(
       'collections_item_template'
     ) as HTMLTemplateElement
-    Data.getProjectCollection(quad.project_id, quad.id).then((results) => {
+    Data.getProjectCollection(quad.project_id, quadId).then((results) => {
       results.map((result) => {
         const item = this.makeCollectionItem(result, template) as Node
         itemsContainer?.append(item)

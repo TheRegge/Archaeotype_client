@@ -411,9 +411,13 @@ export class Data {
     return foundArtifact.data
   }
 
-  async getProjectCollection(projectId: number) {
+  async getProjectCollection(projectId: number, quadId?: number) {
+    let requestUrl = `${process.env.API_URL}project/collection/${projectId}`
+    if (quadId) {
+      requestUrl = `${process.env.API_URL}project/collection/${projectId}/?quad_id=${quadId}`
+    }
     const collection = await axios.get(
-      `${process.env.API_URL}project/collection/${projectId}`,
+      requestUrl,
       {
         headers: {
           Authorization: `Bearer ${window.localStorage.getItem(

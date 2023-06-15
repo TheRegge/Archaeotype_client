@@ -2,6 +2,7 @@ import BaseSubScene from './BaseSubScene'
 import Data from '../../common/Data'
 import Auth from '../../common/Auth'
 import { UpdatableElement } from '../../common/Types'
+import QuadScene from '../QuadScene'
 
 export default class ActionsSubScene extends BaseSubScene {
   public elements: UpdatableElement[]
@@ -18,6 +19,7 @@ export default class ActionsSubScene extends BaseSubScene {
     const { action, quad } = this.data.get('htmlData')
 
     this.elements = [
+      // UNLOCK MAP
       {
         el: document.querySelector(
           '[data-el="unlockMap"]'
@@ -53,7 +55,7 @@ export default class ActionsSubScene extends BaseSubScene {
           },
         },
       },
-      // SAVE HIDDEN FILES
+      // SAVE HIDDEN TILES
       {
         el: document.querySelector(
           '[data-el="saveHiddenTiles"]'
@@ -108,6 +110,8 @@ export default class ActionsSubScene extends BaseSubScene {
                   this.notifier.info('There were no tiles to reset!')
                 } else {
                   this.notifier.success(`Reset ${result.data?.numtiles} tiles!`)
+                  const quadScene = this.game.scene.getScene('quad') as QuadScene
+                  quadScene.restartScene(quadScene.pointerState)
                 }
               } else {
                 this.notifier.alert('Something went wrong. Maybe try again?')
@@ -140,6 +144,8 @@ export default class ActionsSubScene extends BaseSubScene {
                   this.notifier.info('There were no tiles to reset!')
                 } else {
                   this.notifier.success(`Reset ${result.data?.numtiles} tiles!`)
+                  const quadScene = this.game.scene.getScene('quad') as QuadScene
+                  quadScene.restartScene(quadScene.pointerState)
                 }
               } else {
                 this.notifier.alert('Something went wrong. Maybe try again?')
@@ -176,6 +182,8 @@ export default class ActionsSubScene extends BaseSubScene {
                   this.notifier.success(
                     `Rotated ${result.data?.numRotated} artifacts!`
                   )
+                  const quadScene = this.game.scene.getScene('quad') as QuadScene
+                  quadScene.restartScene(quadScene.pointerState)
                 }
               } else {
                 this.notifier.alert('Something went wrong. Maybe try again?')

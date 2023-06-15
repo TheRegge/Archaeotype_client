@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import Phaser, { Scene } from 'phaser'
 
 // Scenes
 import BaseScene from './BaseScene'
@@ -60,6 +60,7 @@ export default class QuadScene extends BaseScene {
   public player
   public pointerState: QuadPointerState = 'play'
   public pointerStateCache: QuadPointerState = 'play'
+  public debug: boolean
   public debugPointerStateText
   public debugPointerStateTextCache
 
@@ -73,6 +74,9 @@ export default class QuadScene extends BaseScene {
     this.adminTools = null
     this.artifactsChooser = null
     this.setPointerState('play')
+
+    // set this.debug to true if the debug url param is true
+    this.debug = location.search.includes('debug=true')
   }
 
   // preload() {
@@ -80,9 +84,11 @@ export default class QuadScene extends BaseScene {
   // in the previous scene (PreloadScene)
   // }
 
-  init() {
-    super.init()
-    this.setPointerState('play')
+  init(pointerState: QuadPointerState | null) {
+    super.init(null)
+    const newPointerState = pointerState || this.pointerState
+
+    this.setPointerState(newPointerState)
   }
 
   async setup() {
@@ -276,10 +282,12 @@ export default class QuadScene extends BaseScene {
       this.debugPointerStateText = this.add
         .text(200, 200, 'pointerState: ' + this.pointerState)
         .setScrollFactor(0)
+        .setColor('#ff0000')
 
       this.debugPointerStateTextCache = this.add
         .text(200, 250, 'cache: ' + this.pointerState)
         .setScrollFactor(0)
+        .setColor('#ff0000')
     }
   }
 
@@ -317,7 +325,11 @@ export default class QuadScene extends BaseScene {
     this.listenToKeyInputs()
   }
 
-  setPointerState(newState: QuadPointerState) {
+  setPointerState(newState: QuadPointerState | null) {
+    if (newState === null) {
+      newState = 'play'
+    }
+
     this.pointerStateCache = this.pointerState
     this.pointerState = newState
   }
@@ -429,6 +441,11 @@ export default class QuadScene extends BaseScene {
     } else {
       console.error('failed to insert artifact')
     }
+  }
+
+  restartScene = (pointerState: QuadPointerState | null) => {
+    this.cleanup()
+    this.init(pointerState)
   }
 
   getCoordinatesInMeters = (location: {
@@ -673,6 +690,29 @@ export default class QuadScene extends BaseScene {
             htmlTagName: 'collections',
             htmlData: {
               quad: this.data.get('quad'),
+              allCollections: true
+            },
+          }
+
+          if (toScene) {
+            this.scene.wake('collections', data)
+          } else {
+            this.scene.add('collections', CollectionsSubScene, true, data)
+          }
+          this.scene.pause(this.scene.key)
+        }
+      },
+      {
+        name: 'Quad Collection',
+        ...baseLinkOptions,
+        callback: () => {
+          const toScene = this.scene.get('collections')
+          const data = {
+            fromScene: this,
+            htmlTagName: 'collections',
+            htmlData: {
+              quad: this.data.get('quad'),
+              allCollections: false
             },
           }
 
@@ -992,7 +1032,6 @@ export default class QuadScene extends BaseScene {
     pointer: Phaser.Input.Pointer,
     gameObjects: any
   ) => {
-    console.log(gameObjects[0]?.name)
     if (this.clickDoesNotRemoveTileGuard(pointer, gameObjects)) return
 
     const tile: Phaser.Tilemaps.Tile | null = this.tileMap.getTileAtWorldXY(
@@ -1040,7 +1079,7 @@ export default class QuadScene extends BaseScene {
     pointer: Phaser.Input.Pointer,
     gameObjects: any
   ) => {
-    console.log('handlePointerDownAddState')
+    // NO functionality yet
   }
 
   handlePointerDownEditState = (
@@ -1073,7 +1112,7 @@ export default class QuadScene extends BaseScene {
 
         const deleted = await Data.deleteOnmapArtifact(onmap_id)
         if (deleted) {
-          gameObjects[0].destroy()
+          artifact.destroy()
         } else {
           console.error('Could not delete artifact')
         }

@@ -13,14 +13,15 @@ export default class ToolbarButton extends ContainerWithBg {
     pointerDown: () => void,
     toggleOnInit: boolean = false
   ) {
-    // const padding = toolbar.width / 4
-    // const topY = 0 - toolbar.height / 2 + toolbar.width / 4
-    // const buttonWidth = toolbar.width / 2
-    // const buttonHeight = toolbar.width / 2
+    const padding = toolbar.width / 4
+    const topY = 0 - toolbar.height / 2 + toolbar.width / 4
+    const buttonWidth = toolbar.width / 2
+    const buttonHeight = toolbar.width / 2
+
     super({
       scene: toolbar.scene,
       x: 0 - toolbar.width / 4,
-      y: 0 - toolbar.height / 2 + toolbar.width / 4,
+      y: topY + index * (buttonHeight + padding),
       width: toolbar.width / 2,
       height: toolbar.width / 2,
       backgroundColor: Config.COLOR_GRAY_700,

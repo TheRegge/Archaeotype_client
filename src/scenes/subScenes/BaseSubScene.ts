@@ -80,7 +80,7 @@ export default class BaseSubScene extends BaseScene {
   }
 
   init(): void {
-    super.init()
+    super.init(null)
     this.input.keyboard.on('keydown-ESC', this.close.bind(this))
 
     this.events.on('wake', (input: any, newData: any) => {

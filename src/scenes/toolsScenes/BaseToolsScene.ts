@@ -36,7 +36,7 @@ export default class BaseToolsScene extends BaseScene {
   }
 
   init(): void {
-    super.init()
+    super.init(null)
   }
 
   create(): void {

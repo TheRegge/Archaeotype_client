@@ -4,6 +4,7 @@ import Config from '../../common/Config'
 import Auth from '../../common/Auth'
 import Data from '../../common/Data'
 import Artifact from '../../classes/Artifact'
+import QuadScene from '../QuadScene'
 export default class LabSubScene extends BaseSubScene {
   public elements: UpdatableElement[]
   public artifactOnMap: Artifact | null = null
@@ -46,6 +47,9 @@ export default class LabSubScene extends BaseSubScene {
         found_height: artifactData.height,
         found_width: artifactData.width,
         found_materials: artifactData.materials,
+        found_label: artifactData.found_label,
+        found_colors: artifactData.found_colors,
+        found_notes: artifactData.found_notes,
       },
     })
 
@@ -119,7 +123,7 @@ export default class LabSubScene extends BaseSubScene {
         el: document.querySelector('[data-el="colors"]') as HTMLInputElement,
         data: {
           valueType: 'value',
-          value: '',
+          value: artifactData.found_colors || '',
         },
         action: {
           event: 'change',
@@ -141,7 +145,7 @@ export default class LabSubScene extends BaseSubScene {
         el: document.querySelector('[data-el="notes"]') as HTMLInputElement,
         data: {
           valueType: 'value',
-          value: '',
+          value: artifactData.found_notes || '',
         },
         action: {
           event: 'change',
@@ -181,6 +185,15 @@ export default class LabSubScene extends BaseSubScene {
               if (data?.data?.id > 0) {
                 this.artifactOnMap?.showFlag()
                 this.notifier.success('The Artifact was saved successfully')
+
+                // update the duplicate Artifacts cache in the Quad
+                // with the name chosen by the user
+                const quad =  this.game.scene.getScene('quad') as QuadScene
+                quad.updateDuplicateArtifactsCache(
+                  this.data.get('htmlData').artifactData.id,
+                  formData.fields
+                )
+
                 this.close()
               } else if (data?.error) {
                 alert(data.error)

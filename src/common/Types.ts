@@ -13,6 +13,21 @@ export type Quad = {
 
 export type QuadPointerState = 'play' | 'edit' | 'delete' | 'add' | 'reveal'
 
+export type DuplicateArtifactData = {
+  id: number
+  found_label: string
+  found_colors: string
+  found_notes: string
+  count: number
+}
+
+export type ReturnedArtifactData = {
+  project_id: string
+  site_id: string
+  quad_id: string
+  data: string
+}
+
 export type User = {
   email: string
   firstname: string
@@ -51,6 +66,9 @@ export type ArtifactData = {
   width: number
   angle: number
   isFound?: boolean
+  found_label?: string
+  found_colors?: string
+  found_notes?: string
   isPainting: boolean
   materials: string[]
   fileName: string

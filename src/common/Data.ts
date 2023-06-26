@@ -1,6 +1,7 @@
 import config from './Config'
 
 import axios from 'axios'
+import { ReturnedArtifactData } from './Types'
 
 export class Data {
   private static instance: Data
@@ -136,6 +137,69 @@ export class Data {
       },
     })
     return artifacts.data
+  }
+
+  /**
+   * Gets duplicate artifacts on quad
+   *
+   * The data about duplicates artifacts on each quad is cached in the db
+   * to enable the auto-labeling feature. Auto-labeling is a feature that
+   * automatically labels artifacts on a quad when there are multiple artifacts
+   * of the same type on the quad.
+   *
+   * @param projectId
+   * @param siteId
+   * @param quadId
+   * @returns data describing the duplicate artifacts on quad.
+   */
+  async getDuplicateArtifactsOnQuad(
+    projectId,
+    siteId,
+    quadId
+  ): Promise<ReturnedArtifactData> {
+    const dups = await axios.get(
+      `${process.env.API_URL}quad/artifacts/duplicates/${projectId}/${siteId}/${quadId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem(
+            config.LOCAL_STORAGE_API_TOKEN_NAME
+          )}`,
+        },
+      }
+    )
+    return dups.data
+  }
+
+  /**
+   * Saves duplicate artifacts on quad
+   * @param projectId
+   * @param siteId
+   * @param quadId
+   * @param dupsData
+   * @returns duplicate artifacts on quad
+   */
+  async saveDuplicateArtifactsOnQuad(
+    projectId,
+    siteId,
+    quadId,
+    dupsData
+  ): Promise<any> {
+    const result = await axios.post(
+      `${process.env.API_URL}quad/artifacts/duplicates`,
+      {
+        projectId,
+        siteId,
+        quadId,
+        dupsData: JSON.stringify(dupsData),
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem(
+            config.LOCAL_STORAGE_API_TOKEN_NAME
+          )}`,
+        },
+      }
+    )
   }
 
   async getUnplacedArtifact(artifactId: number): Promise<any> {
@@ -416,16 +480,13 @@ export class Data {
     if (quadId) {
       requestUrl = `${process.env.API_URL}project/collection/${projectId}/?quad_id=${quadId}`
     }
-    const collection = await axios.get(
-      requestUrl,
-      {
-        headers: {
-          Authorization: `Bearer ${window.localStorage.getItem(
-            config.LOCAL_STORAGE_API_TOKEN_NAME
-          )}`,
-        },
-      }
-    )
+    const collection = await axios.get(requestUrl, {
+      headers: {
+        Authorization: `Bearer ${window.localStorage.getItem(
+          config.LOCAL_STORAGE_API_TOKEN_NAME
+        )}`,
+      },
+    })
     return collection.data
   }
 

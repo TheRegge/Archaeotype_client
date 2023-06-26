@@ -24,7 +24,12 @@ import Ruler from '../classes/Ruler'
 
 //Common
 import { AdminTools } from '../classes'
-import { ArtifactData, User, QuadPointerState } from '../common/Types'
+import {
+  ArtifactData,
+  User,
+  QuadPointerState,
+  DuplicateArtifactData,
+} from '../common/Types'
 import { IGetBounds } from '../common/Interfaces'
 import Auth from '../common/Auth'
 import config from '../common/Config'
@@ -63,6 +68,7 @@ export default class QuadScene extends BaseScene {
   public debug: boolean
   public debugPointerStateText
   public debugPointerStateTextCache
+  public duplicateArtifacts: DuplicateArtifactData[]
 
   constructor() {
     super({ key: 'quad' })
@@ -73,6 +79,7 @@ export default class QuadScene extends BaseScene {
     this.editMapLink = 'foo'
     this.adminTools = null
     this.artifactsChooser = null
+    this.duplicateArtifacts = []
     this.setPointerState('play')
 
     // set this.debug to true if the debug url param is true
@@ -107,14 +114,16 @@ export default class QuadScene extends BaseScene {
     if (this.tileMap) {
       const toplayer = this.topLayer as Phaser.Tilemaps.TilemapLayer
       toplayer.destroy()
-      this.createTileMap().then((tilemap) => {
-        this.populateTileMap(tilemap)
 
-        // Place artifacts on the map
-        this.getArtifacts().then((artifacts) => {
-          this.placeArtifactsOnQuad(artifacts)
-        })
-      })
+      const tilemap = await this.createTileMap()
+      this.populateTileMap(tilemap)
+
+      // Place artifacts on the map
+      const artifacts = await this.getArtifacts()
+      this.placeArtifactsOnQuad(artifacts)
+
+      // Get duplicate artifacts
+      this.duplicateArtifacts = await this.getSavedDuplicateArtifacts()
     }
   }
 
@@ -129,7 +138,7 @@ export default class QuadScene extends BaseScene {
     super.transitionIn()
   }
 
-  create() {
+  async create() {
     this.layer0_bgImage = this.add.layer()
     this.layer1_artifacts = this.add.layer()
     this.layer2_toptiles = this.add.layer()
@@ -153,75 +162,71 @@ export default class QuadScene extends BaseScene {
     this.cameras.main.setName('MAIN')
 
     // Create tileMap
-    this.createTileMap().then((tilemap) => {
-      this.populateTileMap(tilemap)
-      // Place artifacts on the map
-      this.getArtifacts().then((artifacts) => {
-        this.placeArtifactsOnQuad(artifacts)
-      })
+    const tilemap = await this.createTileMap()
+    this.populateTileMap(tilemap)
 
-      // Add bg image
-      // TODO: image y pos should be set at config.WORLD.origin.y (not * 2), but this is a hack to fix a bug I don't understand yet
-      const bgImageName = this.data.get('quad').bgFilename.split('.')[0]
-      this.bgImage = this.add
-        .image(
-          config.WORLD.origin.x * 2,
-          config.WORLD.origin.y * 2,
-          bgImageName
-        )
-        .setOrigin(0)
+    // Place artifacts on the map
+    const artifacts = await this.getArtifacts()
+    this.placeArtifactsOnQuad(artifacts)
 
-      this.layer0_bgImage.add([this.bgImage])
+    // Get duplicate artifacts
+    this.duplicateArtifacts = await this.getSavedDuplicateArtifacts()
 
-      // Player
-      this.player = Player.getInstance(
-        this,
-        config.VIEWPORT.width,
-        config.VIEWPORT.height
-      )
-      this.player.reset()
-      this.ignoredByMainCam.push(this.player)
+    // Add bg image
+    // TODO: image y pos should be set at config.WORLD.origin.y (not * 2), but this is a hack to fix a bug I don't understand yet
+    const bgImageName = this.data.get('quad').bgFilename.split('.')[0]
+    this.bgImage = this.add
+      .image(config.WORLD.origin.x * 2, config.WORLD.origin.y * 2, bgImageName)
+      .setOrigin(0)
 
-      this.createGrid()
-      this.ignoredByMinimap.push(this.grid)
+    this.layer0_bgImage.add([this.bgImage])
 
-      this.createMinimap()
-      
-      this.ignoredByMainCam.push(this.minimap)
-      this.ignoredByMainCam.push(this.minimapFrame)
+    // Player
+    this.player = Player.getInstance(
+      this,
+      config.VIEWPORT.width,
+      config.VIEWPORT.height
+    )
+    this.player.reset()
+    this.ignoredByMainCam.push(this.player)
 
-      const measurer = new Measurer({
-        scene: this,
-      })
-      this.add.existing(measurer)
+    this.createGrid()
+    this.ignoredByMinimap.push(this.grid)
 
-      this.createRulers()
-      this.ignoredByMinimap.push(this.rulerH)
-      this.ignoredByMinimap.push(this.rulerV)
-      this.ignoredByMinimap.push(this.originButton)
+    this.createMinimap()
 
-      this.createMainNav()
-      this.ignoredByMinimap.push(this.mainNav)
+    this.ignoredByMainCam.push(this.minimap)
+    this.ignoredByMainCam.push(this.minimapFrame)
 
-      this.createArtifactsChooser()
-      if (this.artifactsChooser)
-        this.ignoredByMinimap.push(this.artifactsChooser)
-      this.createAdminTools()
-
-      this.ignoredByMinimap.push(
-        this.adminTools as Phaser.GameObjects.GameObject
-      )
-
-      this.createPopup()
-      this.ignoredByMinimap.push(this.popup)
-
-      this.ignoredByMainCam.push(this.minimapFrame)
-
-      this.cameras.main.ignore(this.ignoredByMainCam)
-      this.minimap.ignore(this.ignoredByMinimap)
-      this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
-      this.sceneReady = true
+    const measurer = new Measurer({
+      scene: this,
     })
+    this.add.existing(measurer)
+
+    this.createRulers()
+    this.ignoredByMinimap.push(this.rulerH)
+    this.ignoredByMinimap.push(this.rulerV)
+    this.ignoredByMinimap.push(this.originButton)
+
+    this.createMainNav()
+    this.ignoredByMinimap.push(this.mainNav)
+
+    this.createArtifactsChooser()
+    if (this.artifactsChooser) this.ignoredByMinimap.push(this.artifactsChooser)
+    this.createAdminTools()
+
+    this.ignoredByMinimap.push(this.adminTools as Phaser.GameObjects.GameObject)
+
+    this.createPopup()
+    this.ignoredByMinimap.push(this.popup)
+
+    this.ignoredByMainCam.push(this.minimapFrame)
+
+    this.cameras.main.ignore(this.ignoredByMainCam)
+    this.minimap.ignore(this.ignoredByMinimap)
+    this.cameras.main.startFollow(this.player, false, 0.05, 0.05)
+    this.sceneReady = true
+
     // handle clicking on map
     this.input.on('pointerdown', this.handlePointerdown)
     this.scene.scene.input.on(
@@ -448,6 +453,16 @@ export default class QuadScene extends BaseScene {
     this.init(pointerState)
   }
 
+  updateDuplicateArtifactsCache(index: number, fields: any) {
+    if (!this.duplicateArtifacts[index]) return
+    this.duplicateArtifacts[index].count++
+    this.duplicateArtifacts[index].found_label = fields.found_label
+    this.duplicateArtifacts[index].found_colors = fields.found_colors
+    this.duplicateArtifacts[index].found_notes = fields.found_notes
+    this.duplicateArtifacts[index].id = index
+    this.saveDuplicateArtifacts()
+  }
+
   getCoordinatesInMeters = (location: {
     x: number
     y: number
@@ -556,12 +571,16 @@ export default class QuadScene extends BaseScene {
     this.cameras.addExisting(this.minimap)
     this.minimapFrame = new Phaser.GameObjects.Rectangle(
       this,
-      config.WORLD.origin.x + (strokeWidth / 2),
-      config.WORLD.origin.y + (strokeWidth / 2) + config.WORLD.innerPadding,
+      config.WORLD.origin.x + strokeWidth / 2,
+      config.WORLD.origin.y + strokeWidth / 2 + config.WORLD.innerPadding,
       config.WORLD.width - (strokeWidth + config.WORLD.innerPadding) * 0.5,
       config.WORLD.height - strokeWidth
     )
-    this.minimapFrame.setStrokeStyle(strokeWidth, config.COLOR_HINT_SECONDARY, 1)
+    this.minimapFrame.setStrokeStyle(
+      strokeWidth,
+      config.COLOR_HINT_SECONDARY,
+      1
+    )
     this.minimapFrame.setOrigin(0, 0)
     this.layer3_UI_1.add([this.minimapFrame])
   }
@@ -690,7 +709,7 @@ export default class QuadScene extends BaseScene {
             htmlTagName: 'collections',
             htmlData: {
               quad: this.data.get('quad'),
-              allCollections: true
+              allCollections: true,
             },
           }
 
@@ -700,7 +719,7 @@ export default class QuadScene extends BaseScene {
             this.scene.add('collections', CollectionsSubScene, true, data)
           }
           this.scene.pause(this.scene.key)
-        }
+        },
       },
       {
         name: 'Quad Collection',
@@ -712,7 +731,7 @@ export default class QuadScene extends BaseScene {
             htmlTagName: 'collections',
             htmlData: {
               quad: this.data.get('quad'),
-              allCollections: false
+              allCollections: false,
             },
           }
 
@@ -881,11 +900,49 @@ export default class QuadScene extends BaseScene {
     return dataMap
   }
 
-  getArtifacts = async () => {
-    let artifacts = await Data.getArtifactsOnQuad(
+  getArtifacts = async (): Promise<ArtifactData[]> => {
+    let artifacts: ArtifactData[] = await Data.getArtifactsOnQuad(
       parseInt(this.data.get('quad').id)
     )
     return artifacts
+  }
+
+  getSavedDuplicateArtifacts = async (): Promise<DuplicateArtifactData[]> => {
+    const quad = this.data.get('quad')
+    let duplicateArtifacts: {
+      data: string
+      project_id: string
+      quad_id: string
+      site_id: string
+    } = await Data.getDuplicateArtifactsOnQuad(
+      parseInt(quad.projectId),
+      parseInt(quad.siteId),
+      parseInt(quad.id)
+    )
+
+    if (!duplicateArtifacts.data) return []
+
+    const dupsData: any[] = []
+    const data = JSON.parse(duplicateArtifacts.data)
+
+    data.forEach((dup) => {
+      dupsData[dup.id] = dup
+    })
+    return dupsData
+  }
+
+  saveDuplicateArtifacts = async () => {
+    // remove all null values and reset array index
+    let arr = this.duplicateArtifacts.filter((el) => {
+      return el != null
+    })
+
+    await Data.saveDuplicateArtifactsOnQuad(
+      parseInt(this.data.get('quad').projectId),
+      parseInt(this.data.get('quad').siteId),
+      parseInt(this.data.get('quad').id),
+      arr
+    )
   }
 
   placeArtifactsOnQuad = (artifactsData: ArtifactData[]) => {
@@ -1064,11 +1121,37 @@ export default class QuadScene extends BaseScene {
       gameObjects[0] &&
       gameObjects[0].name.toLowerCase() === 'artifact'
     ) {
-      const artifactData = gameObjects[0]?.data.getAll() as ArtifactData
-      if (!gameObjects[0].data.get('flag')) {
+      const artifact = gameObjects[0] as Artifact
+      const artifactData = artifact?.data.getAll() as ArtifactData
+      if (!artifact.data.get('flag')) {
         artifactData.siteId = this.data.get('quad').siteId
         artifactData.projectId = this.data.get('quad').projectId
-        this.openLab(artifactData, gameObjects[0])
+
+        // Auto naming of duplicate artifacts
+        // ----------------------------------
+        // When multiple instances of the same artifact are found, the first one is named
+        // by the user, and the rest are named automatically by appending a number to the
+        // end of the name. The data entered by the user (colors, notes) is carried over as well.
+        // This is done here, and the name is updated in the lab.
+        const dup = this.duplicateArtifacts[artifactData.id]
+        if (dup) {
+          artifactData.found_label =
+            dup.found_label.split(' #')[0] + ' #' + dup.count
+          artifactData.found_colors = dup.found_colors
+          artifactData.found_notes = dup.found_notes
+        } else {
+          // first instance of this artifact,
+          // add it to the list of duplicate artifacts
+          // and initialize the count to 1
+          // the associated data (label, colors, notes) will be updated when saved in lab
+          this.duplicateArtifacts[artifactData.id] = {
+            count: 1,
+            found_label: '',
+            found_colors: '',
+            found_notes: '',
+          }
+        }
+        this.openLab(artifactData, artifact)
       } else {
         this.openCollectionItem(artifactData)
       }

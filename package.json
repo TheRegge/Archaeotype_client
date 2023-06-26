@@ -9,8 +9,9 @@
 		"lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
 		"kill:3001": "lsof -t -i :3001 | xargs kill -9"
 	},
-	"author": "supertommy",
-	"license": "MIT",
+	"author": "Regis Zaleman",
+	"license": "UNLICENSED",
+	"private": true,
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/ourcade/phaser3-parcel-template.git"
